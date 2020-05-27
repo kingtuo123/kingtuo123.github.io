@@ -24,17 +24,19 @@ description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
   line in _config.yml. It will appear in your document head meta (for
   Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: 
+twitter_username: kingtuo123
 github_username:  kingtuo123
 
 # Build settings
-#theme: minima
-#theme: just-the-docs
-remote_theme: just-the-docs
+theme: just-the-docs
+#remote_theme: pmarsceill/just-the-docs
+remote_theme:  cotes2020/jekyll-theme-chirpy
+
+
 plugins:
-    - jekyll-feed
+  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -43,7 +45,7 @@ plugins:
 #
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
-#favicon.ico
+#
 # exclude:
 #   - .sass-cache/
 #   - .jekyll-cache/
@@ -55,4 +57,3 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-#logo: "favicon.ico"

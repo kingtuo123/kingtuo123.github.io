@@ -31,60 +31,66 @@
     "relUrl": "/docs/Windows"
   }
   ,"5": {
+    "title": "About",
+    "content": "This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at jekyllrb.com . You can find the source code for Minima at GitHub: jekyll / minima . You can find the source code for Jekyll at GitHub: jekyll / jekyll .",
+    "url": "http://localhost:4000/About",
+    "relUrl": "/About"
+  }
+  ,"6": {
     "title": "gentoo",
     "content": "gentoo . something about gentoo .",
     "url": "http://localhost:4000/docs/Linux/gentoo/gentoo.html",
     "relUrl": "/docs/Linux/gentoo/gentoo.html"
   }
-  ,"6": {
+  ,"7": {
     "title": "gentoo搭建lnmp环境",
     "content": "gentoo搭建lnmp环境 . . 安装配置Mysql | 安装配置php | 安装配置nginx | 测试 | . 安装配置Mysql . emerge -av dev-db/mysql . 首次安装需配置root密码 . emerge --config dev-db/mysql . 修改配置文件,编辑/etc/mysql/my.cnf . [client] socket=/var/run/mysqld/mysqld.sock [mysqld] #禁用远程访问，只使用本地socket连接 skip-networking #默认套接字路径 socket=/var/run/mysqld/mysqld.sock #数据库默认存放路径 datadir=/var/lib/mysql/ . 启动mysql . rc-service mysql start . 登陆mysql . mysql -u root -p . 查看端口 . mysql&gt; show variables like &#39;port&#39;; ++-+ | Variable_name | Value | ++-+ | port | 0 | ++-+ 1 row in set (0.01 sec) . port为0,远程连接关闭 . 查看其他设置 . mysql&gt; show variables like &#39;socket&#39;; ++--+ | Variable_name | Value | ++--+ | socket | /var/run/mysqld/mysqld.sock | ++--+ 1 row in set (0.01 sec) mysql&gt; show variables like &#39;datadir&#39;; ++--+ | Variable_name | Value | ++--+ | datadir | /var/lib/mysql/ | ++--+ 1 row in set (0.00 sec) . 安装配置php . 修改USE，编辑文件/etc/portage/package.use/package.use，添加如下 . dev-lang/php fpm mysql mysqli gd . 按需添加，查看各项USE标记含义，执行equery u dev-lang/php . fpm : Enable the FastCGI Process Manager SAPI mysql : Add mySQL Database support mysqli : Add support for the improved mySQL libraries gd : Adds support for gd (bundled with PHP) . 安装dev-lang/php，默认会安装最新的php7 . emerge -av dev-lang/php . 查看版本，执行eselect php list cli或者执行php -v . [1] php7.3 * . php默认配置文件路径/etc/php/ . 修改/etc/php/fpm-php7.3/fpm.d/www.conf文件 . user = nginx group = nginx ;默认是开9000端口用TCP连接，没有必要，注释掉改为本地socket连接 ;listen = 127.0.0.1:9000 listen = /var/run/php-fpm/php-fpm.sock listen.owner = nginx listen.group = nginx listen.mode = 0660 . 修改/etc/php/fpm-php7.3/php.ini,修改下面内容 . ;去掉下面这行注释并在末尾添加.html，支持解析html security.limit_extensions = .php .php4 .php5 .php7 .html cgi.fix_pathinfo=0 . 百度了下cgi.fix_pathinfo，如果PHP的配置里 cgi.fix_pathinfo=1，会导致安全问题，这个问题只存在于 Nginx 服务器中，Apache和IIS都不会有这个问题 . 安装配置nginx . 执行equery u nginx检查USE标记nginx_modules_http_fastcgi是否默认添加 . emerge -av www-servers/nginx . 默认配置文件路径/etc/nginx/,修改nginx.conf . server { listen 80 default_server; listen [::]:80 default_server; server_name localhost; include /etc/nginx/default.d/*.conf; root /home/test/www; #网站主目录 location / { root /home/test/www; index index.php index.html index.htm; } location ~ .* .(php|html)$ { #添加php，html解析 try_files $uri =404; fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME /home/test/www$fastcgi_script_name; include fastcgi_params; } } . 添加nginx到test用户组 . usermod -a -G test nginx . 查看用户组 . root# groups nginx test nginx . 最后，确保网站主目录的group有r和x权限。 . 测试 . 启动nginx，执行rc-service nginx start，同样再启动php-fpm和mysql。 . 可以添加开机运行，执行rc-update add &lt;服务名称&gt; default . 在网站主目录下新建index.html,写入以下内容 . &lt;?php $con=mysqli_connect(null,&quot;root&quot;,&quot;密码&quot;,null,null,&quot;/var/run/mysqld/mysqld.sock&quot;); if ($con){ echo &quot;连接成功&quot;; } ?&gt; . 打开浏览器输入127.0.0.1，看到连接成功，配置成功。 .",
     "url": "http://localhost:4000/docs/Linux/gentoo/gentoo%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83.html",
     "relUrl": "/docs/Linux/gentoo/gentoo%E6%90%AD%E5%BB%BAlnmp%E7%8E%AF%E5%A2%83.html"
   }
-  ,"7": {
+  ,"8": {
     "title": "github设置SSH Key",
     "content": "github设置SSH Key . . 创建SSH Key | 添加公钥 | 验证 | . 创建SSH Key . 运行下列命令创建SSH Key . ssh-keygen -t rsa -C &quot;kingtuo123@foxmail.com&quot; . 邮箱使用github创建时用的邮箱，输出如下，按提示操作 . Generating public/private rsa key pair. Enter file in which to save the key (/home/king/.ssh/id_rsa): /home/king/.ssh/github_rsa Enter passphrase (empty for no passphrase): Enter same passphrase again: . 以上会在～/.ssh目录下生成github_rsa(私钥)和github_rsa.pub(公钥)文件 . 添加公钥 . 查看公钥的内容,执行 cat github_rsa.pub . ssh-rsa [公钥的内容] kingtuo123@foxmail.com . 打开github在setting-&gt;SSH and GPG keys中添加SSH Key . 验证 . 执行 . ssh -i github_rsa -T git@github.com . 结果如下为成功 . The authenticity of host &#39;github.com (52.74.223.119)&#39; can&#39;t be established. RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8. Are you sure you want to continue connecting (yes/no/[fingerprint])? yes Warning: Permanently added &#39;github.com,52.74.223.119&#39; (RSA) to the list of known hosts. Enter passphrase for key &#39;github_rsa&#39;: Hi kingtuo123! You&#39;ve successfully authenticated, but GitHub does not provide shell access. .",
     "url": "http://localhost:4000/docs/Git/github%E8%AE%BE%E7%BD%AEssh%20key.html",
     "relUrl": "/docs/Git/github%E8%AE%BE%E7%BD%AEssh%20key.html"
   }
-  ,"8": {
+  ,"9": {
     "title": "git分支操作",
     "content": "git分支操作 . . git branch 显示分支一览表 | git checkout -b 创建分支 | git checkout 切换分支 | git merge 合并分支 | git log –graph 以图表形式查看分支 | . git branch 显示分支一览表 . $ git branch * master . *表示当前所在分支 . git checkout -b 创建分支 . 创建名为-A的分支 . $ git checkout -b feature-A Switched to a new branch &#39;feature-A&#39; . 在分支下的git add等操作不会影响到主分支 . git checkout 切换分支 . 切换到主分支 . git check master . 切换到上一分支 . git check - . git merge 合并分支 . git merge --no-ff feature-A . git merge 相关参数 . --ff 快速合并(fast-forward)，这个是默认的参数。如果合并过程出现冲突，Git会显示出冲突并等待手动解决 --ff-only 只有能快速合并的情况才合并。如果合并过程出现冲突，Git会自动abort此次merge --no-ff 不使用fast-forward方式合并，会生成一次新的提交记录,保留分支的commit历史 --squas 把多次分支commit历史压缩为一次 . git log –graph 以图表形式查看分支 . $git log --graph * commit c62e68678e014db91bd54b034114a0c0b34c57ac (HEAD -&gt; master) | Merge: 2d5828b 7d1003a | | Author: kingtuo123 &lt;kingtuo123@foxmail.com&gt; | | Date: Mon May 25 14:10:57 2020 +0800 | | | | Merge branch &#39;feature-A&#39; | | | * commit 7d1003abe0a6af61eae4a45319b853d24ed381f8 (feature-A) |/ Author: kingtuo123 &lt;kingtuo123@foxmail.com&gt; | Date: Mon May 25 13:04:05 2020 +0800 | | fafafa | * commit 10c811a7b9d674bc837ae87755901d40abda75ad Author: kingtuo123 &lt;kingtuo123@foxmail.com&gt; Date: Mon May 25 10:00:16 2020 +0800 First commit .",
     "url": "http://localhost:4000/docs/Git/git%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C.html",
     "relUrl": "/docs/Git/git%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C.html"
   }
-  ,"9": {
+  ,"10": {
     "title": "git基本操作",
     "content": "git基本操作 . . git init 初始化仓库 | git status 查看仓库的状态 | git add 向暂存区中添加文件 | git commit 保存仓库的历史记录 | git log 查看提交日志 只显示提交信息的第一行 | 只显示指定目录、文件的日志 | 显示文件的改动 | | git diff 查看更改前后的差别 查看工作树和暂存区的差别 | 查看工作树和最新提交的区别 | | . git init 初始化仓库 . $ mkdir test $ cd test $ git init Initialized empty Git repository in /home/king/test/.git/ . 初始化成功后会在当前目录下生成.git目录,这个目录里存储着管理当前目录内容所需的仓库数据。 . git status 查看仓库的状态 . $ git status On branch master No commits yet nothing to commit (create/copy files and use &quot;git add&quot; to track) . 结果显示当前处于master分支下,新建README.md文件 . git add 向暂存区中添加文件 . $ git add README.md $ git status On branch master No commits yet Changes to be committed: (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage) new file: README.md . git commit 保存仓库的历史记录 . git commit命令可以将当前暂存区中的文件实际保存到仓库的历史记录中。通过这些记录，我们就可以在工作树中复原文件。 . $ git commit -m &quot;First commit&quot; [master (root-commit) 10c811a] First commit 1 file changed, 4 insertions(+) create mode 100644 README.md . git log 查看提交日志 . $ git log commit 10c811a7b9d674bc837ae87755901d40abda75ad (HEAD -&gt; master) Author: kingtuo123 &lt;kingtuo123@foxmail.com&gt; Date: Mon May 25 10:00:16 2020 +0800 First commit . 只显示提交信息的第一行 . git log --pretty=short . 只显示指定目录、文件的日志 . git log README.md . 显示文件的改动 . git log -p 后面跟文件可显示指定文件的改动 . git diff 查看更改前后的差别 . git diff命令可以查看工作树、暂存区、最新提交之间的差别。 在README.md中写点东西 . $ echo hello &gt;&gt; README.md . 查看工作树和暂存区的差别 . $ diff --git a/README.md b/README.md index d9c0eff..3690dad 100644 a/README.md +++ b/README.md @@ -6,3 +6,4 @@ hello world i&#39;m here test +hello . 再用git add向暂存区中添加README.md,再次执行git diff,则没有任何输出 . 查看工作树和最新提交的区别 . 由于执行了git add向暂存区添加了README.md，所以git diff会没有输出，所以最好在git commit执行前执行以下命令 . git diff HEAD . git commit提交的是暂存区的文件，所以在git add执行后，如果文件有新的改动则需要重新添加。 .",
     "url": "http://localhost:4000/docs/Git/git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.html",
     "relUrl": "/docs/Git/git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.html"
   }
-  ,"10": {
+  ,"11": {
     "title": "git更改提交的操作",
     "content": "git更改提交的操作 . . git reset 回溯历史版本 | . git reset 回溯历史版本 . 使用git log查看目标点的哈希值 .",
     "url": "http://localhost:4000/docs/Git/git%E6%9B%B4%E6%94%B9%E6%8F%90%E4%BA%A4%E7%9A%84%E6%93%8D%E4%BD%9C.html",
     "relUrl": "/docs/Git/git%E6%9B%B4%E6%94%B9%E6%8F%90%E4%BA%A4%E7%9A%84%E6%93%8D%E4%BD%9C.html"
   }
-  ,"11": {
-    "title": "Home",
-    "content": "Notes . Take notes of what I learned . .",
+  ,"12": {
+    "title": "",
+    "content": "test .",
     "url": "http://localhost:4000/",
     "relUrl": "/"
   }
-  ,"12": {
+  ,"13": {
     "title": "ip命令详解",
     "content": "Main navigation . The main navigation for your Just the Docs site is on the left side of the page at large screens and on the top (behind a tap) on small screens. The main navigation can be structured to accommodate a multi-level menu system (pages with children and grandchildren). . By default, all pages will appear as top level pages in the main nav unless a parent page is defined (see Pages with Children). . . Ordering pages . To specify a page order, use the nav_order parameter in your pages’ YAML front matter. . Example . layout: default title: Customization nav_order: 4 .",
     "url": "http://localhost:4000/docs/Linux/linux%E5%91%BD%E4%BB%A4/ip%E5%91%BD%E4%BB%A4.html",
     "relUrl": "/docs/Linux/linux%E5%91%BD%E4%BB%A4/ip%E5%91%BD%E4%BB%A4.html"
   }
-  ,"13": {
+  ,"14": {
     "title": "linux命令",
     "content": "linux command . something about linux command .",
     "url": "http://localhost:4000/docs/Linux/linux%E5%91%BD%E4%BB%A4/linux%E5%91%BD%E4%BB%A4.html",
     "relUrl": "/docs/Linux/linux%E5%91%BD%E4%BB%A4/linux%E5%91%BD%E4%BB%A4.html"
   }
-  ,"14": {
+  ,"15": {
     "title": "Markdown基本语法",
     "content": "Markdown基本语法 . . 标题 | 字体样式 | 引用 | 图片 | 超链接 | 列表 无序列表 | 有序列表 | 列表嵌套 | | 表格 | 代码 | . 标题 . # 这是一级标题 ## 这是二级标题 ### 这是三级标题 #### 这是四级标题 ##### 这是五级标题 ###### 这是六级标题 . 最后一个#号后面加空格 . 字体样式 . **这是加粗的文字** *这是倾斜的文字* ***这是斜体加粗的文字*** ~~这是加删除线的文字~~ . 引用 . &gt;这是引用的内容 &gt;&gt;这是引用的内容 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;这是引用的内容 . ##　分割线 . 三个或者三个以上的 - 或者 * 都可以。 . - *** ***** . 图片 . ![图片alt](图片地址 &quot;图片title&quot;) . 超链接 . [超链接名](超链接地址 &quot;超链接title&quot;) . 列表 . 无序列表 . - 和+ 和* 三个符号都可以 . - 列表内容 + 列表内容 * 列表内容 . 显示如下 . 列表内容 | 列表内容 | 列表内容 | . 有序列表 . 数字加点 . 1.列表内容 2.列表内容 3.列表内容 . 列表嵌套 . 二级列表前加三个空格 . - 一级无序列表内容 - 二级无序列表内容 - 二级无序列表内容 - 二级无序列表内容 . 表格 . 表头|表头2222222|表头33333333 |:--:|--: 内容|内容|内容 内容|内容|内容 . :--: 表示居中 . --: 靠右 . :-- 靠左 . 显示如下 . 表头 表头2222222 表头33333333 . 内容 | 内容 | 内容 | . 内容 | 内容 | 内容 | . 代码 . ​markdown 代码... 代码... 代码... ​ . `` `后可加语言类型，方便解析器解析后实现代码高亮 .",
     "url": "http://localhost:4000/docs/Uncategorized/markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95.html",
