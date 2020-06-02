@@ -30,7 +30,7 @@ twitter_username: kingtuo123
 github_username:  kingtuo123
 
 # Build settings
-#theme: just-the-docs
+theme: just-the-docs
 remote_theme: pmarsceill/just-the-docs
 #remote_theme:  cotes2020/jekyll-theme-chirpy
 
