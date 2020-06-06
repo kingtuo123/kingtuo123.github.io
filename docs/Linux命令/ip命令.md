@@ -1,7 +1,7 @@
 ---
 layout: default
 title: ip命令详解
-parent: linux命令
+parent: Linux命令
 grand_parent: Linux
 nav_order: 1
 ---

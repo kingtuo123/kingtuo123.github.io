@@ -1,8 +1,7 @@
 ---
 layout: default
-title: gentoo
-nav_order: 1
-parent: Linux
+title: Gentoo
+nav_order: 2
 has_children: true
 ---
 

@@ -1,8 +1,7 @@
 ---
 layout: default
 title: gentoo搭建lnmp环境
-parent: gentoo
-grand_parent: Linux
+parent: Gentoo
 nav_order: 1
 ---
 

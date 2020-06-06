@@ -1,8 +1,7 @@
 ---
 layout: default
-title: linux命令
-nav_order: 1
-parent: Linux
+title: Linux命令
+nav_order: 3
 has_children: true
 ---
 

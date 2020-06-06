@@ -44,7 +44,7 @@ function initNav() {
 
 function initSearch() {
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://localhost:4000/notes/assets/js/search-data.json', true);
+  request.open('GET', 'http://localhost:4000/assets/js/search-data.json', true);
 
   request.onload = function(){
     if (request.status >= 200 && request.status < 400) {
@@ -52,7 +52,7 @@ function initSearch() {
       var data = JSON.parse(request.responseText);
       
       
-      lunr.tokenizer.separator = /[\s/]+/
+      lunr.tokenizer.separator = /[\s\-/]+/
       
       
       var index = lunr(function () {
