@@ -32,7 +32,7 @@ github_username:  kingtuo123
 # Build settings
 #theme: minima
 #theme: just-the-docs
-remote_theme: pmarsceill/just-the-docs
+remote_theme: kingtuo123/just-the-docs
 
 plugins:
     - jekyll-feed
