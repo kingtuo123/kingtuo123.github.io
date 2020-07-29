@@ -25,7 +25,7 @@ $ git branch
 `*`表示当前所在分支
 
 ## git checkout -b 创建分支
-创建名为-A的分支
+创建名为feature-A的分支
 ```
 $ git checkout -b feature-A
 Switched to a new branch 'feature-A'

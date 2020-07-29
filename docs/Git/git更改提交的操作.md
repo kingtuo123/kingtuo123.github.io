@@ -19,3 +19,6 @@ nav_order: 3
 
 ## git reset 回溯历史版本
 使用`git log`查看目标点的哈希值
+
+执行`git reset --hard <哈希值>`就可以回溯到该目标点
+
