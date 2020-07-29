@@ -83,7 +83,9 @@ $ echo hello >> README.md
 ```
 ### 查看工作树和暂存区的差别
 ```
-$ diff --git a/README.md b/README.md
+$ git diff
+
+diff --git a/README.md b/README.md
 index d9c0eff..3690dad 100644
 --- a/README.md
 +++ b/README.md
