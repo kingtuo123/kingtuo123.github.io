@@ -13,6 +13,5 @@ permalink: /
 Take notes of what I learned
 
 
----
 
 

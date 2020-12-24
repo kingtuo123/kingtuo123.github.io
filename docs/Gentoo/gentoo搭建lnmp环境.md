@@ -151,27 +151,27 @@ emerge -av www-servers/nginx
 默认配置文件路径`/etc/nginx/`,修改`nginx.conf`
 
 ```nginx
-    server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
-        server_name  localhost;
+server {
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  localhost;
 
-        include /etc/nginx/default.d/*.conf;
-		root  /home/test/www; #网站主目录
+    include /etc/nginx/default.d/*.conf;
+    	root  /home/test/www; #网站主目录
 
-        location / {
-		root  /home/test/www;
-		index index.php index.html index.htm; 
-        }
-
-	location ~ .*\.(php|html)$ {  #添加php，html解析
-            try_files $uri =404;
-            fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME /home/test/www$fastcgi_script_name;
-            include fastcgi_params;
-        }
+    location / {
+    	root  /home/test/www;
+    	index index.php index.html index.htm; 
     }
+
+    location ~ .*\.(php|html)$ {  #添加php，html解析
+        try_files $uri =404;
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME /home/test/www$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
 
 ```
 
