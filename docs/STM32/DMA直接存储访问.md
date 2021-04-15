@@ -36,9 +36,7 @@ STM32F4xx 有两个 DMA 控制器。每个 DMA 控制器具有 8 个数据流，
 
 每个数据流都与一个 DMA 请求相关联，此 DMA 请求可以从 8 个可能的通道请求中选出。此选择由 DMA_SxCR（DMA stream x configuration register） 寄存器中的 CHSEL[2:0] 位控制。
 
-<img src="https://knote.oss-cn-hangzhou.aliyuncs.com/img/DMA%E9%80%9A%E9%81%93%E9%80%89%E6%8B%A9.png" style="zoom:50%;" />
-
-
+<img src="https://knote.oss-cn-hangzhou.aliyuncs.com/img/DMA%E9%80%9A%E9%81%93%E9%80%89%E6%8B%A9.png" style="max-height:300px"  align="center"/>
 
 **CHSEL[2:0]**：通道选择 (Channel selection)
 
