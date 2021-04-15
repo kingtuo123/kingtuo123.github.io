@@ -84,15 +84,15 @@ STM32F4xx 有两个 DMA 控制器。每个 DMA 控制器具有 8 个数据流，
 
 ### FIFO
 
-每个数据流都独立拥有四级 32 位 FIFO(先进先出存储器缓冲区)。DMA 传输具有 FIFO模式和直接模式。
+- 每个数据流都独立拥有四级 32 位 FIFO(先进先出存储器缓冲区)。DMA 传输具有 FIFO模式和直接模式。
 
-在直接模式下，如果 DMA 配置为存储器到外设传输那 DMA 会将一个数据存放在 FIFO 内，如果外设启动 DMA 传输请求就可以马上将数据传输过去。
+- 在直接模式下，如果 DMA 配置为存储器到外设传输那 DMA 会将一个数据存放在 FIFO 内，如果外设启动 DMA 传输请求就可以马上将数据传输过去。
 
-FIFO 用于在源数据传输到目标地址之前临时存放这些数据。可以通过 DMA 数据流xFIFO 控制寄存器 DMA_SxFCR 的 FTH[1:0]位（FIFO threshold selection）来控制 FIFO 的阈值，分别为 1/4、1/2、3/4、4/4。如果数据存储量达到阈值级别时，FIFO 内容将传输到目标中。
+- FIFO 用于在源数据传输到目标地址之前临时存放这些数据。可以通过 DMA 数据流xFIFO 控制寄存器 DMA_SxFCR 的 FTH[1:0]位（FIFO threshold selection）来控制 FIFO 的阈值，分别为 1/4、1/2、3/4、4/4。如果数据存储量达到阈值级别时，FIFO 内容将传输到目标中。
 
-简而言之，直接模式来一个发一个，FIFO模式凑够数再发。
+- 简而言之，直接模式来一个发一个，FIFO模式凑够数再发。
 
-FIFO 另外一个作用使用于突发(burst)传输。
+- FIFO 另外一个作用使用于突发(burst)传输。
 
 *备注：F103系列没有FIFO*
 
@@ -148,21 +148,21 @@ DMA2 支持全部三种传输模式，而 DMA1 只有外设到存储器和存储
 
 ### 流控制器
 
-流控制器主要涉及到一个控制 DMA 传输停止问题。DMA 传输在 DMA_SxCR 寄存器的 EN 位被置 1 后就进入准备传输状态，如果有外设请求 DMA 传输就可以进行数据传输。
+- 流控制器主要涉及到一个控制 DMA 传输停止问题。DMA 传输在 DMA_SxCR 寄存器的 EN 位被置 1 后就进入准备传输状态，如果有外设请求 DMA 传输就可以进行数据传输。
 
-很多情况下，我们明确知道传输数据的数目，比如要传 1000 个或者 2000 个数据，这样我们就可以在传输之前设置 DMA_SxNDTR 寄存器为要传输数目值，DMA 控制器在传输完这么多数目数据后就可以控制 DMA 停止传输。
+- 很多情况下，我们明确知道传输数据的数目，比如要传 1000 个或者 2000 个数据，这样我们就可以在传输之前设置 DMA_SxNDTR 寄存器为要传输数目值，DMA 控制器在传输完这么多数目数据后就可以控制 DMA 停止传输。
 
-DMA 数据流 x 数据项数 DMA_SxNDTR(x 为 0~7)寄存器用来记录当前仍需要传输数目，它是一个 16 位数据有效寄存器，即最大值为 65535，这个值在程序设计是非常有用也是需要注意的地方。我们在编程时一般都会明确指定一个传输数量，在完成一次数目传输后DMA_SxNDTR 计数值就会自减，当达到零时就说明传输完成。
+- DMA 数据流 x 数据项数 DMA_SxNDTR(x 为 0~7)寄存器用来记录当前仍需要传输数目，它是一个 16 位数据有效寄存器，即最大值为 65535，这个值在程序设计是非常有用也是需要注意的地方。我们在编程时一般都会明确指定一个传输数量，在完成一次数目传输后DMA_SxNDTR 计数值就会自减，当达到零时就说明传输完成。
 
-如果某些情况下在传输之前我们无法确定数据的数目，那 DMA 就无法自动控制传输停止了，此时需要外设通过硬件通信向 DMA 控制器发送停止传输信号。这里有一个大前提就是外设必须是可以发出这个停止传输信号，只有 SDIO 才有这个功能，其他外设不具备此功能。
+- 如果某些情况下在传输之前我们无法确定数据的数目，那 DMA 就无法自动控制传输停止了，此时需要外设通过硬件通信向 DMA 控制器发送停止传输信号。这里有一个大前提就是外设必须是可以发出这个停止传输信号，只有 SDIO 才有这个功能，其他外设不具备此功能。
 
 
 
 ### 循环模式
 
-循环模式相对应于一次模式。一次模式就是传输一次就停止传输，下一次传输需要手动控制，而循环模式在传输一次后会自动按照相同配置重新传输，周而复始直至被控制停止或传输发生错误。
+- 循环模式相对应于一次模式。一次模式就是传输一次就停止传输，下一次传输需要手动控制，而循环模式在传输一次后会自动按照相同配置重新传输，周而复始直至被控制停止或传输发生错误。
 
-通过 DMA_SxCR 寄存器的 CIRC 位可以使能循环模式。
+- 通过 DMA_SxCR 寄存器的 CIRC 位可以使能循环模式。
 
 
 
@@ -192,25 +192,25 @@ DMA 数据流 x 数据项数 DMA_SxNDTR(x 为 0~7)寄存器用来记录当前仍
 
 ### 直接模式
 
-默认情况下，DMA 工作在直接模式，不使能 FIFO 阈值级别。
+- 默认情况下，DMA 工作在直接模式，不使能 FIFO 阈值级别。
 
-直接模式接收到外设请求后立即启动对存储器的单次传输。直接模式要求源地址和目标地址的数据宽度必须一致，所以只有 PSIZE 控制，而 MSIZE 值被忽略。
+- 直接模式接收到外设请求后立即启动对存储器的单次传输。直接模式要求源地址和目标地址的数据宽度必须一致，所以只有 PSIZE 控制，而 MSIZE 值被忽略。
 
-突发传输是基于 FIFO 的所以直接模式不被支持。另外直接模式不能用于存储器到存储器传输。
+- 突发传输是基于 FIFO 的所以直接模式不被支持。另外直接模式不能用于存储器到存储器传输。
 
-在直接模式下，如果 DMA 配置为存储器到外设传输那 DMA 会见一个数据存放在FIFO 内，如果外设启动 DMA 传输请求就可以马上将数据传输过去。
+- 在直接模式下，如果 DMA 配置为存储器到外设传输那 DMA 会见一个数据存放在FIFO 内，如果外设启动 DMA 传输请求就可以马上将数据传输过去。
 
 
 
 ### 双缓冲模式
 
-设置 DMA_SxCR 寄存器的 DBM 位为 1 可启动双缓冲传输模式，并自动激活循环模式。
+- 设置 DMA_SxCR 寄存器的 DBM 位为 1 可启动双缓冲传输模式，并自动激活循环模式。
 
-双缓冲不应用与存储器到存储器的传输。
+- 双缓冲不应用与存储器到存储器的传输。
 
-双缓冲模式下，两个存储器地址指针都有效，即DMA_SxM1AR 寄存器将被激活使用。开始传输使用 DMA_SxM0AR 寄存器的地址指针所对应的存储区，当这个存储区数据传输完 DMA 控制器会自动切换至 DMA_SxM1AR 寄存器的地址指针所对应的另一块存储区，如果这一块也传输完成就再切换至 DMA_SxM0AR寄存器的地址指针所对应的存储区，这样循环调用。
+- 双缓冲模式下，两个存储器地址指针都有效，即DMA_SxM1AR 寄存器将被激活使用。开始传输使用 DMA_SxM0AR 寄存器的地址指针所对应的存储区，当这个存储区数据传输完 DMA 控制器会自动切换至 DMA_SxM1AR 寄存器的地址指针所对应的另一块存储区，如果这一块也传输完成就再切换至 DMA_SxM0AR寄存器的地址指针所对应的存储区，这样循环调用。
 
-当其中一个存储区传输完成时都会把传输完成中断标志 TCIF 位置 1，如果我们使能了DMA_SxCR 寄存器的传输完成中断，则可以产生中断信号，这个对我们编程非常有用。另外一个非常有用的信息是 DMA_SxCR 寄存器的 CT 位，当 DMA 控制器是在访问使用DMA_SxM0AR 时 CT=0，此时 CPU 不能访问 DMA_SxM0AR，但可以向 DMA_SxM1AR填充或者读取数据；当 DMA 控制器是在访问使用 DMA_SxM1AR 时 CT=1，此时 CPU 不能访问 DMA_SxM1AR，但可以向 DMA_SxM0AR 填充或者读取数据。另外在未使能DMA 数据流传输时，可以直接写 CT 位，改变开始传输的目标存储区。
+- 当其中一个存储区传输完成时都会把传输完成中断标志 TCIF 位置 1，如果我们使能了DMA_SxCR 寄存器的传输完成中断，则可以产生中断信号，这个对我们编程非常有用。另外一个非常有用的信息是 DMA_SxCR 寄存器的 CT 位，当 DMA 控制器是在访问使用DMA_SxM0AR 时 CT=0，此时 CPU 不能访问 DMA_SxM0AR，但可以向 DMA_SxM1AR填充或者读取数据；当 DMA 控制器是在访问使用 DMA_SxM1AR 时 CT=1，此时 CPU 不能访问 DMA_SxM1AR，但可以向 DMA_SxM0AR 填充或者读取数据。另外在未使能DMA 数据流传输时，可以直接写 CT 位，改变开始传输的目标存储区。
 
 
 
@@ -218,15 +218,15 @@ DMA 数据流 x 数据项数 DMA_SxNDTR(x 为 0~7)寄存器用来记录当前仍
 
 每个 DMA 数据流可以在发送以下事件时产生中断：
 
-   - 达到半传输：DMA 数据传输达到一半时 HTIF 标志位被置 1，如果使能 HTIE 中断控制位将产生达到半传输中断
+   - **达到半传输**：DMA 数据传输达到一半时 HTIF 标志位被置 1，如果使能 HTIE 中断控制位将产生达到半传输中断
 
-   - 传输完成：DMA 数据传输完成时 TCIF 标志位被置 1，如果使能 TCIE 中断控制位将产生传输完成中断
+   - **传输完成**：DMA 数据传输完成时 TCIF 标志位被置 1，如果使能 TCIE 中断控制位将产生传输完成中断
 
-   - 传输错误：DMA 访问总线发生错误或者在双缓冲模式下试图访问“受限”存储器地址寄存器时 TEIF 标志位被置 1，如果使能 TEIE 中断控制位将产生传输错误中断
+   - **传输错误**：DMA 访问总线发生错误或者在双缓冲模式下试图访问“受限”存储器地址寄存器时 TEIF 标志位被置 1，如果使能 TEIE 中断控制位将产生传输错误中断
 
-   - FIFO错误：发生 FIFO 下溢或者上溢时 FEIF 标志位被置 1，如果使能 FEIE 中断控制位将产生 FIFO 错误中断
+   - **FIFO错误**：发生 FIFO 下溢或者上溢时 FEIF 标志位被置 1，如果使能 FEIE 中断控制位将产生 FIFO 错误中断
 
-   - 直接模式错误：在外设到存储器的直接模式下，因为存储器总线没得到授权，使得先前数据没有完成被传输到存储器空间上，此时 DMEIF 标志位被置 1，如果使能 DMEIE 中断控制位将产生直接模式错误中断。
+   - **直接模式错误**：在外设到存储器的直接模式下，因为存储器总线没得到授权，使得先前数据没有完成被传输到存储器空间上，此时 DMEIF 标志位被置 1，如果使能 DMEIE 中断控制位将产生直接模式错误中断。
 
 
 
@@ -255,12 +255,19 @@ typedef struct {
 - **DMA_Channel**：DMA 请求通道选择，可选通道 0 至通道 7
 
   DMA_Channel_0 
+  
   DMA_Channel_1 
+  
   DMA_Channel_2 
+  
   DMA_Channel_3 
+  
   DMA_Channel_4 
+  
   DMA_Channel_5 
+  
   DMA_Channel_6 
+  
   DMA_Channel_7 
 
   
@@ -276,9 +283,11 @@ typedef struct {
 - **DMA_DIR**：传输方向选择，可选外设到存储器、存储器到外设以及存储器到存储器。它设定 DMA_SxCR 寄存器的 DIR[1:0]位的值。
 
   DMA_DIR_PeripheralToMemory
+  
   DMA_DIR_MemoryToPeripheral
-  DMA_DIR_MemoryToMemory    
-
+  
+  DMA_DIR_MemoryToMemory   
+  
   
 
 - **DMA_BufferSize**：设定待传输数据数目，初始化设定 DMA_SxNDTR 寄存器的值。
@@ -288,6 +297,7 @@ typedef struct {
 - **DMA_PeripheralInc**：如果配置为 DMA_PeripheralInc_Enable，使能外设地址自动递增功能，它设定 DMA_SxCR 寄存器的 PINC 位的值；一般外设都是只有一个数据寄存器，所以一般不会使能该位。ADC3 的数据寄存器地址是固定并且只有一 个所以不使能外设地址递增。
 
   DMA_PeripheralInc_Enable 
+  
   DMA_PeripheralInc_Disable
 
   
@@ -295,6 +305,7 @@ typedef struct {
 - **DMA_MemoryInc**：如果配置为 DMA_MemoryInc_Enable，使能存储器地址自动递增功能，它设定 DMA_SxCR 寄存器的 MINC 位的值；我们自定义的存储区一般都是存放多个数据的，所以使能存储器地址自动递增功能。
 
   DMA_MemoryInc_Enable 
+  
   DMA_MemoryInc_Disable
 
   
@@ -302,7 +313,9 @@ typedef struct {
 - **DMA_PeripheralDataSize**：外设数据宽度，外设数据宽度，可选字节(8 位)、半字(16 位)和字(32位)，它设定 DMA_SxCR 寄存器的 PSIZE[1:0]位的值
 
   DMA_PeripheralDataSize_Byte 
+  
   DMA_PeripheralDataSize_HalfWord
+  
   DMA_PeripheralDataSize_Word
   
   
@@ -310,7 +323,9 @@ typedef struct {
 - **DMA_MemoryDataSize**：存储器数据宽度，可选字节(8 位)、半字(16 位)和字(32位)，它设定 DMA_SxCR 寄存器的 MSIZE[1:0]位的值。
 
   DMA_MemoryDataSize_Byte 
+  
   DMA_MemoryDataSize_HalfWord
+  
   DMA_MemoryDataSize_Word 
 
   
@@ -318,6 +333,7 @@ typedef struct {
 - **DMA_Mode**：DMA 传输模式选择， 可选 一次传输或者循环传输 ，它设定DMA_SxCR 寄存器的 CIRC 位的值。
 
   DMA_Mode_Normal 
+  
   DMA_Mode_Circular
   
   
@@ -326,8 +342,11 @@ typedef struct {
 - **DMA_Priority**：软件设置数据流的优先级
 
   DMA_Priority_Low 
+  
   DMA_Priority_Medium 
+  
   DMA_Priority_High 
+  
   DMA_Priority_VeryHigh
 
   
@@ -335,6 +354,7 @@ typedef struct {
 - **DMA_FIFOMode**：FIFO 模式使能
 
   DMA_FIFOMode_Disable
+  
   DMA_FIFOMode_Enable 
 
   
@@ -342,8 +362,11 @@ typedef struct {
 - **DMA_FIFOThreshold**：FIFO 阈值选择
 
   1/4：DMA_FIFOThreshold_1QuarterFull 
+  
   2/4：DMA_FIFOThreshold_HalfFull 
+  
   3/4：DMA_FIFOThreshold_3QuartersFull
+  
   4/4：DMA_FIFOThreshold_Full
   
   
@@ -351,8 +374,11 @@ typedef struct {
 - **DMA_MemoryBurst**：存储器突发模式选择
 
   单次    ：DMA_MemoryBurst_Single
+  
   4节拍  ：DMA_MemoryBurst_INC4 
+  
   8节拍  ：DMA_MemoryBurst_INC8 
+  
   16节拍：DMA_MemoryBurst_INC16 
   
   
@@ -360,8 +386,11 @@ typedef struct {
 - **DMA_PeripcheralBurst**：外设突发模式选择
 
   单次    ：DMA_PeripheralBurst_Single
+  
   4节拍  ：DMA_PeripheralBurst_INC4
+  
   8节拍  ：DMA_PeripheralBurst_INC8
+  
   16节拍：DMA_PeripheralBurst_INC16 
 
 
