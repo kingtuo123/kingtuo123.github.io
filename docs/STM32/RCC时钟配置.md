@@ -267,7 +267,7 @@ HSE_SetSysClock(RCC_PLLMul_9); 则设置系统时钟为：8MHZ * 9 = 72MHZ
 
 HSE_SetSysClock(RCC_PLLMul_16); 则设置系统时钟为：8MHZ * 16 = 128MHZ
 
-## F1系列使用HSEI配置系统时钟
+## F1系列使用HSI配置系统时钟
 
 ![](https://knote.oss-cn-hangzhou.aliyuncs.com/img/RCC_F103_HSI.png)
 
