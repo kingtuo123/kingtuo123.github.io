@@ -7,4 +7,4 @@ has_children: true
 
 # gentoo
 
-something about gentoo 
+![](https://knote.kingtuo123.com/img/gentoo-horizontal.png)
