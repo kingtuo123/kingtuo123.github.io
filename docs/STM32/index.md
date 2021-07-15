@@ -6,6 +6,5 @@ has_children: true
 permalink: /docs/STM32
 ---
 
-# STM32
 
 ![](https://knote.kingtuo123.com/img/stm-model.png)
