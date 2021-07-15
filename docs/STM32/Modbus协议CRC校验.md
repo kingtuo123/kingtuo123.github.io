@@ -32,7 +32,7 @@ nav_order: 16
    - CRC-4表示所得CRC码为4位，在数据A右侧补上4个0，数据A：**1011 1001 0000**
    - 数据A做被除数，用除数 **10011** 做**模2除法**，如下图
 
-   - <img src="https://knote.oss-cn-hangzhou.aliyuncs.com/img/CRC-%E6%A8%A12%E9%99%A4%E6%B3%95.png" style="max-width:200px;"  align="center"/>
+   - <img src="https://knote.kingtuo123.com/img/CRC-%E6%A8%A12%E9%99%A4%E6%B3%95.png" style="max-width:200px;"  align="center"/>
 
 - 关于模2除法：
    - 本质是**异或运算**
@@ -78,7 +78,7 @@ nav_order: 16
 
 再来观察上面的式子,看下图左侧，模2除法里除数和被除数左侧以1对齐后再异或运算，最左侧1在每次运算后都会被丢弃（因为1异或1为0，而模2除法会舍去0），并不会对最终结果产生影响
 
-<img src="https://knote.oss-cn-hangzhou.aliyuncs.com/img/CRC-%E5%8E%BB1.png" style="max-height:300px"  align="center"/>
+<img src="https://knote.kingtuo123.com/img/CRC-%E5%8E%BB1.png" style="max-height:300px"  align="center"/>
 
 我们把除数左侧的1去掉，如图右侧所示，可以看出，只要将除数与被除数的第2位对齐再异或运算 ，最后结果是一样的，所以除数最高位1可以舍去，13就可以简写为03。
 
@@ -158,7 +158,7 @@ int main(void) {
 
 大概的原理如下图
 
-<img src="https://knote.oss-cn-hangzhou.aliyuncs.com/img/CRC%E6%9F%A5%E8%A1%A8%E6%B3%95.png" style=""  align="center"/>
+<img src="https://knote.kingtuo123.com/img/CRC%E6%9F%A5%E8%A1%A8%E6%B3%95.png" style=""  align="center"/>
 
 8位一共有256种结果，可以先将结果计算好后存入数组中。按16位查表太多有65536种结果。所以按8位查表是最合适的。
 

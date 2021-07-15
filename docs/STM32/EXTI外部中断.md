@@ -196,7 +196,7 @@ nav_order: 10
 </table>
 下图是F4参考手册中的内容
 
-![](https://knote.oss-cn-hangzhou.aliyuncs.com/img/EXTI.png)
+![](https://knote.kingtuo123.com/img/EXTI.png)
 
 ## 嵌套向量中断控制器NVIC配置
 
@@ -260,7 +260,7 @@ typedef struct
 
 ## EXTI 中断配置
 
-![](https://knote.oss-cn-hangzhou.aliyuncs.com/img/EXTI_SYS.png)
+![](https://knote.kingtuo123.com/img/EXTI_SYS.png)
 
 ```c
 void EXTI_Key_Config(void)

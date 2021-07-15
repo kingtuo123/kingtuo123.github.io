@@ -8,5 +8,4 @@ permalink: /docs/STM32
 
 # STM32
 
-Something about STM32 !
-![](https://knote.oss-cn-hangzhou.aliyuncs.com/img/stm-model.png)
+![](https://knote.kingtuo123.com/img/stm-model.png)
