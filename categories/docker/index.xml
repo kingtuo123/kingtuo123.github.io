@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on kingtuo123</title><link>https://kingtuo123.com/categories/docker/</link><description>Recent content in docker on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/categories/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker基本命令</title><link>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</link><pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</guid><description>&lt;h2 id="docker镜像">docker镜像&lt;/h2>
+&lt;h3 id="拉取镜像">拉取镜像&lt;/h3>
+&lt;pre>&lt;code>docker image pull &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="查看镜像">查看镜像&lt;/h3>
+&lt;pre>&lt;code>docker image ls -a
+docker images
+&lt;/code>&lt;/pre>
+&lt;h3 id="删除镜像">删除镜像&lt;/h3>
+&lt;pre>&lt;code>docker image rm &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt;
+docker image rm &amp;lt;image id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>id不用补全，比如 &lt;code>ba6acccedd29&lt;/code> ，只需输入 &lt;code>ba&lt;/code> ，只要id前几位没和其他镜像重复。&lt;br>
+当镜像已有创建的容器时，无法删除。可以使用-f参数强制删除。&lt;/p>
+&lt;h3 id="提交镜像">提交镜像&lt;/h3>
+&lt;p>首先你在基础镜像生成的容器中做了修改后，使用 &lt;code>commit&lt;/code> 命令可以生成一个新的镜像，这个镜像相较于基础镜像多了一层Layer（你在容器内做的所有修改都打包成了Layer）&lt;/p>
+&lt;pre>&lt;code>docker commit -m &amp;quot;some info&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>生成的镜像可以用 &lt;code>image&lt;/code> 命令查看到，&lt;code>commit&lt;/code> 之后你可以使用 &lt;code>push&lt;/code> 命令推送到远端仓库&lt;/p>
+&lt;h2 id="docker容器">docker容器&lt;/h2>
+&lt;h3 id="创建容器">创建容器&lt;/h3>
+&lt;p>以下命令会自动创建一个容器并运行bash，也可以用 &lt;code>create&lt;/code> 命令创建容器。&lt;/p>
+&lt;pre>&lt;code>docker container run --name &amp;lt;name&amp;gt; -it --rm &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt; bash
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>run&lt;/code> 常用参数：&lt;/p>
+&lt;ul>
+&lt;li>--name：指定容器名称&lt;/li>
+&lt;li>-i：开启标准输入&lt;/li>
+&lt;li>-t：分配伪终端&lt;/li>
+&lt;li>--rm：退出容器后自动删除容器，多用于一次性测试&lt;/li>
+&lt;li>-v：挂载路径，格式 -v &amp;lt;host path&amp;gt;:&amp;lt;container path&amp;gt;&lt;/li>
+&lt;li>-p：指定端口映射，格式 -p &amp;lt;host port&amp;gt;:&amp;lt;container port&amp;gt;&lt;/li>
+&lt;li>-P：随机端口映射，docker会随机映射一个端口到内部容器的网络端口&lt;/li>
+&lt;li>-d：后台运行容器，并返回容器ID，类似命令后加&amp;amp;&lt;/li>
+&lt;li>-e：设置环境变量，格式 -e &amp;lt;variables1&amp;gt;=&amp;lt;variables2&amp;gt;&lt;/li>
+&lt;li>--network：连接指定网络，系统预定义的有bridge、host、null三种，默认bridge（桥接）&lt;/li>
+&lt;li>--privileged：扩大容器权限，在容器内可以看到host的更多设备、可mount挂载设备&lt;/li>
+&lt;/ul>
+&lt;h3 id="启动容器">启动容器&lt;/h3>
+&lt;pre>&lt;code>docker container start &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>start&lt;/code> 后面可跟多个 &lt;code>id&lt;/code>&lt;/p>
+&lt;h3 id="进入容器">进入容器&lt;/h3>
+&lt;pre>&lt;code>docker container attach &amp;lt;name|container id&amp;gt;
+docker container exec -it &amp;lt;name|container id&amp;gt; bash
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>attach&lt;/code> 在退出容器后会停止容器，&lt;code>exec&lt;/code> 不会&lt;/p>
+&lt;p>&lt;code>attach&lt;/code> 相当于进入当前终端，&lt;code>exec&lt;/code> 相当于新开了一个终端&lt;/p>
+&lt;h3 id="停止容器">停止容器&lt;/h3>
+&lt;pre>&lt;code>docker container stop &amp;lt;name|container id&amp;gt;
+docker container kill &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>stop&lt;/code> 先发送SIGTERM信号，容器内程序可以做退出前的准备工作，一段时间之后再发送SIGKILL信号。&lt;/p>
+&lt;p>&lt;code>kill&lt;/code> 发送SIGKILL信号，应用程序直接退出。&lt;/p>
+&lt;h3 id="查看容器">查看容器&lt;/h3>
+&lt;p>列出所有容器&lt;/p>
+&lt;pre>&lt;code>docker container ls -a
+&lt;/code>&lt;/pre>
+&lt;h3 id="删除容器">删除容器&lt;/h3>
+&lt;pre>&lt;code>docker container rm &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>使用 &lt;code>prune&lt;/code> 可以删除所有已停止的容器&lt;/p>
+&lt;pre>&lt;code>docker container prune
+&lt;/code>&lt;/pre>
+&lt;h3 id="文件拷贝">文件拷贝&lt;/h3>
+&lt;p>拷贝无需容器运行，只要该容器存在即可，以下命令从容器拷贝至主机&lt;/p>
+&lt;pre>&lt;code>docker container cp &amp;lt;container id|name&amp;gt;:&amp;lt;container path&amp;gt; &amp;lt;host path&amp;gt;
+&lt;/code>&lt;/pre></description></item></channel></rss>

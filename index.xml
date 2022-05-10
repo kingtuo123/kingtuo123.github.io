@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kingtuo123</title><link>https://kingtuo123.com/</link><description>Recent content on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker基本命令</title><link>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</link><pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</guid><description>&lt;h2 id="docker镜像">docker镜像&lt;/h2>
+&lt;h3 id="拉取镜像">拉取镜像&lt;/h3>
+&lt;pre>&lt;code>docker image pull &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="查看镜像">查看镜像&lt;/h3>
+&lt;pre>&lt;code>docker image ls -a
+docker images
+&lt;/code>&lt;/pre>
+&lt;h3 id="删除镜像">删除镜像&lt;/h3>
+&lt;pre>&lt;code>docker image rm &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt;
+docker image rm &amp;lt;image id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>id不用补全，比如 &lt;code>ba6acccedd29&lt;/code> ，只需输入 &lt;code>ba&lt;/code> ，只要id前几位没和其他镜像重复。&lt;br>
+当镜像已有创建的容器时，无法删除。可以使用-f参数强制删除。&lt;/p>
+&lt;h3 id="提交镜像">提交镜像&lt;/h3>
+&lt;p>首先你在基础镜像生成的容器中做了修改后，使用 &lt;code>commit&lt;/code> 命令可以生成一个新的镜像，这个镜像相较于基础镜像多了一层Layer（你在容器内做的所有修改都打包成了Layer）&lt;/p>
+&lt;pre>&lt;code>docker commit -m &amp;quot;some info&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>生成的镜像可以用 &lt;code>image&lt;/code> 命令查看到，&lt;code>commit&lt;/code> 之后你可以使用 &lt;code>push&lt;/code> 命令推送到远端仓库&lt;/p>
+&lt;h2 id="docker容器">docker容器&lt;/h2>
+&lt;h3 id="创建容器">创建容器&lt;/h3>
+&lt;p>以下命令会自动创建一个容器并运行bash，也可以用 &lt;code>create&lt;/code> 命令创建容器。&lt;/p>
+&lt;pre>&lt;code>docker container run --name &amp;lt;name&amp;gt; -it --rm &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt; bash
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>run&lt;/code> 常用参数：&lt;/p>
+&lt;ul>
+&lt;li>--name：指定容器名称&lt;/li>
+&lt;li>-i：开启标准输入&lt;/li>
+&lt;li>-t：分配伪终端&lt;/li>
+&lt;li>--rm：退出容器后自动删除容器，多用于一次性测试&lt;/li>
+&lt;li>-v：挂载路径，格式 -v &amp;lt;host path&amp;gt;:&amp;lt;container path&amp;gt;&lt;/li>
+&lt;li>-p：指定端口映射，格式 -p &amp;lt;host port&amp;gt;:&amp;lt;container port&amp;gt;&lt;/li>
+&lt;li>-P：随机端口映射，docker会随机映射一个端口到内部容器的网络端口&lt;/li>
+&lt;li>-d：后台运行容器，并返回容器ID，类似命令后加&amp;amp;&lt;/li>
+&lt;li>-e：设置环境变量，格式 -e &amp;lt;variables1&amp;gt;=&amp;lt;variables2&amp;gt;&lt;/li>
+&lt;li>--network：连接指定网络，系统预定义的有bridge、host、null三种，默认bridge（桥接）&lt;/li>
+&lt;li>--privileged：扩大容器权限，在容器内可以看到host的更多设备、可mount挂载设备&lt;/li>
+&lt;/ul>
+&lt;h3 id="启动容器">启动容器&lt;/h3>
+&lt;pre>&lt;code>docker container start &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>start&lt;/code> 后面可跟多个 &lt;code>id&lt;/code>&lt;/p>
+&lt;h3 id="进入容器">进入容器&lt;/h3>
+&lt;pre>&lt;code>docker container attach &amp;lt;name|container id&amp;gt;
+docker container exec -it &amp;lt;name|container id&amp;gt; bash
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>attach&lt;/code> 在退出容器后会停止容器，&lt;code>exec&lt;/code> 不会&lt;/p>
+&lt;p>&lt;code>attach&lt;/code> 相当于进入当前终端，&lt;code>exec&lt;/code> 相当于新开了一个终端&lt;/p>
+&lt;h3 id="停止容器">停止容器&lt;/h3>
+&lt;pre>&lt;code>docker container stop &amp;lt;name|container id&amp;gt;
+docker container kill &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>stop&lt;/code> 先发送SIGTERM信号，容器内程序可以做退出前的准备工作，一段时间之后再发送SIGKILL信号。&lt;/p>
+&lt;p>&lt;code>kill&lt;/code> 发送SIGKILL信号，应用程序直接退出。&lt;/p>
+&lt;h3 id="查看容器">查看容器&lt;/h3>
+&lt;p>列出所有容器&lt;/p>
+&lt;pre>&lt;code>docker container ls -a
+&lt;/code>&lt;/pre>
+&lt;h3 id="删除容器">删除容器&lt;/h3>
+&lt;pre>&lt;code>docker container rm &amp;lt;name|container id&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>使用 &lt;code>prune&lt;/code> 可以删除所有已停止的容器&lt;/p>
+&lt;pre>&lt;code>docker container prune
+&lt;/code>&lt;/pre>
+&lt;h3 id="文件拷贝">文件拷贝&lt;/h3>
+&lt;p>拷贝无需容器运行，只要该容器存在即可，以下命令从容器拷贝至主机&lt;/p>
+&lt;pre>&lt;code>docker container cp &amp;lt;container id|name&amp;gt;:&amp;lt;container path&amp;gt; &amp;lt;host path&amp;gt;
+&lt;/code>&lt;/pre></description></item><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
+&lt;p>运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。&lt;/p>
+&lt;pre>&lt;code>ssh-keygen -t rsa -C &amp;quot;kingtuo123@foxmail.com&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>输出如下，一路回车&lt;/p>
+&lt;pre>&lt;code>Generating public/private rsa key pair.
+Enter file in which to save the key (/home/king/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+&lt;/code>&lt;/pre>
+&lt;p>以上会在 &lt;code>～/.ssh&lt;/code> 目录下生成 &lt;code>id_rsa&lt;/code> （私钥）和 &lt;code>id_rsa.pub&lt;/code> （公钥）文件。&lt;/p>
+&lt;p>如果你没有使用默认的路径，记得修改 &lt;code>/etc/ssh/ssh_config&lt;/code> 或 &lt;code>~/.ssh/config&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 这里是默认身份文件路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_rsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_dsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_ecdsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_ed25519&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="添加公钥">添加公钥&lt;/h2>
+&lt;p>查看公钥的内容&lt;/p>
+&lt;pre>&lt;code>cat ~/.ssh/id_rsa.pub
+&lt;/code>&lt;/pre>
+&lt;p>打开github在 &lt;code>setting&lt;/code> -&amp;gt; &lt;code>SSH and GPG keys&lt;/code> 中添加SSH Key，将上面的输出复制进去。&lt;/p>
+&lt;h2 id="验证">验证&lt;/h2>
+&lt;pre>&lt;code>ssh -T git@github.com
+&lt;/code>&lt;/pre>
+&lt;p>返回如下信息则配置成功&lt;/p>
+&lt;pre>&lt;code>You've successfully authenticated, but GitHub does not provide shell access
+&lt;/code>&lt;/pre>
+&lt;h2 id="使用ssh-key推送">使用SSH Key推送&lt;/h2>
+&lt;div align="left">
+&lt;img src="git.png" style="max-height:200px">&lt;/img>
+&lt;/div>
+&lt;p>使用以上的链接。&lt;/p></description></item><item><title>Archives</title><link>https://kingtuo123.com/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/archives/</guid><description/></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</link><pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</guid><description>&lt;h2 id="安装">安装&lt;/h2>
+&lt;pre>&lt;code>emerge -av curlftpfs
+&lt;/code>&lt;/pre>
+&lt;p>需要内核启用 &lt;code>fuse&lt;/code>&lt;/p>
+&lt;h2 id="以root挂载">以root挂载&lt;/h2>
+&lt;p>创建挂载点&lt;/p>
+&lt;pre>&lt;code>mkdir /mnt/ftp
+&lt;/code>&lt;/pre>
+&lt;p>挂载，若没有用户名密码就省去 &lt;code>-o&lt;/code> 及后面参数&lt;/p>
+&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password
+&lt;/code>&lt;/pre>
+&lt;p>想让普通用户有访问权限，添加 &lt;code>allow_other&lt;/code> 选项，以逗号分隔&lt;/p>
+&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password,allow_other
+&lt;/code>&lt;/pre>
+&lt;h2 id="以普通用户挂载">以普通用户挂载&lt;/h2>
+&lt;pre>&lt;code>mkdir ~/example
+curlftpfs -o ssl,utf8 ftp://example.com/ ~/example
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>ssl&lt;/code> ：使用SSL/TLS传输数据&lt;/p>
+&lt;p>&lt;code>utf8&lt;/code> ： 使用utf8编码&lt;/p>
+&lt;h2 id="卸载">卸载&lt;/h2>
+&lt;pre>&lt;code>fusermount -u ~/example
+&lt;/code>&lt;/pre>
+&lt;p>或者&lt;/p>
+&lt;pre>&lt;code>umount ~/example
+&lt;/code>&lt;/pre></description></item><item><title>About</title><link>https://kingtuo123.com/about/</link><pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/about/</guid><description>&lt;p>不积跬步。无以至千里。不积小流，无以成江海。&lt;/p>
+&lt;p>合抱之木，生于毫末；九层之台，起于累土；千里之行，始于足下。&lt;/p></description></item><item><title>Search</title><link>https://kingtuo123.com/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/search/</guid><description/></item></channel></rss>
