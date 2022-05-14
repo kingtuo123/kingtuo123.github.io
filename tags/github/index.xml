@@ -203,16 +203,16 @@ Enter same passphrase again:
 &lt;p>设置Bucket读写权限权限为 &lt;code>公共读&lt;/code>&lt;/p>
 &lt;p>设置静态页面如下&lt;/p>
 &lt;div align="center">
-&lt;img src="6.png" style="max-width:800px">&lt;/img>
+&lt;img src="6.png" style="max-height:300px">&lt;/img>
 &lt;/div>
 &lt;h3 id="创建accesskey">创建Accesskey&lt;/h3>
 &lt;p>打开阿里云控制台右上角 &lt;code>头像&lt;/code> -&amp;gt; &lt;code>Accesskey管理&lt;/code>&lt;/p>
 &lt;div align="center">
-&lt;img src="3.png" style="max-width:350px">&lt;/img>
+&lt;img src="3.png" style="max-height:150px">&lt;/img>
 &lt;/div>
 &lt;p>选择 &lt;code>子用户Accesskey&lt;/code>&lt;/p>
 &lt;div align="center">
-&lt;img src="4.png" style="max-width:450px">&lt;/img>
+&lt;img src="4.png" style="max-height:180px">&lt;/img>
 &lt;/div>
 &lt;p>Accesskey创建成功后会生成 &lt;code>ID&lt;/code> 和 &lt;code>SECRET&lt;/code>，记得复制否则要重新创建。&lt;/p>
 &lt;p>最后给当前子用户添加 &lt;code>AliyunOSSFullAccess&lt;/code> 权限。&lt;/p>
