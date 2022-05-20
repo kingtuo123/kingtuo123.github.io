@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on kingtuo123</title><link>https://kingtuo123.com/post/</link><description>Recent content in Posts on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile基础</title><link>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</link><pubDate>Sun, 01 May 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</guid><description>&lt;h2 id="makefile-语法">makefile 语法&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on kingtuo123</title><link>https://kingtuo123.com/post/</link><description>Recent content in Posts on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile基础</title><link>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</link><pubDate>Sun, 01 May 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</guid><description>&lt;blockquote>
+&lt;p>翻译自 &lt;a class="link" href="https://makefiletutorial.com/#getting-started" target="_blank" rel="noopener"
+>Makefile Tutorial&lt;/a>，部分有增删或修改，仅供参考。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="makefile-语法">Makefile 语法&lt;/h2>
 &lt;p>makefile 由一组规则组成。如下所示：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1487,7 +1491,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="err">-include&lt;/span> &lt;span class="k">$(&lt;/span>&lt;span class="nv">DEPS&lt;/span>&lt;span class="k">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Docker基本命令</title><link>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</link><pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</guid><description>&lt;h2 id="docker镜像">docker镜像&lt;/h2>
+&lt;/div></description></item><item><title>Docker基本命令</title><link>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</link><pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</guid><description>&lt;h2 id="docker镜像">docker镜像&lt;/h2>
 &lt;h3 id="拉取镜像">拉取镜像&lt;/h3>
 &lt;pre>&lt;code>docker image pull &amp;lt;repository&amp;gt;:&amp;lt;tag&amp;gt;
 &lt;/code>&lt;/pre>
@@ -1554,7 +1558,32 @@ docker container kill &amp;lt;name|container id&amp;gt;
 &lt;h3 id="文件拷贝">文件拷贝&lt;/h3>
 &lt;p>拷贝无需容器运行，只要该容器存在即可，以下命令从容器拷贝至主机&lt;/p>
 &lt;pre>&lt;code>docker container cp &amp;lt;container id|name&amp;gt;:&amp;lt;container path&amp;gt; &amp;lt;host path&amp;gt;
-&lt;/code>&lt;/pre></description></item><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
+&lt;/code>&lt;/pre></description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</guid><description>&lt;h2 id="安装">安装&lt;/h2>
+&lt;pre>&lt;code>emerge -av curlftpfs
+&lt;/code>&lt;/pre>
+&lt;p>需要内核启用 &lt;code>fuse&lt;/code>&lt;/p>
+&lt;h2 id="以root挂载">以root挂载&lt;/h2>
+&lt;p>创建挂载点&lt;/p>
+&lt;pre>&lt;code>mkdir /mnt/ftp
+&lt;/code>&lt;/pre>
+&lt;p>挂载，若没有用户名密码就省去 &lt;code>-o&lt;/code> 及后面参数&lt;/p>
+&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password
+&lt;/code>&lt;/pre>
+&lt;p>想让普通用户有访问权限，添加 &lt;code>allow_other&lt;/code> 选项，以逗号分隔&lt;/p>
+&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password,allow_other
+&lt;/code>&lt;/pre>
+&lt;h2 id="以普通用户挂载">以普通用户挂载&lt;/h2>
+&lt;pre>&lt;code>mkdir ~/example
+curlftpfs -o ssl,utf8 ftp://example.com/ ~/example
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>ssl&lt;/code> ：使用SSL/TLS传输数据&lt;/p>
+&lt;p>&lt;code>utf8&lt;/code> ： 使用utf8编码&lt;/p>
+&lt;h2 id="卸载">卸载&lt;/h2>
+&lt;pre>&lt;code>fusermount -u ~/example
+&lt;/code>&lt;/pre>
+&lt;p>或者&lt;/p>
+&lt;pre>&lt;code>umount ~/example
+&lt;/code>&lt;/pre></description></item><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
 &lt;p>运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。&lt;/p>
 &lt;pre>&lt;code>ssh-keygen -t rsa -C &amp;quot;kingtuo123@foxmail.com&amp;quot;
 &lt;/code>&lt;/pre>
@@ -1597,32 +1626,7 @@ Enter same passphrase again:
 &lt;div align="left">
 &lt;img src="git.png" style="max-height:200px">&lt;/img>
 &lt;/div>
-&lt;p>使用以上的链接。&lt;/p></description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</link><pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</guid><description>&lt;h2 id="安装">安装&lt;/h2>
-&lt;pre>&lt;code>emerge -av curlftpfs
-&lt;/code>&lt;/pre>
-&lt;p>需要内核启用 &lt;code>fuse&lt;/code>&lt;/p>
-&lt;h2 id="以root挂载">以root挂载&lt;/h2>
-&lt;p>创建挂载点&lt;/p>
-&lt;pre>&lt;code>mkdir /mnt/ftp
-&lt;/code>&lt;/pre>
-&lt;p>挂载，若没有用户名密码就省去 &lt;code>-o&lt;/code> 及后面参数&lt;/p>
-&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password
-&lt;/code>&lt;/pre>
-&lt;p>想让普通用户有访问权限，添加 &lt;code>allow_other&lt;/code> 选项，以逗号分隔&lt;/p>
-&lt;pre>&lt;code>curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password,allow_other
-&lt;/code>&lt;/pre>
-&lt;h2 id="以普通用户挂载">以普通用户挂载&lt;/h2>
-&lt;pre>&lt;code>mkdir ~/example
-curlftpfs -o ssl,utf8 ftp://example.com/ ~/example
-&lt;/code>&lt;/pre>
-&lt;p>&lt;code>ssl&lt;/code> ：使用SSL/TLS传输数据&lt;/p>
-&lt;p>&lt;code>utf8&lt;/code> ： 使用utf8编码&lt;/p>
-&lt;h2 id="卸载">卸载&lt;/h2>
-&lt;pre>&lt;code>fusermount -u ~/example
-&lt;/code>&lt;/pre>
-&lt;p>或者&lt;/p>
-&lt;pre>&lt;code>umount ~/example
-&lt;/code>&lt;/pre></description></item><item><title>Hugo deploy</title><link>https://kingtuo123.com/p/hugo-deploy/</link><pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/hugo-deploy/</guid><description>&lt;h2 id="初始化">初始化&lt;/h2>
+&lt;p>使用以上的链接。&lt;/p></description></item><item><title>Hugo deploy</title><link>https://kingtuo123.com/p/hugo-deploy/</link><pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/hugo-deploy/</guid><description>&lt;h2 id="初始化">初始化&lt;/h2>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1

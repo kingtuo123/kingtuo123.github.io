@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>makefile on kingtuo123</title><link>https://kingtuo123.com/tags/makefile/</link><description>Recent content in makefile on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/makefile/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile基础</title><link>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</link><pubDate>Sun, 01 May 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</guid><description>&lt;h2 id="makefile-语法">makefile 语法&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>makefile on kingtuo123</title><link>https://kingtuo123.com/tags/makefile/</link><description>Recent content in makefile on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/makefile/index.xml" rel="self" type="application/rss+xml"/><item><title>Makefile基础</title><link>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</link><pubDate>Sun, 01 May 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/</guid><description>&lt;blockquote>
+&lt;p>翻译自 &lt;a class="link" href="https://makefiletutorial.com/#getting-started" target="_blank" rel="noopener"
+>Makefile Tutorial&lt;/a>，部分有增删或修改，仅供参考。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="makefile-语法">Makefile 语法&lt;/h2>
 &lt;p>makefile 由一组规则组成。如下所示：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">

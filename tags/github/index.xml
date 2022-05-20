@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>github on kingtuo123</title><link>https://kingtuo123.com/tags/github/</link><description>Recent content in github on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>github on kingtuo123</title><link>https://kingtuo123.com/tags/github/</link><description>Recent content in github on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
 &lt;p>运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。&lt;/p>
 &lt;pre>&lt;code>ssh-keygen -t rsa -C &amp;quot;kingtuo123@foxmail.com&amp;quot;
 &lt;/code>&lt;/pre>
@@ -41,7 +41,7 @@ Enter same passphrase again:
 &lt;div align="left">
 &lt;img src="git.png" style="max-height:200px">&lt;/img>
 &lt;/div>
-&lt;p>使用以上的链接。&lt;/p></description></item><item><title>Hugo deploy</title><link>https://kingtuo123.com/p/hugo-deploy/</link><pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/hugo-deploy/</guid><description>&lt;h2 id="初始化">初始化&lt;/h2>
+&lt;p>使用以上的链接。&lt;/p></description></item><item><title>Hugo deploy</title><link>https://kingtuo123.com/p/hugo-deploy/</link><pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/hugo-deploy/</guid><description>&lt;h2 id="初始化">初始化&lt;/h2>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
