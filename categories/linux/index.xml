@@ -103,7 +103,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touch other_file
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>下面这个 makefile 始终会执行默认目标的命令，因为它的依赖始终无法满足。&lt;/p>
+&lt;/div>&lt;p>下面这个 &lt;code>makefile&lt;/code> 始终会执行默认目标的命令，因为它的依赖始终无法满足。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -120,7 +120,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;nothing&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>clean 常被用来清理一些生成的文件，但它在 make 中并不是一个特殊的词。（一般都是约定俗成的，大家习惯用 clean 清理文件）&lt;/p>
+&lt;/div>&lt;p>&lt;code>clean&lt;/code> 常被用来清理一些生成的文件，但它在 make 中并不是一个特殊的词。（一般都是约定俗成的，大家习惯用 clean 清理文件）&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -443,9 +443,9 @@
 &lt;h3 id="隐式规则">隐式规则&lt;/h3>
 &lt;p>隐式规则会让东西变得混乱，不推荐使用，但是要了解。&lt;/p>
 &lt;ul>
-&lt;li>编译 C 程序： n.o 由 n.c 自动生成，命令形式为 $(CC) -c $(CPPFLAGS) $(CFLAGS)&lt;/li>
-&lt;li>编译 C++ 程序：n.o 由 n.cc 或 n.cpp 自动生成，命令形式为 $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)&lt;/li>
-&lt;li>链接单个目标文件： n 是通过运行命令 $(CC) $(LDFLAGS) n.o $(LOADLIBES) $(LDLIBS) 从 n.o 自动生成的&lt;/li>
+&lt;li>编译 C 程序： &lt;code>n.o&lt;/code> 由 &lt;code>n.c&lt;/code> 自动生成，命令形式为 &lt;code>$(CC) -c $(CPPFLAGS) $(CFLAGS)&lt;/code>&lt;/li>
+&lt;li>编译 C++ 程序：&lt;code>n.o&lt;/code> 由 &lt;code>n.cc&lt;/code> 或 &lt;code>n.cpp&lt;/code> 自动生成，命令形式为 &lt;code>$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)&lt;/code>&lt;/li>
+&lt;li>链接单个目标文件： &lt;code>n&lt;/code> 是通过运行命令 &lt;code>$(CC) $(LDFLAGS) n.o $(LOADLIBES) $(LDLIBS)&lt;/code> 从 &lt;code>n.o&lt;/code> 自动生成的&lt;/li>
 &lt;/ul>
 &lt;p>隐式规则常用的几个变量：&lt;/p>
 &lt;ul>
@@ -1101,7 +1101,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h2 id="函数">函数&lt;/h2>
-&lt;p>函数主要只是用于文本处理。使用 $(fn, arguments) 或 ${fn, arguments} 调用函数。&lt;/p>
+&lt;p>函数主要只是用于文本处理。使用 &lt;code>$(fn, arguments)&lt;/code> 或 &lt;code>${fn, arguments}&lt;/code> 调用函数。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -1281,6 +1281,210 @@
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">all&lt;/span>&lt;span class="o">:&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 非常难看，因为换行符不见了&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @echo &lt;span class="k">$(&lt;/span>shell ls -la&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="其他特性">其他特性&lt;/h2>
+&lt;h3 id="应用外部makefile">应用外部makefile&lt;/h3>
+&lt;p>&lt;code>include&lt;/code> 的语法是&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="err">include&lt;/span> &lt;span class="err">filenames&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="vpath-指令">vpath 指令&lt;/h3>
+&lt;p>语法 &lt;code>vpath &amp;lt;pattern&amp;gt; &amp;lt;directories&amp;gt;&lt;/code> ，&lt;code>&amp;lt;pattern&amp;gt;&lt;/code> 会匹配 &lt;code>&amp;lt;directories&amp;gt;&lt;/code> 中的文件名，多个目录使用 &lt;code>空格&lt;/code> 或 &lt;code>冒号&lt;/code> 分隔。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">vpath %.h ../headers ../other-directory
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">some_binary: ../headers blah.h
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touch some_binary
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">../headers:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mkdir ../headers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">blah.h:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touch ../headers/blah.h
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">clean:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -rf ../headers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -f some_binary
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="phony">.phony&lt;/h3>
+&lt;p>make 并不生成“clean”这个文件。“伪目标”并不是一个文件，只是一个 &lt;code>标签&lt;/code> ，由于“伪目标”不是文件，所以 make 无法生成它的依赖关系和决定它是否要执行。我们只有通过显式地指明这个“目标”才能让其生效（通过 &lt;code>make clean&lt;/code> 命令）。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="err">.PHONY&lt;/span> &lt;span class="err">clean&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">clean&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -f *.o
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="delete_on_error">.delete_on_error&lt;/h3>
+&lt;p>当规则执行失败，&lt;code>.delete_on_error&lt;/code> 会删除规则已生成的所有目标文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">.DELETE_ON_ERROR&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">all&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">one&lt;/span> &lt;span class="n">two&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">one&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touch one
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">two&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touch two
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">false&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="makefile-模板">makefile 模板&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-makefile" data-lang="makefile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 感谢 Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 最终要生成的目标文件名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">TARGET_EXEC&lt;/span> &lt;span class="o">:=&lt;/span> final_program
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 编译生成文件的目录
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">BUILD_DIR&lt;/span> &lt;span class="o">:=&lt;/span> ./build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 源文件所在的目录
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">SRC_DIRS&lt;/span> &lt;span class="o">:=&lt;/span> ./src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 找到所有需要编译的 C 和 C++ 文件
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 注意 * 表达式周围的单引号。否则 Make 会错误地扩展这些。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Note the single quotes around the * expressions. Make will incorrectly expand these otherwise.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">SRCS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>shell find &lt;span class="k">$(&lt;/span>SRC_DIRS&lt;span class="k">)&lt;/span> -name &lt;span class="s1">&amp;#39;*.cpp&amp;#39;&lt;/span> -or -name &lt;span class="s1">&amp;#39;*.c&amp;#39;&lt;/span> -or -name &lt;span class="s1">&amp;#39;*.s&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 给每个 C/C++ 文件名加 .o 结尾
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 如 hello.cpp 转换为 ./build/hello.cpp.o
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">OBJS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>SRCS:%&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>BUILD_DIR&lt;span class="k">)&lt;/span>/%.o&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># .o 结尾替换为 .d
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 如 ./build/hello.cpp.o 转换为 ./build/hello.cpp.d
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">DEPS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>OBJS:.o&lt;span class="o">=&lt;/span>.d&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># ./src 中的每个文件夹都需要传递给 GCC，以便它可以找到头文件
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">INC_DIRS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>shell find &lt;span class="k">$(&lt;/span>SRC_DIRS&lt;span class="k">)&lt;/span> -type d&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 给 INC_DIRS 添加前缀 -I ，GCC指定头文件路径需要 -I，如 moduleA 会变成 -ImoduleA
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">INC_FLAGS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>addprefix -I,&lt;span class="k">$(&lt;/span>INC_DIRS&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># -MMD 和 -MP 参数会生成每个 .c 文件所依赖的头文件关系
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 保存到 .d 结尾的文件中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nv">CPPFLAGS&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="k">$(&lt;/span>INC_FLAGS&lt;span class="k">)&lt;/span> -MMD -MP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 最终的编译步骤
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">$(BUILD_DIR)/$(TARGET_EXEC)&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="k">$(&lt;/span>&lt;span class="nv">OBJS&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">$(&lt;/span>CC&lt;span class="k">)&lt;/span> &lt;span class="k">$(&lt;/span>OBJS&lt;span class="k">)&lt;/span> -o &lt;span class="nv">$@&lt;/span> &lt;span class="k">$(&lt;/span>LDFLAGS&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 编译C源码
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">$(BUILD_DIR)/%.c.o&lt;/span>&lt;span class="o">:&lt;/span> %.&lt;span class="n">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mkdir -p &lt;span class="k">$(&lt;/span>dir &lt;span class="nv">$@&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">$(&lt;/span>CC&lt;span class="k">)&lt;/span> &lt;span class="k">$(&lt;/span>CPPFLAGS&lt;span class="k">)&lt;/span> &lt;span class="k">$(&lt;/span>CFLAGS&lt;span class="k">)&lt;/span> -c $&amp;lt; -o &lt;span class="nv">$@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># 编译C++源码
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">$(BUILD_DIR)/%.cpp.o&lt;/span>&lt;span class="o">:&lt;/span> %.&lt;span class="n">cpp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mkdir -p &lt;span class="k">$(&lt;/span>dir &lt;span class="nv">$@&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">$(&lt;/span>CXX&lt;span class="k">)&lt;/span> &lt;span class="k">$(&lt;/span>CPPFLAGS&lt;span class="k">)&lt;/span> &lt;span class="k">$(&lt;/span>CXXFLAGS&lt;span class="k">)&lt;/span> -c $&amp;lt; -o &lt;span class="nv">$@&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">.PHONY&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">clean&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">clean&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rm -r &lt;span class="k">$(&lt;/span>BUILD_DIR&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Include the .d makefiles. The - at the front suppresses the errors of missing
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Makefiles. Initially, all the .d files will be missing, and we don&amp;#39;t want those
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># errors to show up.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="err">-include&lt;/span> &lt;span class="k">$(&lt;/span>&lt;span class="nv">DEPS&lt;/span>&lt;span class="k">)&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div></description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</link><pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/curlftpfs%E6%8C%82%E8%BD%BDftp%E5%88%B0%E6%9C%AC%E5%9C%B0/</guid><description>&lt;h2 id="安装">安装&lt;/h2>

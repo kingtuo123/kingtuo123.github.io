@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="makefile 语法 makefile 由一组规则组成。如下所示： 1 2 3 4 targets: prerequisites command command command targets 是文件名，以空格分隔。通常一个规则只有一个目标。 command 通常是用于生成 targets 的一系列步骤。以 Tab 开"><title>Makefile基础</title><link rel=canonical href=https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/><link rel=stylesheet href=/scss/style.min.98900bb61dfc6c73b10eb20270c2e3164662a9c878511f3a9cb1b8cd1cc85690.css><meta property="og:title" content="Makefile基础"><meta property="og:description" content="makefile 语法 makefile 由一组规则组成。如下所示： 1 2 3 4 targets: prerequisites command command command targets 是文件名，以空格分隔。通常一个规则只有一个目标。 command 通常是用于生成 targets 的一系列步骤。以 Tab 开"><meta property="og:url" content="https://kingtuo123.com/p/makefile%E5%9F%BA%E7%A1%80/"><meta property="og:site_name" content="kingtuo123"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="makefile"><meta property="article:published_time" content="2022-05-01T00:00:00+00:00"><meta property="article:modified_time" content="2022-05-01T00:00:00+00:00"><meta name=twitter:title content="Makefile基础"><meta name=twitter:description content="makefile 语法 makefile 由一组规则组成。如下所示： 1 2 3 4 targets: prerequisites command command command targets 是文件名，以空格分隔。通常一个规则只有一个目标。 command 通常是用于生成 targets 的一系列步骤。以 Tab 开"><link rel="shortcut icon" href=/favicon.ico></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"light")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
 <span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hud329c9971c353ea4bc5df4e784289bf9_479107_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a>
-<span class=emoji>😐</span></figure><div class=site-meta><h1 class=site-name><a href=/>kingtuo123</a></h1><h2 class=site-description>去码头整点薯条！</h2></div></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>About</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/linux/>linux</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/makefile%E5%9F%BA%E7%A1%80/>Makefile基础</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>May 01, 2022</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 9 分钟</time></div></footer></div></header><section class=article-content><h2 id=makefile-语法>makefile 语法</h2><p>makefile 由一组规则组成。如下所示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+<span class=emoji>😐</span></figure><div class=site-meta><h1 class=site-name><a href=/>kingtuo123</a></h1><h2 class=site-description>去码头整点薯条！</h2></div></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>About</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/linux/>linux</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/makefile%E5%9F%BA%E7%A1%80/>Makefile基础</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>May 01, 2022</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 11 分钟</time></div></footer></div></header><section class=article-content><h2 id=makefile-语法>makefile 语法</h2><p>makefile 由一组规则组成。如下所示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -48,7 +48,7 @@
 </span></span><span class=line><span class=cl><span class=nf>other_file</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;This will run first&#34;</span>
 </span></span><span class=line><span class=cl>    touch other_file
-</span></span></code></pre></td></tr></table></div></div><p>下面这个 makefile 始终会执行默认目标的命令，因为它的依赖始终无法满足。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><p>下面这个 <code>makefile</code> 始终会执行默认目标的命令，因为它的依赖始终无法满足。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -58,7 +58,7 @@
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=nf>other_file</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;nothing&#34;</span>
-</span></span></code></pre></td></tr></table></div></div><p>clean 常被用来清理一些生成的文件，但它在 make 中并不是一个特殊的词。（一般都是约定俗成的，大家习惯用 clean 清理文件）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><p><code>clean</code> 常被用来清理一些生成的文件，但它在 make 中并不是一个特殊的词。（一般都是约定俗成的，大家习惯用 clean 清理文件）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -222,7 +222,7 @@
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=nf>clean</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    rm -f hey one two
-</span></span></code></pre></td></tr></table></div></div><h2 id=规则>规则</h2><h3 id=隐式规则>隐式规则</h3><p>隐式规则会让东西变得混乱，不推荐使用，但是要了解。</p><ul><li>编译 C 程序： n.o 由 n.c 自动生成，命令形式为 $(CC) -c $(CPPFLAGS) $(CFLAGS)</li><li>编译 C++ 程序：n.o 由 n.cc 或 n.cpp 自动生成，命令形式为 $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)</li><li>链接单个目标文件： n 是通过运行命令 $(CC) $(LDFLAGS) n.o $(LOADLIBES) $(LDLIBS) 从 n.o 自动生成的</li></ul><p>隐式规则常用的几个变量：</p><ul><li><code>CC</code> ：C 程序编译器，默认 <code>cc</code> 。</li><li><code>CXX</code> ：C++ 程序编译器，默认 <code>g++</code> 。</li><li><code>CFLAGS</code> ：提供给 C 编译器的参数。</li><li><code>CXXFLAGS</code> ：提供给 C++ 编译器的参数。</li><li><code>CPPFLAGS</code> ：提供给 C 预处理器的参数。</li><li><code>LDFLAGS</code> ：当编译器调用链接器时提供给编译器的额外参数。</li></ul><p>下面这个例子无需明确告诉 Make 如何进行编译，就可以构建一个 C 程序。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></code></pre></td></tr></table></div></div><h2 id=规则>规则</h2><h3 id=隐式规则>隐式规则</h3><p>隐式规则会让东西变得混乱，不推荐使用，但是要了解。</p><ul><li>编译 C 程序： <code>n.o</code> 由 <code>n.c</code> 自动生成，命令形式为 <code>$(CC) -c $(CPPFLAGS) $(CFLAGS)</code></li><li>编译 C++ 程序：<code>n.o</code> 由 <code>n.cc</code> 或 <code>n.cpp</code> 自动生成，命令形式为 <code>$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)</code></li><li>链接单个目标文件： <code>n</code> 是通过运行命令 <code>$(CC) $(LDFLAGS) n.o $(LOADLIBES) $(LDLIBS)</code> 从 <code>n.o</code> 自动生成的</li></ul><p>隐式规则常用的几个变量：</p><ul><li><code>CC</code> ：C 程序编译器，默认 <code>cc</code> 。</li><li><code>CXX</code> ：C++ 程序编译器，默认 <code>g++</code> 。</li><li><code>CFLAGS</code> ：提供给 C 编译器的参数。</li><li><code>CXXFLAGS</code> ：提供给 C++ 编译器的参数。</li><li><code>CPPFLAGS</code> ：提供给 C 预处理器的参数。</li><li><code>LDFLAGS</code> ：当编译器调用链接器时提供给编译器的额外参数。</li></ul><p>下面这个例子无需明确告诉 Make 如何进行编译，就可以构建一个 C 程序。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -680,7 +680,7 @@
 </span></span></span><span class=line><span class=cl><span class=c></span><span class=err>ifneq</span> <span class=err>(,</span><span class=k>$(</span><span class=nv>findstring</span> <span class=nv>i</span>, <span class=k>$(</span><span class=nv>MAKEFLAGS</span><span class=k>))</span><span class=err>)</span>
 </span></span><span class=line><span class=cl>    <span class=err>echo</span> <span class=s2>&#34;i was passed to MAKEFLAGS&#34;</span>
 </span></span><span class=line><span class=cl><span class=err>endif</span>
-</span></span></code></pre></td></tr></table></div></div><h2 id=函数>函数</h2><p>函数主要只是用于文本处理。使用 $(fn, arguments) 或 ${fn, arguments} 调用函数。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><h2 id=函数>函数</h2><p>函数主要只是用于文本处理。使用 <code>$(fn, arguments)</code> 或 <code>${fn, arguments}</code> 调用函数。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -798,10 +798,174 @@
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-makefile data-lang=makefile><span class=line><span class=cl><span class=nf>all</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=c1># 非常难看，因为换行符不见了</span>
 </span></span><span class=line><span class=cl>    @echo <span class=k>$(</span>shell ls -la<span class=k>)</span> 
+</span></span></code></pre></td></tr></table></div></div><h2 id=其他特性>其他特性</h2><h3 id=应用外部makefile>应用外部makefile</h3><p><code>include</code> 的语法是</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-makefile data-lang=makefile><span class=line><span class=cl><span class=err>include</span> <span class=err>filenames</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=vpath-指令>vpath 指令</h3><p>语法 <code>vpath &lt;pattern> &lt;directories></code> ，<code>&lt;pattern></code> 会匹配 <code>&lt;directories></code> 中的文件名，多个目录使用 <code>空格</code> 或 <code>冒号</code> 分隔。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>vpath %.h ../headers ../other-directory
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>some_binary: ../headers blah.h
+</span></span><span class=line><span class=cl>    touch some_binary
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>../headers:
+</span></span><span class=line><span class=cl>    mkdir ../headers
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>blah.h:
+</span></span><span class=line><span class=cl>    touch ../headers/blah.h
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>clean:
+</span></span><span class=line><span class=cl>    rm -rf ../headers
+</span></span><span class=line><span class=cl>    rm -f some_binary
+</span></span></code></pre></td></tr></table></div></div><h3 id=phony>.phony</h3><p>make 并不生成“clean”这个文件。“伪目标”并不是一个文件，只是一个 <code>标签</code> ，由于“伪目标”不是文件，所以 make 无法生成它的依赖关系和决定它是否要执行。我们只有通过显式地指明这个“目标”才能让其生效（通过 <code>make clean</code> 命令）。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-makefile data-lang=makefile><span class=line><span class=cl><span class=err>.PHONY</span> <span class=err>clean</span>
+</span></span><span class=line><span class=cl><span class=nf>clean</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    rm -f *.o
+</span></span></code></pre></td></tr></table></div></div><h3 id=delete_on_error>.delete_on_error</h3><p>当规则执行失败，<code>.delete_on_error</code> 会删除规则已生成的所有目标文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-makefile data-lang=makefile><span class=line><span class=cl><span class=nf>.DELETE_ON_ERROR</span><span class=o>:</span>
+</span></span><span class=line><span class=cl><span class=nf>all</span><span class=o>:</span> <span class=n>one</span> <span class=n>two</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>one</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    touch one
+</span></span><span class=line><span class=cl>    <span class=nb>false</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>two</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    touch two
+</span></span><span class=line><span class=cl>    <span class=nb>false</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=makefile-模板>makefile 模板</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-makefile data-lang=makefile><span class=line><span class=cl><span class=c># 感谢 Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
+</span></span></span><span class=line><span class=cl><span class=c># 最终要生成的目标文件名
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>TARGET_EXEC</span> <span class=o>:=</span> final_program
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 编译生成文件的目录
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>BUILD_DIR</span> <span class=o>:=</span> ./build
+</span></span><span class=line><span class=cl><span class=c># 源文件所在的目录
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>SRC_DIRS</span> <span class=o>:=</span> ./src
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 找到所有需要编译的 C 和 C++ 文件
+</span></span></span><span class=line><span class=cl><span class=c># 注意 * 表达式周围的单引号。否则 Make 会错误地扩展这些。
+</span></span></span><span class=line><span class=cl><span class=c># Note the single quotes around the * expressions. Make will incorrectly expand these otherwise.
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>SRCS</span> <span class=o>:=</span> <span class=k>$(</span>shell find <span class=k>$(</span>SRC_DIRS<span class=k>)</span> -name <span class=s1>&#39;*.cpp&#39;</span> -or -name <span class=s1>&#39;*.c&#39;</span> -or -name <span class=s1>&#39;*.s&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 给每个 C/C++ 文件名加 .o 结尾
+</span></span></span><span class=line><span class=cl><span class=c># 如 hello.cpp 转换为 ./build/hello.cpp.o
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>OBJS</span> <span class=o>:=</span> <span class=k>$(</span>SRCS:%<span class=o>=</span><span class=k>$(</span>BUILD_DIR<span class=k>)</span>/%.o<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># .o 结尾替换为 .d
+</span></span></span><span class=line><span class=cl><span class=c># 如 ./build/hello.cpp.o 转换为 ./build/hello.cpp.d
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>DEPS</span> <span class=o>:=</span> <span class=k>$(</span>OBJS:.o<span class=o>=</span>.d<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># ./src 中的每个文件夹都需要传递给 GCC，以便它可以找到头文件
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>INC_DIRS</span> <span class=o>:=</span> <span class=k>$(</span>shell find <span class=k>$(</span>SRC_DIRS<span class=k>)</span> -type d<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=c># 给 INC_DIRS 添加前缀 -I ，GCC指定头文件路径需要 -I，如 moduleA 会变成 -ImoduleA
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>INC_FLAGS</span> <span class=o>:=</span> <span class=k>$(</span>addprefix -I,<span class=k>$(</span>INC_DIRS<span class=k>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># -MMD 和 -MP 参数会生成每个 .c 文件所依赖的头文件关系
+</span></span></span><span class=line><span class=cl><span class=c># 保存到 .d 结尾的文件中
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nv>CPPFLAGS</span> <span class=o>:=</span> <span class=k>$(</span>INC_FLAGS<span class=k>)</span> -MMD -MP
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 最终的编译步骤
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nf>$(BUILD_DIR)/$(TARGET_EXEC)</span><span class=o>:</span> <span class=k>$(</span><span class=nv>OBJS</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>$(</span>CC<span class=k>)</span> <span class=k>$(</span>OBJS<span class=k>)</span> -o <span class=nv>$@</span> <span class=k>$(</span>LDFLAGS<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 编译C源码
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nf>$(BUILD_DIR)/%.c.o</span><span class=o>:</span> %.<span class=n>c</span>
+</span></span><span class=line><span class=cl>    mkdir -p <span class=k>$(</span>dir <span class=nv>$@</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>$(</span>CC<span class=k>)</span> <span class=k>$(</span>CPPFLAGS<span class=k>)</span> <span class=k>$(</span>CFLAGS<span class=k>)</span> -c $&lt; -o <span class=nv>$@</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 编译C++源码
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=nf>$(BUILD_DIR)/%.cpp.o</span><span class=o>:</span> %.<span class=n>cpp</span>
+</span></span><span class=line><span class=cl>    mkdir -p <span class=k>$(</span>dir <span class=nv>$@</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>$(</span>CXX<span class=k>)</span> <span class=k>$(</span>CPPFLAGS<span class=k>)</span> <span class=k>$(</span>CXXFLAGS<span class=k>)</span> -c $&lt; -o <span class=nv>$@</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>.PHONY</span><span class=o>:</span> <span class=n>clean</span>
+</span></span><span class=line><span class=cl><span class=nf>clean</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    rm -r <span class=k>$(</span>BUILD_DIR<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># Include the .d makefiles. The - at the front suppresses the errors of missing
+</span></span></span><span class=line><span class=cl><span class=c># Makefiles. Initially, all the .d files will be missing, and we don&#39;t want those
+</span></span></span><span class=line><span class=cl><span class=c># errors to show up.
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=err>-include</span> <span class=k>$(</span><span class=nv>DEPS</span><span class=k>)</span>
 </span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/makefile/>makefile</a></section></footer><link rel=stylesheet href=/js/katex.min.css crossorigin=anonymous><script src=/js/katex.min.js crossorigin=anonymous defer></script><script src=/js/auto-render.min.js crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script></article><footer class=site-footer><section class=copyright>&copy;
 2020 -
 2022 kingtuo123</section><section class=powerby>www.kingtuo123.com<br>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.11.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 <button class="pswp__button pswp__button--share" title=Share></button>
 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=/js/photoswipe.min.js crossorigin=anonymous defer></script><script src=/js/photoswipe-ui-default.min.js crossorigin=anonymous defer></script><link rel=stylesheet href=/js/default-skin.css crossorigin=anonymous><link rel=stylesheet href=/js/photoswipe.css crossorigin=anonymous></main><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#makefile-语法>makefile 语法</a></li><li><a href=#示例>示例</a></li><li><a href=#变量>变量</a></li><li><a href=#目标>目标</a></li><li><a href=#通配符>通配符</a></li><li><a href=#自动化变量>自动化变量</a></li><li><a href=#规则>规则</a><ol><li><a href=#隐式规则>隐式规则</a></li><li><a href=#静态模式规则>静态模式规则</a></li><li><a href=#模式规则>模式规则</a></li><li><a href=#双冒号规则>双冒号规则</a></li></ol></li><li><a href=#命令>命令</a><ol><li><a href=#不打印命令>不打印命令</a></li><li><a href=#命令执行>命令执行</a></li><li><a href=#默认-shell>默认 shell</a></li><li><a href=#错误处理>错误处理</a></li><li><a href=#中断-make>中断 make</a></li><li><a href=#嵌套执行-make>嵌套执行 make</a></li><li><a href=#使用-export-嵌套>使用 export 嵌套</a></li><li><a href=#覆盖命令行参数>覆盖命令行参数</a></li><li><a href=#define函数定义>define函数定义</a></li><li><a href=#指定目标变量>指定目标变量</a></li><li><a href=#指定模式变量>指定模式变量</a></li></ol></li><li><a href=#条件判断>条件判断</a><ol><li><a href=#ifelse>if/else</a></li><li><a href=#判断变量为空>判断变量为空</a></li><li><a href=#检查变量是否定义>检查变量是否定义</a></li><li><a href=#命令行参数-makeflags>命令行参数 $(MAKEFLAGS)</a></li></ol></li><li><a href=#函数>函数</a><ol><li><a href=#字符串替换>字符串替换</a></li><li><a href=#foreach-函数>foreach 函数</a></li><li><a href=#if-函数>if 函数</a></li><li><a href=#call-函数>call 函数</a></li><li><a href=#shell-函数>shell 函数</a></li></ol></li></ol></nav></div></section></aside></div><script src=/js/vibrant.min.js crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script></body></html>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=/js/photoswipe.min.js crossorigin=anonymous defer></script><script src=/js/photoswipe-ui-default.min.js crossorigin=anonymous defer></script><link rel=stylesheet href=/js/default-skin.css crossorigin=anonymous><link rel=stylesheet href=/js/photoswipe.css crossorigin=anonymous></main><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#makefile-语法>makefile 语法</a></li><li><a href=#示例>示例</a></li><li><a href=#变量>变量</a></li><li><a href=#目标>目标</a></li><li><a href=#通配符>通配符</a></li><li><a href=#自动化变量>自动化变量</a></li><li><a href=#规则>规则</a><ol><li><a href=#隐式规则>隐式规则</a></li><li><a href=#静态模式规则>静态模式规则</a></li><li><a href=#模式规则>模式规则</a></li><li><a href=#双冒号规则>双冒号规则</a></li></ol></li><li><a href=#命令>命令</a><ol><li><a href=#不打印命令>不打印命令</a></li><li><a href=#命令执行>命令执行</a></li><li><a href=#默认-shell>默认 shell</a></li><li><a href=#错误处理>错误处理</a></li><li><a href=#中断-make>中断 make</a></li><li><a href=#嵌套执行-make>嵌套执行 make</a></li><li><a href=#使用-export-嵌套>使用 export 嵌套</a></li><li><a href=#覆盖命令行参数>覆盖命令行参数</a></li><li><a href=#define函数定义>define函数定义</a></li><li><a href=#指定目标变量>指定目标变量</a></li><li><a href=#指定模式变量>指定模式变量</a></li></ol></li><li><a href=#条件判断>条件判断</a><ol><li><a href=#ifelse>if/else</a></li><li><a href=#判断变量为空>判断变量为空</a></li><li><a href=#检查变量是否定义>检查变量是否定义</a></li><li><a href=#命令行参数-makeflags>命令行参数 $(MAKEFLAGS)</a></li></ol></li><li><a href=#函数>函数</a><ol><li><a href=#字符串替换>字符串替换</a></li><li><a href=#foreach-函数>foreach 函数</a></li><li><a href=#if-函数>if 函数</a></li><li><a href=#call-函数>call 函数</a></li><li><a href=#shell-函数>shell 函数</a></li></ol></li><li><a href=#其他特性>其他特性</a><ol><li><a href=#应用外部makefile>应用外部makefile</a></li><li><a href=#vpath-指令>vpath 指令</a></li><li><a href=#phony>.phony</a></li><li><a href=#delete_on_error>.delete_on_error</a></li></ol></li><li><a href=#makefile-模板>makefile 模板</a></li></ol></nav></div></section></aside></div><script src=/js/vibrant.min.js crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script></body></html>
