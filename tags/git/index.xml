@@ -1,44 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>git on kingtuo123</title><link>https://kingtuo123.com/tags/git/</link><description>Recent content in git on kingtuo123</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/p/github%E8%AE%BE%E7%BD%AEssh-key/</guid><description>&lt;h2 id="创建ssh-key">创建SSH Key&lt;/h2>
-&lt;p>运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。&lt;/p>
-&lt;pre>&lt;code>ssh-keygen -t rsa -C &amp;quot;kingtuo123@foxmail.com&amp;quot;
-&lt;/code>&lt;/pre>
-&lt;p>输出如下，一路回车&lt;/p>
-&lt;pre>&lt;code>Generating public/private rsa key pair.
-Enter file in which to save the key (/home/king/.ssh/id_rsa):
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-&lt;/code>&lt;/pre>
-&lt;p>以上会在 &lt;code>～/.ssh&lt;/code> 目录下生成 &lt;code>id_rsa&lt;/code> （私钥）和 &lt;code>id_rsa.pub&lt;/code> （公钥）文件。&lt;/p>
-&lt;p>如果你没有使用默认的路径，记得修改 &lt;code>/etc/ssh/ssh_config&lt;/code> 或 &lt;code>~/.ssh/config&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 这里是默认身份文件路径&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_rsa&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_dsa&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_ecdsa&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># IdentityFile ~/.ssh/id_ed25519&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="添加公钥">添加公钥&lt;/h2>
-&lt;p>查看公钥的内容&lt;/p>
-&lt;pre>&lt;code>cat ~/.ssh/id_rsa.pub
-&lt;/code>&lt;/pre>
-&lt;p>打开github在 &lt;code>setting&lt;/code> -&amp;gt; &lt;code>SSH and GPG keys&lt;/code> 中添加SSH Key，将上面的输出复制进去。&lt;/p>
-&lt;h2 id="验证">验证&lt;/h2>
-&lt;pre>&lt;code>ssh -T git@github.com
-&lt;/code>&lt;/pre>
-&lt;p>返回如下信息则配置成功&lt;/p>
-&lt;pre>&lt;code>You've successfully authenticated, but GitHub does not provide shell access
-&lt;/code>&lt;/pre>
-&lt;h2 id="使用ssh-key推送">使用SSH Key推送&lt;/h2>
-&lt;div align="left">
-&lt;img src="git.png" style="max-height:200px">&lt;/img>
-&lt;/div>
-&lt;p>使用以上的链接。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>git on king's blog</title><link>https://kingtuo123.com/tags/git/</link><description>Recent content in git on king's blog</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Github设置SSH Key</title><link>https://kingtuo123.com/posts/github-set-sshkey/</link><pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/github-set-sshkey/</guid><description>创建SSH Key 运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。
+ssh-keygen -t rsa -C &amp;#34;kingtuo123@foxmail.com&amp;#34; 输出如下，一路回车
+Generating public/private rsa key pair. Enter file in which to save the key (/home/king/.ssh/id_rsa): Enter passphrase (empty for no passphrase): Enter same passphrase again: 以上会在 ～/.ssh 目录下生成 id_rsa （私钥）和 id_rsa.pub （公钥）文件。
+如果你没有使用默认的路径，记得修改 /etc/ssh/ssh_config 或 ~/.ssh/config
+# 这里是默认身份文件路径 # IdentityFile ~/.ssh/id_rsa # IdentityFile ~/.ssh/id_dsa # IdentityFile ~/.ssh/id_ecdsa # IdentityFile ~/.ssh/id_ed25519 添加公钥 查看公钥的内容
+cat ~/.ssh/id_rsa.pub 打开github在 setting -&amp;gt; SSH and GPG keys 中添加SSH Key，将上面的输出复制进去。</description></item></channel></rss>
