@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>ftp on king's blog</title><link>https://kingtuo123.com/tags/ftp/</link><description>Recent content in ftp on king's blog</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/tags/ftp/index.xml" rel="self" type="application/rss+xml"/><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/posts/curlftpfs-mount-local/</link><pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/curlftpfs-mount-local/</guid><description>安装 emerge -av curlftpfs 需要内核启用 fuse
+以root挂载 创建挂载点
+mkdir /mnt/ftp 挂载，若没有用户名密码就省去 -o 及后面参数
+curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password 想让普通用户有访问权限，添加 allow_other 选项，以逗号分隔
+curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password,allow_other 以普通用户挂载 mkdir ~/example curlftpfs -o ssl,utf8 ftp://example.com/ ~/example ssl ：使用SSL/TLS传输数据
+utf8 ： 使用utf8编码
+卸载 fusermount -u ~/example 或者
+umount ~/example</description></item></channel></rss>
