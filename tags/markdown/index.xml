@@ -4,4 +4,5 @@
 --- ---- *** ***** 图片 ![图片alt](图片链接 &amp;#34;图片title&amp;#34;) 若要指定图片大小/位置，使用HTML
 &amp;lt;div align=&amp;#34;center&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;1.png&amp;#34; style=&amp;#34;max-height:180px&amp;#34;&amp;gt;&amp;lt;/img&amp;gt; &amp;lt;/div&amp;gt; 超链接 [超链接名](超链接地址 &amp;#34;超链接title&amp;#34;) 列表 无序列表 - 和+ 和* 三个符号都可以
 - 列表内容 + 列表内容 * 列表内容 显示如下
-列表内容 列表内容 列表内容 有序列表 数字加点</description></item></channel></rss>
+列表内容 列表内容 列表内容 有序列表 数字加点
+1. 列表内容 2.</description></item></channel></rss>
