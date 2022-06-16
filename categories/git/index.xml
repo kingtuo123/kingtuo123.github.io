@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>git on king's blog</title><link>https://kingtuo123.com/categories/git/</link><description>Recent content in git on king's blog</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Wed, 15 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kingtuo123.com/categories/git/index.xml" rel="self" type="application/rss+xml"/><item><title>git 基础 - 常用命令</title><link>https://kingtuo123.com/posts/git-basic/git-basic/</link><pubDate>Wed, 15 Jun 2022 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/git-basic/git-basic/</guid><description>Git 设置 配置文件 /etc/gitconfig
+当前用户配置文件 ~/.gitconfig 或 ~/.config/git/config
+当前仓库配置文件 .git/config
+后面配置会覆盖上层的配置
+账号设置：
+git config --global user.name &amp;#34;Your Name&amp;#34; git config --global user.email &amp;#34;email@example.com&amp;#34; git config --global core.editor vim git diff 查看改动
+git status 查看状态
+git log 查看commit历史
+git reset --hard commit_id git reflog 查看命令历史</description></item></channel></rss>
