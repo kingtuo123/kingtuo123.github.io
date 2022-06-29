@@ -34,48 +34,48 @@ mysql> show variables like 'socket'; +---------------+--------------------------
 </span></span><span class=line><span class=cl><span class=nv>datadir</span><span class=o>=</span>/var/lib/mysql/
 </span></span></code></pre></div><p>启动mysql</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>rc-service mysql start
 </span></span></code></pre></div><p>登陆mysql</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mysql -u root -p
-</span></span></code></pre></div><p>查看端口</p><pre tabindex=0><code>mysql&gt;  show variables like &#39;port&#39;;
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| port          | 0     |
-+---------------+-------+
-1 row in set (0.01 sec)
-</code></pre><p>port为0,远程连接关闭</p><p>查看其他设置</p><pre tabindex=0><code>mysql&gt;  show variables like &#39;socket&#39;;
-+---------------+-----------------------------+
-| Variable_name | Value                       |
-+---------------+-----------------------------+
-| socket        | /var/run/mysqld/mysqld.sock |
-+---------------+-----------------------------+
-1 row in set (0.01 sec)
-
-mysql&gt;  show variables like &#39;datadir&#39;;
-+---------------+-----------------+
-| Variable_name | Value           |
-+---------------+-----------------+
-| datadir       | /var/lib/mysql/ |
-+---------------+-----------------+
-1 row in set (0.00 sec)
-</code></pre><h2 id=安装配置php>安装配置php<a hidden class=anchor aria-hidden=true href=#安装配置php>#</a></h2><p>修改USE，编辑文件<code>/etc/portage/package.use/package.use</code>，添加如下</p><pre tabindex=0><code>dev-lang/php fpm mysql mysqli gd
-</code></pre><p>按需添加，查看各项USE标记含义，执行<code>equery u dev-lang/php</code></p><pre tabindex=0><code>fpm     : Enable the FastCGI Process Manager SAPI
-mysql   : Add mySQL Database support
-mysqli  : Add support for the improved mySQL libraries
-gd      : Adds support for gd (bundled with PHP)
-</code></pre><p>安装<code>dev-lang/php</code>，默认会安装最新的php7</p><pre tabindex=0><code>emerge -av dev-lang/php
-</code></pre><p>查看版本，执行<code>eselect php list cli</code>或者执行<code>php -v</code></p><pre tabindex=0><code>[1]   php7.3 *
-</code></pre><p>php默认配置文件路径<code>/etc/php/</code></p><p>修改<code>/etc/php/fpm-php7.3/fpm.d/www.conf</code>文件</p><pre tabindex=0><code>user = nginx
-group = nginx 
-;默认是开9000端口用TCP连接，没有必要，注释掉改为本地socket连接
-;listen = 127.0.0.1:9000 
-listen = /var/run/php-fpm/php-fpm.sock
-listen.owner = nginx
-listen.group = nginx
-listen.mode = 0660
-</code></pre><p>修改<code>/etc/php/fpm-php7.3/php.ini</code>,修改下面内容</p><pre tabindex=0><code>;去掉下面这行注释并在末尾添加.html，支持解析html
-security.limit_extensions = .php .php4 .php5 .php7 .html
-cgi.fix_pathinfo=0
-</code></pre><blockquote><p>百度了下cgi.fix_pathinfo，如果PHP的配置里 cgi.fix_pathinfo=1，会导致安全问题，这个问题只存在于 Nginx 服务器中，Apache和IIS都不会有这个问题</p></blockquote><h2 id=安装配置nginx>安装配置nginx<a hidden class=anchor aria-hidden=true href=#安装配置nginx>#</a></h2><p>执行<code>equery u nginx</code>检查USE标记<code>nginx_modules_http_fastcgi</code>是否默认添加</p><pre tabindex=0><code>emerge -av www-servers/nginx
-</code></pre><p>默认配置文件路径<code>/etc/nginx/</code>,修改<code>nginx.conf</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span></code></pre></div><p>查看端口</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mysql&gt;  show variables like &#39;port&#39;;
+</span></span><span class=line><span class=cl>+---------------+-------+
+</span></span><span class=line><span class=cl>| Variable_name | Value |
+</span></span><span class=line><span class=cl>+---------------+-------+
+</span></span><span class=line><span class=cl>| port          | 0     |
+</span></span><span class=line><span class=cl>+---------------+-------+
+</span></span><span class=line><span class=cl>1 row in set (0.01 sec)
+</span></span></code></pre></div><p>port为0,远程连接关闭</p><p>查看其他设置</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mysql&gt;  show variables like &#39;socket&#39;;
+</span></span><span class=line><span class=cl>+---------------+-----------------------------+
+</span></span><span class=line><span class=cl>| Variable_name | Value                       |
+</span></span><span class=line><span class=cl>+---------------+-----------------------------+
+</span></span><span class=line><span class=cl>| socket        | /var/run/mysqld/mysqld.sock |
+</span></span><span class=line><span class=cl>+---------------+-----------------------------+
+</span></span><span class=line><span class=cl>1 row in set (0.01 sec)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>mysql&gt;  show variables like &#39;datadir&#39;;
+</span></span><span class=line><span class=cl>+---------------+-----------------+
+</span></span><span class=line><span class=cl>| Variable_name | Value           |
+</span></span><span class=line><span class=cl>+---------------+-----------------+
+</span></span><span class=line><span class=cl>| datadir       | /var/lib/mysql/ |
+</span></span><span class=line><span class=cl>+---------------+-----------------+
+</span></span><span class=line><span class=cl>1 row in set (0.00 sec)
+</span></span></code></pre></div><h2 id=安装配置php>安装配置php<a hidden class=anchor aria-hidden=true href=#安装配置php>#</a></h2><p>修改USE，编辑文件<code>/etc/portage/package.use/package.use</code>，添加如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>dev-lang/php fpm mysql mysqli gd
+</span></span></code></pre></div><p>按需添加，查看各项USE标记含义，执行<code>equery u dev-lang/php</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>fpm     : Enable the FastCGI Process Manager SAPI
+</span></span><span class=line><span class=cl>mysql   : Add mySQL Database support
+</span></span><span class=line><span class=cl>mysqli  : Add support for the improved mySQL libraries
+</span></span><span class=line><span class=cl>gd      : Adds support for gd (bundled with PHP)
+</span></span></code></pre></div><p>安装<code>dev-lang/php</code>，默认会安装最新的php7</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>emerge -av dev-lang/php
+</span></span></code></pre></div><p>查看版本，执行<code>eselect php list cli</code>或者执行<code>php -v</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[1]   php7.3 *
+</span></span></code></pre></div><p>php默认配置文件路径<code>/etc/php/</code></p><p>修改<code>/etc/php/fpm-php7.3/fpm.d/www.conf</code>文件</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>user = nginx
+</span></span><span class=line><span class=cl>group = nginx 
+</span></span><span class=line><span class=cl>;默认是开9000端口用TCP连接，没有必要，注释掉改为本地socket连接
+</span></span><span class=line><span class=cl>;listen = 127.0.0.1:9000 
+</span></span><span class=line><span class=cl>listen = /var/run/php-fpm/php-fpm.sock
+</span></span><span class=line><span class=cl>listen.owner = nginx
+</span></span><span class=line><span class=cl>listen.group = nginx
+</span></span><span class=line><span class=cl>listen.mode = 0660
+</span></span></code></pre></div><p>修改<code>/etc/php/fpm-php7.3/php.ini</code>,修改下面内容</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>;去掉下面这行注释并在末尾添加.html，支持解析html
+</span></span><span class=line><span class=cl>security.limit_extensions = .php .php4 .php5 .php7 .html
+</span></span><span class=line><span class=cl>cgi.fix_pathinfo=0
+</span></span></code></pre></div><blockquote><p>百度了下cgi.fix_pathinfo，如果PHP的配置里 cgi.fix_pathinfo=1，会导致安全问题，这个问题只存在于 Nginx 服务器中，Apache和IIS都不会有这个问题</p></blockquote><h2 id=安装配置nginx>安装配置nginx<a hidden class=anchor aria-hidden=true href=#安装配置nginx>#</a></h2><p>执行<code>equery u nginx</code>检查USE标记<code>nginx_modules_http_fastcgi</code>是否默认添加</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>emerge -av www-servers/nginx
+</span></span></code></pre></div><p>默认配置文件路径<code>/etc/nginx/</code>,修改<code>nginx.conf</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=kn>listen</span>       <span class=mi>80</span> <span class=s>default_server</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kn>listen</span>       <span class=s>[::]:80</span> <span class=s>default_server</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kn>server_name</span>  <span class=s>localhost</span><span class=p>;</span>
@@ -96,10 +96,10 @@ cgi.fix_pathinfo=0
 </span></span><span class=line><span class=cl>        <span class=kn>include</span> <span class=s>fastcgi_params</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>添加nginx到test用户组</p><pre tabindex=0><code>usermod -a -G  test nginx
-</code></pre><p>查看用户组</p><pre tabindex=0><code>root# groups nginx
-test nginx
-</code></pre><p>最后，确保网站主目录的<code>group</code>有<code>r</code>和<code>x</code>权限。</p><h2 id=测试>测试<a hidden class=anchor aria-hidden=true href=#测试>#</a></h2><p>启动nginx，执行<code>rc-service nginx start</code>，同样再启动php-fpm和mysql。</p><p>可以添加开机运行，执行<code>rc-update add &lt;服务名称> default</code></p><p>在网站主目录下新建index.html,写入以下内容</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
+</span></span></code></pre></div><p>添加nginx到test用户组</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>usermod -a -G  test nginx
+</span></span></code></pre></div><p>查看用户组</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>root# groups nginx
+</span></span><span class=line><span class=cl>test nginx
+</span></span></code></pre></div><p>最后，确保网站主目录的<code>group</code>有<code>r</code>和<code>x</code>权限。</p><h2 id=测试>测试<a hidden class=anchor aria-hidden=true href=#测试>#</a></h2><p>启动nginx，执行<code>rc-service nginx start</code>，同样再启动php-fpm和mysql。</p><p>可以添加开机运行，执行<code>rc-update add &lt;服务名称> default</code></p><p>在网站主目录下新建index.html,写入以下内容</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
 </span></span><span class=line><span class=cl><span class=nv>$con</span><span class=o>=</span><span class=nx>mysqli_connect</span><span class=p>(</span><span class=k>null</span><span class=p>,</span><span class=s2>&#34;root&#34;</span><span class=p>,</span><span class=s2>&#34;密码&#34;</span><span class=p>,</span><span class=k>null</span><span class=p>,</span><span class=k>null</span><span class=p>,</span><span class=s2>&#34;/var/run/mysqld/mysqld.sock&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=nv>$con</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>    <span class=k>echo</span> <span class=s2>&#34;连接成功&#34;</span><span class=p>;</span>

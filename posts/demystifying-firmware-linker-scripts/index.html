@@ -59,8 +59,8 @@
 </span></span><span class=line><span class=cl>  9 .text.port_pin_toggle_output_level 00000038  00000000  00000000  00000120  2**1                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
 </span></span><span class=line><span class=cl> 10 .text.set_output 00000040  00000000  00000000  00000158  2**1                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
 </span></span><span class=line><span class=cl> 11 .text.main    0000002c  00000000  00000000  00000198  2**2                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
-</span></span></code></pre></div><p>我们看到每一个符号都有一个 section。这是因为我们在编译时指定了 <code>-ffucntion-sections</code> 和 <code>-fdata-sections</code> 标志。如果我们没有包含这些标志，编译器可以将多个函数包含进一个 section 中去。</p><p>在我们的链接器脚本中要将所有函数都放到 <code>.text</code> 中，我们可以按以下语法：</p><pre tabindex=0><code>&lt;filename&gt;(&lt;section&gt;)
-</code></pre><p><code>filename</code> 是包含我们所需符号的输入文件的名称，<code>section</code> 就是该文件中包含的 section 的名称。如果我们想要取一个文件中所有的 <code>.text</code> section，我们可以使用 <code>*</code> 通配符：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>.text :
+</span></span></code></pre></div><p>我们看到每一个符号都有一个 section。这是因为我们在编译时指定了 <code>-ffucntion-sections</code> 和 <code>-fdata-sections</code> 标志。如果我们没有包含这些标志，编译器可以将多个函数包含进一个 section 中去。</p><p>在我们的链接器脚本中要将所有函数都放到 <code>.text</code> 中，我们可以按以下语法：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;filename&gt;(&lt;section&gt;)
+</span></span></code></pre></div><p><code>filename</code> 是包含我们所需符号的输入文件的名称，<code>section</code> 就是该文件中包含的 section 的名称。如果我们想要取一个文件中所有的 <code>.text</code> section，我们可以使用 <code>*</code> 通配符：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>.text :
 </span></span><span class=line><span class=cl>{
 </span></span><span class=line><span class=cl>    KEEP(*(.vector*))
 </span></span><span class=line><span class=cl>    *(.text*)
