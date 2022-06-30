@@ -6,11 +6,7 @@ rc-service mysql start 登陆mysql
 mysql -u root -p 查看端口
 mysql&amp;gt; show variables like &amp;#39;port&amp;#39;; +---------------+-------+ | Variable_name | Value | +---------------+-------+ | port | 0 | +---------------+-------+ 1 row in set (0.01 sec) port为0,远程连接关闭
 查看其他设置
-mysql&amp;gt; show variables like &amp;#39;socket&amp;#39;; +---------------+-----------------------------+ | Variable_name | Value | +---------------+-----------------------------+ | socket | /var/run/mysqld/mysqld.sock | +---------------+-----------------------------+ 1 row in set (0.</description></item><item><title>Gentoo ch340 驱动</title><link>https://kingtuo123.com/posts/gentoo-ch340-driver/</link><pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/gentoo-ch340-driver/</guid><description> 参考 Gentoo Wiki/Arduino
-启用内核选项 Device Drivers ---&amp;gt; [*] USB support ---&amp;gt; &amp;lt;*&amp;gt; USB Serial Converter support ---&amp;gt; &amp;lt;*&amp;gt; USB Winchiphead CH341 Single Port Serial Driver 重新编译内核。
-重启后连接设备，设备名为 /dev/ttyUSB0
-非ROOT用户访问权限 添加用户到 dialout 组
-gpasswd -a larry dialout</description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/posts/curlftpfs-mount-local/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/curlftpfs-mount-local/</guid><description>安装 emerge -av curlftpfs 需要内核启用 fuse
+mysql&amp;gt; show variables like &amp;#39;socket&amp;#39;; +---------------+-----------------------------+ | Variable_name | Value | +---------------+-----------------------------+ | socket | /var/run/mysqld/mysqld.sock | +---------------+-----------------------------+ 1 row in set (0.</description></item><item><title>Gentoo ch340 驱动</title><link>https://kingtuo123.com/posts/gentoo-ch340-driver/</link><pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/gentoo-ch340-driver/</guid><description>gentoo 配置 ch340 串口驱动</description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/posts/curlftpfs-mount-local/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/curlftpfs-mount-local/</guid><description>安装 emerge -av curlftpfs 需要内核启用 fuse
 以root挂载 创建挂载点
 mkdir /mnt/ftp 挂载，若没有用户名密码就省去 -o 及后面参数
 curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password 想让普通用户有访问权限，添加 allow_other 选项，以逗号分隔
