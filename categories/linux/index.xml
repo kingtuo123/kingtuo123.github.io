@@ -6,11 +6,9 @@ rc-service mysql start 登陆mysql
 mysql -u root -p 查看端口
 mysql&amp;gt; show variables like &amp;#39;port&amp;#39;; +---------------+-------+ | Variable_name | Value | +---------------+-------+ | port | 0 | +---------------+-------+ 1 row in set (0.01 sec) port为0,远程连接关闭
 查看其他设置
-mysql&amp;gt; show variables like &amp;#39;socket&amp;#39;; +---------------+-----------------------------+ | Variable_name | Value | +---------------+-----------------------------+ | socket | /var/run/mysqld/mysqld.sock | +---------------+-----------------------------+ 1 row in set (0.</description></item><item><title>Gentoo ch340 驱动</title><link>https://kingtuo123.com/posts/gentoo-ch340-driver/</link><pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/gentoo-ch340-driver/</guid><description>gentoo 配置 ch340 串口驱动</description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/posts/curlftpfs-mount-local/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/curlftpfs-mount-local/</guid><description>安装 emerge -av curlftpfs 需要内核启用 fuse
-以root挂载 创建挂载点
-mkdir /mnt/ftp 挂载，若没有用户名密码就省去 -o 及后面参数
-curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password 想让普通用户有访问权限，添加 allow_other 选项，以逗号分隔
-curlftpfs ftp.example.com /mnt/ftp/ -o user=username:password,allow_other 以普通用户挂载 mkdir ~/example curlftpfs -o ssl,utf8 ftp://example.com/ ~/example ssl ：使用SSL/TLS传输数据
-utf8 ： 使用utf8编码
+mysql&amp;gt; show variables like &amp;#39;socket&amp;#39;; +---------------+-----------------------------+ | Variable_name | Value | +---------------+-----------------------------+ | socket | /var/run/mysqld/mysqld.sock | +---------------+-----------------------------+ 1 row in set (0.</description></item><item><title>Gentoo ch340 驱动</title><link>https://kingtuo123.com/posts/gentoo-ch340-driver/</link><pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/gentoo-ch340-driver/</guid><description>gentoo 配置 ch340 串口驱动</description></item><item><title>Curlftpfs挂载ftp到本地</title><link>https://kingtuo123.com/posts/curlftpfs-mount-local/</link><pubDate>Tue, 09 Mar 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/curlftpfs-mount-local/</guid><description> 参考 CurlFtpFS 内核选项 File systems ---&amp;gt; &amp;lt;*&amp;gt; FUSE (Filesystem in Userspace) support 安装 emerge -av net-fs/curlftpfs 以普通用户挂载 首先，创建挂载点
+mkdir ./ftp 挂载
+curlftpfs ftp://server/catalog/ ./ftp/ -o user=username:password,utf8,ssl ssl ：使用 SSL/TLS 传输数据
+utf8 ： 使用 utf8 编码
 卸载 fusermount -u ~/example 或者
 umount ~/example</description></item></channel></rss>
