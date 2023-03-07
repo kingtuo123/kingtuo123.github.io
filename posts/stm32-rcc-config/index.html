@@ -26,7 +26,7 @@
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=n>__IO</span> <span class=kt>uint32_t</span> <span class=n>StartUpCounter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=n>HSEStatus</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>   
-</span></span><span class=line><span class=cl>    <span class=n>RCC_DeInit</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=nf>RCC_DeInit</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>    
 </span></span><span class=line><span class=cl>    <span class=c1>// 使能 HSE
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>RCC</span><span class=o>-&gt;</span><span class=n>CR</span> <span class=o>|=</span> <span class=p>((</span><span class=kt>uint32_t</span><span class=p>)</span><span class=mh>0x01</span> <span class=o>&lt;&lt;</span> <span class=mi>16</span><span class=p>);</span>
@@ -80,40 +80,40 @@
 </span></span></code></pre></div><h3 id=标准库>标准库<a hidden class=anchor aria-hidden=true href=#标准库>#</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>SetSysClockTo72</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=cm>/* RCC system reset(for debug purpose) */</span>
-</span></span><span class=line><span class=cl>    <span class=n>RCC_DeInit</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=nf>RCC_DeInit</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=cm>/* Enable HSE */</span>
-</span></span><span class=line><span class=cl>    <span class=n>RCC_HSEConfig</span><span class=p>(</span><span class=n>RCC_HSE_ON</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>RCC_HSEConfig</span><span class=p>(</span><span class=n>RCC_HSE_ON</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=cm>/* Wait till HSE is ready */</span>
-</span></span><span class=line><span class=cl>    <span class=n>HSEStartUpStatus</span> <span class=o>=</span> <span class=n>RCC_WaitForHSEStartUp</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>HSEStartUpStatus</span> <span class=o>=</span> <span class=nf>RCC_WaitForHSEStartUp</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>HSEStartUpStatus</span> <span class=o>==</span> <span class=n>SUCCESS</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Enable Prefetch Buffer */</span>
-</span></span><span class=line><span class=cl>        <span class=n>FLASH_PrefetchBufferCmd</span><span class=p>(</span><span class=n>FLASH_PrefetchBuffer_Enable</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>FLASH_PrefetchBufferCmd</span><span class=p>(</span><span class=n>FLASH_PrefetchBuffer_Enable</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Flash 2 wait state */</span>
-</span></span><span class=line><span class=cl>        <span class=n>FLASH_SetLatency</span><span class=p>(</span><span class=n>FLASH_Latency_2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>FLASH_SetLatency</span><span class=p>(</span><span class=n>FLASH_Latency_2</span><span class=p>);</span>
 </span></span><span class=line><span class=cl> 
 </span></span><span class=line><span class=cl>        <span class=cm>/* HCLK = SYSCLK */</span>
-</span></span><span class=line><span class=cl>        <span class=n>RCC_HCLKConfig</span><span class=p>(</span><span class=n>RCC_SYSCLK_Div1</span><span class=p>);</span> 
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_HCLKConfig</span><span class=p>(</span><span class=n>RCC_SYSCLK_Div1</span><span class=p>);</span> 
 </span></span><span class=line><span class=cl>        <span class=cm>/* PCLK2 = HCLK */</span>
-</span></span><span class=line><span class=cl>        <span class=n>RCC_PCLK2Config</span><span class=p>(</span><span class=n>RCC_HCLK_Div1</span><span class=p>);</span> 
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_PCLK2Config</span><span class=p>(</span><span class=n>RCC_HCLK_Div1</span><span class=p>);</span> 
 </span></span><span class=line><span class=cl>        <span class=cm>/* PCLK1 = HCLK/2 */</span>
-</span></span><span class=line><span class=cl>        <span class=n>RCC_PCLK1Config</span><span class=p>(</span><span class=n>RCC_HCLK_Div2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_PCLK1Config</span><span class=p>(</span><span class=n>RCC_HCLK_Div2</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        
 </span></span><span class=line><span class=cl>        <span class=cm>/* PLLCLK = 8MHz * 9 = 72 MHz */</span>
-</span></span><span class=line><span class=cl>        <span class=n>RCC_PLLConfig</span><span class=p>(</span><span class=n>RCC_PLLSource_HSE_Div1</span><span class=p>,</span> <span class=n>RCC_PLLMul_9</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_PLLConfig</span><span class=p>(</span><span class=n>RCC_PLLSource_HSE_Div1</span><span class=p>,</span> <span class=n>RCC_PLLMul_9</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Enable PLL */</span> 
-</span></span><span class=line><span class=cl>        <span class=n>RCC_PLLCmd</span><span class=p>(</span><span class=n>ENABLE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_PLLCmd</span><span class=p>(</span><span class=n>ENABLE</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Wait till PLL is ready */</span>
-</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=n>RCC_GetFlagStatus</span><span class=p>(</span><span class=n>RCC_FLAG_PLLRDY</span><span class=p>)</span> <span class=o>==</span> <span class=n>RESET</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=nf>RCC_GetFlagStatus</span><span class=p>(</span><span class=n>RCC_FLAG_PLLRDY</span><span class=p>)</span> <span class=o>==</span> <span class=n>RESET</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Select PLL as system clock source */</span>
-</span></span><span class=line><span class=cl>        <span class=n>RCC_SYSCLKConfig</span><span class=p>(</span><span class=n>RCC_SYSCLKSource_PLLCLK</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nf>RCC_SYSCLKConfig</span><span class=p>(</span><span class=n>RCC_SYSCLKSource_PLLCLK</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=cm>/* Wait till PLL is used as system clock source */</span>
-</span></span><span class=line><span class=cl>        <span class=k>while</span><span class=p>(</span><span class=n>RCC_GetSYSCLKSource</span><span class=p>()</span> <span class=o>!=</span> <span class=mh>0x08</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span><span class=p>(</span><span class=nf>RCC_GetSYSCLKSource</span><span class=p>()</span> <span class=o>!=</span> <span class=mh>0x08</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span><span class=k>else</span><span class=p>{</span> 
 </span></span><span class=line><span class=cl>        <span class=cm>/* If HSE fails to start-up, the application will have wrong clock configuration.
 </span></span></span><span class=line><span class=cl><span class=cm>        User can add here some code to deal with this error */</span>    
@@ -122,7 +122,7 @@
 </span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://kingtuo123.com/tags/stm32/>stm32</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2022 <a href=https://kingtuo123.com/>king's blog</a></span>
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://kingtuo123.com/tags/stm32/>stm32</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2023 <a href=https://kingtuo123.com/>king's blog</a></span>
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
         <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
