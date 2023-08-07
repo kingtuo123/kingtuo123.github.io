@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 SPI"
 date: "2023-07-14"
 summary: "SPI 通讯及 W25Q64JV Flash 驱动"

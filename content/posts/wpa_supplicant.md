@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "wpa_supplicant"
 date: "2023-03-26"
 description: ""

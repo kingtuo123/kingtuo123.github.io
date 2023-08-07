@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Linux 下使用 adb 工具"
 date: "2022-08-15"
 summary: "常用 ADB 命令及使用"

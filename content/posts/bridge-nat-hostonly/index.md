@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Bridge NAT Host-only 区别"
 date: "2022-09-22"
 summary: "桥接，中继，主机模式"

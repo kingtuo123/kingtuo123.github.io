@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 EXTI 外部中断"
 date: "2022-07-20"
 summary: "Note"

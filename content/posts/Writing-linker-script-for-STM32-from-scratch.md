@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Writing linker script for STM32 from scratch"
 date: "2022-06-01"
 description: "从零开始编写stm32链接脚本"

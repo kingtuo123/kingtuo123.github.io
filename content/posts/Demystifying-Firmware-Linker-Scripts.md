@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Demystifying Firmware Linker Scripts"
 date: "2022-05-30"
 description: "揭秘链接器脚本"

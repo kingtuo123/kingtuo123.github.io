@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "MAC 地址表"
 date: "2022-09-21"
 summary: "简述 mac 地址表的建立过程"

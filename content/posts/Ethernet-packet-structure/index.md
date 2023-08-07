@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "以太网数据帧格式"
 date: "2022-09-19"
 summary: "Note"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "V2rayA 安装配置"
 date: "2022-06-13"
 description: ""

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "netstat 命令"
 date: "2022-09-26"
 summary: "一些常用参数"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 位带操作"
 date: "2022-07-11"
 summary: "Note"

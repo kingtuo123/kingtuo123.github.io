@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Modbus 协议 CRC 校验"
 date: "2022-08-24"
 summary: "CRC 校验原理"

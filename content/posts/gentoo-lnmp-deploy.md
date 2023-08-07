@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Gentoo 搭建 lnmp 环境"
 date: "2021-06-08"
 description: ""

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 GPIO"
 date: "2022-07-11"
 summary: "Note"

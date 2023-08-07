@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Gentoo ch340 驱动"
 date: "2021-05-24"
 description: ""

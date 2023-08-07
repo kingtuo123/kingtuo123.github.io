@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 USART"
 date: "2022-08-04"
 summary: "Note"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Gentoo 安装配置"
 date: "2022-06-08"
 summary: "Note"

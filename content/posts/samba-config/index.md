@@ -1,5 +1,4 @@
 ﻿---
-author: "kingtuo123"
 title: "Samba 安装及配置"
 date: "2022-09-03"
 summary: "Samba 安装及配置，配置文件常用参数及用法"

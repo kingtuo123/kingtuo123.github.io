@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Qemu 常用命令"
 date: "2023-03-12"
 description: ""

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 SysTick"
 date: "2022-07-28"
 summary: "Note"

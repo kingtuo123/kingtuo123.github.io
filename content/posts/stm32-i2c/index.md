@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 I2C"
 date: "2022-08-24"
 summary: "Note"

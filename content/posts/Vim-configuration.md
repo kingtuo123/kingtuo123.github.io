@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Vim 配置"
 date: "2022-06-12"
 description: ""

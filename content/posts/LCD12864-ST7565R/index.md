@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "LCD12864 ST7565R"
 date: "2023-07-18"
 summary: "stm32 st7565r spi 驱动程序"

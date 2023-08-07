@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 常用资源"
 date: "2022-07-01"
 summary: "一些常用资源的下载链接"

@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Autodependencies with GNU make"
 date: "2022-06-10"
 description: "make 自动生成依赖关系"

@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Curlftpfs挂载ftp到本地"
 date: "2021-03-09"
 description: ""

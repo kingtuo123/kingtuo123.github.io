@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "git 基础 - 常用命令"
 date: "2022-06-15"
 description: "Note"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Makefile 头文件依赖"
 date: "2022-06-10"
 description: "Makefile 的规则中为何要包含头文件依赖"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Linux下intel核显驱动问题"
 date: "2022-06-06"
 description: ""

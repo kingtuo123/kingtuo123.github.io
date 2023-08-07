@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "MPD PulseAudio 配置"
 date: "2022-07-10"
 description: ""

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 ISP 一键下载"
 date: "2022-05-11"
 summary: "ISP 一键下载原理，windows 和 linux 平台 ISP 下载方法"

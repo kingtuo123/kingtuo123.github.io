@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 移植 FatFs R0.15"
 date: "2023-07-26"
 summary: "stm32 移植 FatFs 并实现基本的读写功能"

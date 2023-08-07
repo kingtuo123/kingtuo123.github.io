@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 DMA"
 date: "2022-08-10"
 summary: "Note"

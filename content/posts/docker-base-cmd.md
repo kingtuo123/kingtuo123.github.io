@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Docker基本命令"
 date: "2022-03-11"
 description: ""

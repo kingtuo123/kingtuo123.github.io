@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Linux 下使用 stlink 烧录程序"
 date: "2022-07-01"
 summary: "stlink 工具命令用法"

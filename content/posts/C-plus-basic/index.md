@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "C++ 基础"
 date: "2022-10-06"
 summary: "C++ primer 学习笔记"

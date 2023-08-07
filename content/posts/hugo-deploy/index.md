@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Hugo deploy"
 date: "2021-01-01"
 description: ""

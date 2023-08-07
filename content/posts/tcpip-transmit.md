@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "MAC 与 IP 地址在传输时的变化"
 date: "2022-09-20"
 summary: "NOTE"

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "NAT 概述"
 date: "2022-09-21"
 summary: "Basic NAT, NAPT, Easy IP"

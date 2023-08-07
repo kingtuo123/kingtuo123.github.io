@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Linux 下编译 STM32"
 date: "2022-07-13"
 summary: "linux 使用 make 管理 stm32 工程"

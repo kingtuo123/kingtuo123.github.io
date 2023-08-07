@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "ldconfig 命令"
 date: "2022-07-01"
 summary: "ldconfig ，LIBRARY_PATH ，LD_LIBRARY_PATH"

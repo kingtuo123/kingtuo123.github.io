@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "xHiDPI"
 date: "2023-03-22"
 description: ""

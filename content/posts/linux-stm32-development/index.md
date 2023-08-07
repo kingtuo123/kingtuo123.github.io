@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Linux 下搭建 stm32 开发环境"
 date: "2022-06-30"
 summary: "安装 gcc 工具链，isp / stlink 下载工具"

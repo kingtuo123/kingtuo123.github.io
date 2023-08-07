@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "APUE 第10章 信号"
 date: "2023-05-06"
 description: ""

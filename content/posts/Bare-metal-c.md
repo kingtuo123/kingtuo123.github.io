@@ -1,5 +1,4 @@
 ---
-author:  "kingtuo123"
 title: "Bare metal C"
 date: "2022-05-29"
 description: "裸机C程序"

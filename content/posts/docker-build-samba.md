@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Docker Samba"
 date: "2023-04-18"
 description: ""

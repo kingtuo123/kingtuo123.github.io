@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 RCC 时钟配置"
 date: "2022-07-15"
 summary: "Note"

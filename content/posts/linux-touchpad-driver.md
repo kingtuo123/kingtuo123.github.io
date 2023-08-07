@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Gentoo touchpad 驱动"
 date: "2022-06-07"
 description: ""

@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Fcitx Rime 简体中文设置"
 date: "2023-03-12"
 description: ""

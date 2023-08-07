@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "STM32 寄存器描述表中使用的缩写列表"
 date: "2022-08-10"
 summary: "Note"

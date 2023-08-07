@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Gentoo qemu 安装记录"
 date: "2022-06-26"
 description: ""

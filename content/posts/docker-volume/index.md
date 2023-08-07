@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Docker volume"
 date: "2022-06-08"
 description: ""

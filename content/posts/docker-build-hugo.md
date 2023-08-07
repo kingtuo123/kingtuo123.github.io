@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "Docker hugo"
 date: "2023-05-05"
 description: ""

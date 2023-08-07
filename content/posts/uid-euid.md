@@ -1,5 +1,4 @@
 ---
-author: "kingtuo123"
 title: "UID EUID SUID"
 date: "2023-03-29"
 description: ""

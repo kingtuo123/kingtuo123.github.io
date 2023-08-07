@@ -1,0 +1,65 @@
+:root {
+    --gap: 24px;
+    --content-gap: 20px;
+    --nav-width: 1024px;
+    --main-width: 800px;
+    --header-height: 60px;
+    --footer-height: 60px;
+    --radius: 8px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.first-entry {
+    min-height: 150px;
+	margin: var(--gap) 0 calc(var(--gap)) 0;
+}
+
+
+.post-title {
+    margin-bottom: 2px;
+    font-size: 30px;
+}
+
+.post-content h1 {
+    margin: 40px auto 32px;
+    font-size: 30px;
+}
+
+.post-content h2 {
+    margin: 32px auto 24px;
+    font-size: 25px;
+}
+
+.post-content h3 {
+    font-size: 20px;
+}
+
+.post-content code {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.post-content table th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+    min-width: 80px;
+    padding: 12px 8px;
+    line-height: 1.5;
+	border: 1px solid var(--border);
+}
+
+@media screen and (max-width: 768px) {
+	:root {
+        --gap: 14px;
+        --gap: 14px;
+    }
+    .first-entry {
+        min-height: 100px;
+    }
+}
+
+
