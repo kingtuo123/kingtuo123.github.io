@@ -61,6 +61,17 @@ tags: [ "markdown" ]
 </div>
 ```
 
+超链接图片：
+
+```html
+<div align="center">
+    <a href="1.jpg" target="_blank">
+        <img src="1.jpg" style="max-height:980px"></img>
+    </a>
+</div>
+```
+
+
 ## 超链接
 
 ```markdown

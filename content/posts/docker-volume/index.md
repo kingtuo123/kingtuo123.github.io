@@ -7,32 +7,40 @@ tags: [ "docker" ]
 categories: [ "docker" ]
 ---
 
+## 创建卷
+
+```bash
+$ docker volume create my-vol
+```
+
 ## 挂载数据卷
 指定路径挂载
 
-```shell
+```bash
 $ docker run -it -v <宿主机路径>:<容器内路径> nginx
 ```
 
-具名挂载，主机路径 `/var/lib/docker/volumes/<卷名>/_data`
+具名挂载，主机路径 `/var/lib/docker/volumes/<卷名>/_data`，没有该卷则自动创建
 
-```shell
+```bash
 $ docker run -it -v <卷名>:<容器内路径> nginx
 ```
 
-匿名挂载，主机路径 `/var/lib/docker/volumes/<一串随机字符>/_data`
+匿名挂载，主机路径 `/var/lib/docker/volumes/<一串随机字符>/_data`，自动创建卷，名称是随机字符
 
-```shell
+```bash
 $ docker run -it -v <容器内路径> nginx
 ```
 
 ## 查看数据卷
+
 列出数据卷
-```shell
+
+```bash
 $ docker volume ls
 ```
 
-```bash
+```
 DRIVER    VOLUME NAME
 local     0b60738f27c8adc38559981ad727d36a722b70b1736b20d8f3020ffc88d202b2
 local     21f61aa404a0fe9c15a6a6ad4a6a056a0ee009a98af593c2092a14062fa7c02e
