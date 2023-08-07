@@ -8,11 +8,12 @@ tags: [ "github" ]
 ---
 
 
-## 创建SSH Key
-运行下列命令创建SSH Key，邮箱使用github创建时用的邮箱。
+## 创建 SSH Key
+
+运行下列命令创建 SSH Key，使用 github 帐号的邮箱。
 
 ```text
-ssh-keygen -t rsa -C "kingtuo123@foxmail.com"
+ssh-keygen -t rsa -C "kingtuo123@email.com"
 ```
 
 输出如下，一路回车
@@ -26,9 +27,9 @@ Enter same passphrase again:
 
 以上会在 `～/.ssh` 目录下生成 `id_rsa` （私钥）和 `id_rsa.pub` （公钥）文件。
 
-## 配置 SSH 私钥路径
+## 配置 git ssh 默认私钥
 
-`ssh` 默认使用的私钥文件定义在 `/etc/ssh/ssh_config` 或 `~/.ssh/config`
+`ssh` 默认使用的私钥文件定义在 `/etc/ssh/ssh_config` 或 `~/.ssh/config`，如下：
 
 ```bash
 #   这里是默认身份文件路径
@@ -38,33 +39,37 @@ Enter same passphrase again:
 #   IdentityFile ~/.ssh/id_ed25519
 ```
 
-为 `github.com` 指定密钥, 修改 `~/.ssh/config` , 添加下列内容:
+为 `github.com` 指定密钥，修改 `~/.ssh/config`：
 
 ```
 Host github.com
- IdentityFile /home/user/.ssh/github/id_rsa
+    IdentityFile /home/user/.ssh/id_rsa_gh
 ```
 
+> 建议给 `id_rsa` 重命名，以免和其他密钥搞混
 
 
 
 
-## 添加公钥
-查看公钥的内容
+
+## Github 添加 SSH Key
+
+查看公钥的内容，执行：
 
 ```bash
 cat ~/.ssh/id_rsa.pub
 ```
 
-打开 `github` 主页在 **setting -> SSH and GPG keys** 中添加SSH Key，将上面的输出复制进去。
+打开 github 主页右上角头像，在 **`Settings -> SSH and GPG keys`** 中添加 SSH Key，将上面的输出复制进去。
 
 ## 验证
 
 ```bash
+# 使用默认路径的密钥
 ssh -T git@github.com
 
-# 指定rsa路径
-ssh -i <rsa path> -T git@github.com
+# 也可以指定密钥路径
+ssh -i <rsa_path> -T git@github.com
 ```
 
 返回如下信息则配置成功
@@ -72,10 +77,10 @@ ssh -i <rsa path> -T git@github.com
 ```text
 You've successfully authenticated, but GitHub does not provide shell access
 ```
-## 使用SSH Key推送
+## 使用 SSH Key 推送
 
 <div align="left">
     <img src="git.png" style="max-height:200px"></img>
 </div>
 
-使用以上的链接。
+使用以上的链接
