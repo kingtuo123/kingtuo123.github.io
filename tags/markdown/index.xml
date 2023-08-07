@@ -2,7 +2,6 @@
 字体样式 **这是加粗的文字** *这是倾斜的文字* ***这是斜体加粗的文字*** ~~这是加删除线的文字~~ 引用 &amp;gt; 这是引用的内容 &amp;gt;&amp;gt; 这是引用的内容 &amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; 这是引用的内容 ##　分割线
 三个或者三个以上的 - 或者 * 都可以。
 --- ---- *** ***** 图片 ![图片alt](图片链接 &amp;#34;图片title&amp;#34;) 若要指定图片大小/位置，使用HTML
-&amp;lt;div align=&amp;#34;center&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;1.png&amp;#34; style=&amp;#34;max-height:180px&amp;#34;&amp;gt;&amp;lt;/img&amp;gt; &amp;lt;/div&amp;gt; 超链接 [超链接名](超链接地址 &amp;#34;超链接title&amp;#34;) 列表 无序列表 - 和+ 和* 三个符号都可以
-- 列表内容 + 列表内容 * 列表内容 显示如下
-列表内容 列表内容 列表内容 有序列表 数字加点
-1. 列表内容 2.</description></item></channel></rss>
+&amp;lt;div align=&amp;#34;center&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;1.png&amp;#34; style=&amp;#34;max-height:180px&amp;#34;&amp;gt;&amp;lt;/img&amp;gt; &amp;lt;/div&amp;gt; 超链接图片：
+&amp;lt;div align=&amp;#34;center&amp;#34;&amp;gt; &amp;lt;a href=&amp;#34;1.jpg&amp;#34; target=&amp;#34;_blank&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;1.jpg&amp;#34; style=&amp;#34;max-height:980px&amp;#34;&amp;gt;&amp;lt;/img&amp;gt; &amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; 超链接 [超链接名](超链接地址 &amp;#34;超链接title&amp;#34;) 列表 无序列表 - 和+ 和* 三个符号都可以
+- 列表内容 + 列表内容 * 列表内容 显示如下</description></item></channel></rss>
