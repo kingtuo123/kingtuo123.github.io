@@ -1,7 +1,7 @@
 ---
-title: "netstat 命令"
+title: "netstat"
 date: "2022-09-26"
-summary: "一些常用参数"
+summary: "打印网络连接、路由表、接口统计信息 ..."
 description: ""
 categories: [ "cmd" ]
 tags: [ "cmd" ]

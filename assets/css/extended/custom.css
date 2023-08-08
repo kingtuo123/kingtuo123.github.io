@@ -40,6 +40,8 @@ body {
 }
 
 .post-content code {
+	margin: auto 0px;
+    padding: 1px 4px;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -47,7 +49,7 @@ body {
 .post-content table th,
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
     min-width: 80px;
-    padding: 12px 8px;
+    padding: 8px 8px;
     line-height: 1.5;
 	border: 1px solid var(--border);
 }

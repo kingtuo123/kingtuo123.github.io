@@ -1,8 +1,8 @@
 ---
-title: "Git"
+title: "git"
 date: "2023-08-07"
 description: ""
-summary: "常用的基础操作"
+summary: "分布式版本控制系统"
 categories: [ "cmd" ]
 tags: [ "git" ]
 ---
