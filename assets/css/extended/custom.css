@@ -68,6 +68,7 @@ body {
     }
     .first-entry {
         min-height: 100px;
+		display: none;
     }
 }
 

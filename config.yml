@@ -60,8 +60,8 @@ params:
     ShowRssButtonInSectionTermList: false
     ShowToc: true
     homeInfoParams:
-        Title: "(　・ˍ・)"
-        Content: 不积跬步，无以至千里
+        Title: "Notes"
+        Content: "emmm"
     assets:
       disableHLJS: true
 
