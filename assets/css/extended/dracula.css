@@ -3,7 +3,7 @@
 /* Error */ .chroma .err {  }
 /* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
 /* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; }
-/* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: #ffffcc }
+/* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: #3b4252 }
 /* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
 /* LineNumbers */ .chroma .ln { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
 /* Keyword */ .chroma .k { color: #ff79c6 }
@@ -73,7 +73,7 @@
 /* GenericError */ .chroma .gr {  }
 /* GenericHeading */ .chroma .gh { font-weight: bold }
 /* GenericInserted */ .chroma .gi { color: #50fa7b; font-weight: bold }
-/* GenericOutput */ .chroma .go { color: #44475a }
+/* GenericOutput */ .chroma .go { color: #6a768e }
 /* GenericPrompt */ .chroma .gp {  }
 /* GenericStrong */ .chroma .gs {  }
 /* GenericSubheading */ .chroma .gu { font-weight: bold }

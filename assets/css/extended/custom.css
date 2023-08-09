@@ -6,6 +6,7 @@
     --header-height: 60px;
     --footer-height: 60px;
     --radius: 8px;
+	--hljs-bg: rgb(36, 41, 51);
 }
 
 body {
