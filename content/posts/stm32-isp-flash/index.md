@@ -11,7 +11,7 @@ categories: [ "stm32","linux","isp" ]
 ## stm32 启动模式
 
 |BOOT0|BOOT1|启动方式|
-|--|--|--|--|
+|--|--|--|
 |0|X|内部flash，用户程序|
 |1|0|系统存储器，BootLoader|
 |0|1|内部SRAM，程序调试|

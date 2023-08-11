@@ -55,6 +55,10 @@ body {
 	border: 1px solid var(--border);
 }
 
+.post-content table {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
 
 .post-content p{
 	margin-top: 10px;

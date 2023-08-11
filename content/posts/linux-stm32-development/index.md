@@ -8,28 +8,28 @@ math: false
 categories: [ "stm32","linux"]
 ---
 
-## 下载 arm gcc 工具链
+## arm gcc 工具链
 
 - [下载地址](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads)
 
-<div align="center">
+<div align="left">
     <img src="1.png" style="max-height:150px"></img>
 </div>
 
 
-解压
+解压：
 
-```bash
-tar xvf gcc-arm-*-arm-none-eabi.tar.xz
+```
+$ tar xvf gcc-arm-*-arm-none-eabi.tar.xz
 ```
 
-安装
+安装：
 
-```bash
-sudo mv gcc-arm-*-arm-none-eabi /opt/arm-none-eabi-gcc
+```
+$ sudo mv gcc-arm-*-arm-none-eabi /opt/arm-none-eabi-gcc
 ```
 
-添加 `PATH` 到 `/etc/profile`
+添加 `PATH` 到 `/etc/profile`：
 
 ```
 export PATH=${PATH}:/opt/arm-none-eabi-gcc/bin
@@ -39,78 +39,94 @@ export PATH=${PATH}:/opt/arm-none-eabi-gcc/bin
 
 - [下载地址](https://sourceforge.net/projects/stm32flash/)
 
-<div align="center">
+<div align="left">
     <img src="2.png" style="max-height:190px"></img>
 </div>
 
-解压
+解压：
 
-```bash
-tar xvf stm32flash-0.7.tar.gz
+```
+$ tar xvf stm32flash-0.7.tar.gz
 ```
 
-编译，成功后目录下有 `stm32flash`
+编译：
 
-```bash
-cd stm32flash-0.7/
-make
+```
+$ cd stm32flash-0.7/
+$ make
 ```
 
-安装，路径 `/usr/local/bin`
-```bash
-sudo make install
+安装，默认安装路径 `/usr/local/bin`：
+
+```
+$ sudo make install
 ```
 
-- 使用方法详见：[ISP 一键下载](https://kingtuo123.com/posts/stm32-isp-flash/)
+- 使用方法详见：[ISP 一键下载](../stm32-isp-flash/)
 
-- 串口驱动安装：[CH340 驱动](https://kingtuo123.com/posts/gentoo-ch340-driver/)
+- 串口驱动安装：[CH340 驱动](../gentoo-ch340-driver/)
 
 ## ST-LINK 下载工具
 
-- 下载地址：[stlink release](https://github.com/stlink-org/stlink/releases)
+- [下载地址](https://github.com/stlink-org/stlink/releases)：选择 `Source Code`
 
-下载 `Source code` 
 <div align="center">
     <img src="3.png" style="max-height:190px"></img>
 </div>
 
-解压
-
-```bash
-tar xvf stlink-1.7.0.tar.gz
-```
-
-安装依赖
+解压：
 
 ```
-sudo emerge -av virtual/libusb
+$ tar xvf stlink-1.7.0.tar.gz
 ```
 
-编译安装
-```bash
-cd stlink-1.7.0/
-make release
-make debug
-sudo make install
+安装依赖库（可选）：
+
+```
+$ sudo emerge -av virtual/libusb
 ```
 
-运行 `st-info  --version`，如果提示
+编译安装：
 
-```text
+```
+$ cd stlink-1.7.0/
+$ make release
+$ make debug
+$ sudo make install
+```
+
+测试：
+
+```bash-session
+$ st-info --version
 libstlink.so.1: cannot open shared object file: No such file or directory
+$ sudo ldconfig    # 如果显示上面的信息，则执行该命令
+$ st-info --version
+v1.7.0
 ```
 
-执行以下命令
+- 使用方法详见：[使用 stlink 烧录程序](../stlink-linux/)
 
-```bash
-sudo ldconfig
-```
+## STM32CubeMX 安装
 
-> `ldconfig` 命令的作用主要是在默认搜寻目录 `/lib` 和 `/usr/lib` 以及动态库配置文件 `/etc/ld.so.conf` 内所列的目录下，搜索出可共享的动态链接库,进而创建出动态装入程序(ld.so)所需的连接和缓存文件。
+- [CubeMX 下载地址](https://www.st.com/en/development-tools/stm32cubemx.html#get-software)
+- [HAL 库下载地址](https://www.st.com/en/embedded-software/stm32cube-mcu-mpu-packages.html)
 
-> `ldconfig` 通常在系统启动时运行，而当用户安装了一个新的动态链接库时，就需要手工运行这个命令。
+<div align="left">
+    <img src="4.png" style="max-height:250px"></img>
+</div>
 
-> `libstlink.so.1` 的安装路径是 `/usr/local/lib64` ，检查 `/etc/ld.so.conf` 内是否有这个路径。
+解压：
 
+ ```
+ $ unzip en.stm32cubemx-lin-v6-9-1.zip
+ ```
 
-- 使用方法详见：[STLINK](https://kingtuo123.com/posts/stlink-linux/)
+ 安装：
+
+ ```
+ $ sudo ./SetupSTM32CubeMX-6.9.1
+ ```
+
+ HAL 库导入：`Help` -> `Manage embedded software packages` -> `From Local`
+

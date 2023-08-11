@@ -13,4 +13,6 @@ categories: [ "stm32" ]
 - [ST英文官网-参考手册](https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html#documentation)
 - [半导小芯-数据手册](http://www.semiee.com/)
 - [Keil Pack](https://www.keil.com/dd2/pack/)
+- [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html#get-software)
+- [HAL 库](https://www.st.com/en/embedded-software/stm32cube-mcu-mpu-packages.html)
 
