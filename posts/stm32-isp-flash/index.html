@@ -30,7 +30,7 @@
 </span></span><span class=line><span class=cl>    <span class=c1># ‘&amp;’表示两个信号之间不加延时</span>
 </span></span><span class=line><span class=cl>    <span class=c1># 在信号前加‘-’表示低电平，不加表示高电平    </span>
 </span></span></code></pre></div><p>读取芯片信息，执行以下命令（root）：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>stm32flash_linux -b 115200 -i &#39;-dtr&amp;rts,dtr:-dtr&amp;-rts,dtr&#39; /dev/ttyUSB0
-</span></span></code></pre></div><p>参数说明：</p><ul><li>-b 115200 ，指定115200波特率</li><li>-dtr&rts,dtr<ul><li>-dtr& 拉低复位</li><li>rts, 拉高 BOOT0，延时100ms</li><li>dtr 释放复位，进入 BootLoader</li></ul></li><li>-dtr&-rts,dtr<ul><li>-dtr& 拉低复位</li><li>-rts, 拉低 BOOT0，延时100ms</li><li>dtr 释放复位，flash启动进入用户程序</li></ul></li><li>/dev/ttyUSB0，设备串口</li></ul><p>上述命令执行成功输出以下信息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Interface serial_posix: 115200 8E1
+</span></span></code></pre></div><p>参数说明：</p><ul><li>-b 115200 ，指定115200波特率</li><li>-dtr&amp;rts,dtr<ul><li>-dtr& 拉低复位</li><li>rts, 拉高 BOOT0，延时100ms</li><li>dtr 释放复位，进入 BootLoader</li></ul></li><li>-dtr&-rts,dtr<ul><li>-dtr& 拉低复位</li><li>-rts, 拉低 BOOT0，延时100ms</li><li>dtr 释放复位，flash启动进入用户程序</li></ul></li><li>/dev/ttyUSB0，设备串口</li></ul><p>上述命令执行成功输出以下信息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Interface serial_posix: 115200 8E1
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>GPIO sequence start
 </span></span><span class=line><span class=cl> setting port signal dtr to 0... ok
