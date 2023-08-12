@@ -40,5 +40,7 @@ jobs:
           endpoint: "oss-accelerate.aliyuncs.com"
           access-key-id: ${{ secrets.ID }}
           access-key-secret: ${{ secrets.SECRET }}
-      - name: Deploy OSS
+      - name: Remove old files of OSS
+        run: ossutil rm -rf ./public oss://kingtuo123/*
+      - name: Upload files to OSS
         run: ossutil cp -rf ./public oss://kingtuo123/
