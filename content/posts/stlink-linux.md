@@ -1,7 +1,7 @@
 ---
-title: "Linux 下使用 stlink 烧录程序"
+title: "Linux 使用 stlink 下载 stm32"
 date: "2022-07-01"
-summary: "stlink 工具命令用法"
+summary: "几个常用的命令行下载工具"
 description: ""
 tags: [ "stm32","linux" ]
 math: false
@@ -10,51 +10,42 @@ categories: [ "stm32","linux" ]
 
 ## 安装
 
-详见 [Linux 下搭建 STM32 开发环境](https://kingtuo123.com/posts/linux-stm32-development/)
+参考：[Linux 下搭建 STM32 开发环境](../linux-stm32-development/)
 
-## 用法
+## 命令
 
-### st-info
+stlink 安装后有这几个命令：
+  - st-info
+  - st-flash
+  - st-trace
+  - st-util
 
-`st-flash [OPTIONS]`
-
-|参数|说明|
-|:--|:--|
-| `--version` | 打印版本信息|
-| `--flash` | 显示设备中可用的 flash 数量|
-| `--sram` | 显示设备中可用的 sram 内存量|
-| `--descr` | 显示设备的文字描述|
-| `--pagesize` | 显示设备的页面大小|
-| `--chipid` | 显示设备的芯片ID|
-| `--serial` | 显示设备的序列号|
-| `--probe` | 显示连接的编程器和设备的汇总信息|
-
-### st-flash
-
-`st-flash [OPTIONS] {read|write|erase} [FILE] <ADDR> <SIZE>`
-
-|命令|说明|
-|:--|:--|
-| `write` `<FILE>` `<ADDR>` | 从地址 `ADDR` 开始将文件写入设备 |
-| `read` `<FILE>` `<ADDR>` `<SIZE>` | 从设备 `ADDR` 读取 `SIZE` 字节到 `FILE` |
-| `erase` | 擦出设备固件 |
-| `reset` | 复位设备 |
+### st-info 读取设备信息
 
 |参数|说明|
 |:--|:--|
-| `--version` | 打印版本信息 |
-| `--debug` | TODO |
-| `--reset` | 在烧录前后触发复位 |
-| `--opt` | 启用忽略结束空字节优化 |
-| `--serial` | TODO |
-| `--flash=` | 后跟大小，如 12KB，12MB，十六进制 0x12KB，八进制 012KB |
+|\-\-version| 打印版本信息|
+|\-\-flash| 显示设备中可用的 flash 数量|
+|\-\-sram| 显示设备中可用的 sram 内存量|
+|\-\-descr| 显示设备的文字描述|
+|\-\-pagesize| 显示设备的页面大小|
+|\-\-chipid| 显示设备的芯片ID|
+|\-\-serial| 显示设备的序列号|
+|\-\-probe| 显示连接的编程器和设备的汇总信息|
 
-示例
+### st-flash 读写 flash
 
-```shell
-$ st-flash write firmware.bin 0x8000000
-$ st-flash read firmware.bin 0x8000000 0x1000
-$ st-flash erase
+常用示例：
+
+```makefile
+# 烧录 bin 文件
+st-flash --format binary write firmware.bin 0x08000000
+# 烧录 hex 文件
+st-flash --format ihex write firmware.hex
+# 从 FLASH 读取 0x1000 个字节
+st-flash read firmware.bin 0x08000000 0x1000
+# 擦除 FLASH
+st-flash erase
 ```
 
 ### st-trace
