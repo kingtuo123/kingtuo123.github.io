@@ -41,6 +41,6 @@ jobs:
           access-key-id: ${{ secrets.ID }}
           access-key-secret: ${{ secrets.SECRET }}
       - name: Remove old files of OSS
-        run: ossutil rm -rf ./public oss://kingtuo123/*
+        run: ossutil rm -rf oss://kingtuo123/*
       - name: Upload files to OSS
         run: ossutil cp -rf ./public oss://kingtuo123/
