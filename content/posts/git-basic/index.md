@@ -81,7 +81,7 @@ git branch --show-current
 # 创建分支，其本质只是创建了一个可以移动的新的指针
 git branch 分支名
 # 删除分支
-git brach -d 分支名
+git branch -d 分支名
 # 切换分支
 git checkout 分支名
 # 合并分支，例如想合并其它分支到 master，则需要先切换至 master，再执行下列命令
@@ -110,16 +110,16 @@ Unmerged paths:
 
 ```
 <<<<<<< HEAD
-this is master brach
+this is master branch
 =======
-this is test brach
+this is test branch
 >>>>>>> test
 ```
 
 解决冲突就是把这部分按自己的需求修改（如下），然后删除这些个符号`<`，`>`，`=`：
 
 ```
-this is master + test brach
+this is master + test branch
 ```
 最后再执行 `add` 和 ` commit`
 

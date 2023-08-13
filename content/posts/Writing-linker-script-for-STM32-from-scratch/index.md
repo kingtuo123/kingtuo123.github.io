@@ -18,6 +18,7 @@ tags: [ "stm32"]
   - [C代码中如何使用链接脚本中定义的变量](https://cloud.tencent.com/developer/article/1709022)
   - [From Zero to main(): Bare metal C](https://interrupt.memfault.com/blog/zero-to-main-1)
   - [From Zero to main(): Demystifying Firmware Linker Scripts](https://interrupt.memfault.com/blog/how-to-write-linker-scripts-for-firmware)
+  - [STM32的启动](https://www.cnblogs.com/The-explosion/p/13652387.html)
 
 
 ## 硬件平台
@@ -61,7 +62,7 @@ FLASH 起始地址是 `0x08000000`，SRAM 起始地址是 `0x20000000`
     <img src="3.png" style="max-height:130px"></img>
 </div>
 
-从 FLASH 启动时，CPU 将地址 `0x08000000` 映射为 `0x00000000`，然后 CPU 就可以从 `0x00000000` 读取数据，当然 `0x08000000` 依然是可以被 CPU 访问的。
+从 FLASH 启动时，CPU 将地址 `0x00000000` 映射到 `0x08000000`，然后 CPU 就可以从 `0x00000000` 读取 FLASH 上的数据，当然 `0x08000000` 依然是可以被 CPU 访问的。
 
 > `0x00000000` 中的值会被加载到 SP 寄存器，`0x00000004` 中的值会被加载到 PC 寄存器
 
@@ -71,12 +72,31 @@ FLASH 起始地址是 `0x08000000`，SRAM 起始地址是 `0x20000000`
 
 ### 最简单的链接脚本
 
-链接文件由一个称为 `SECTIONS` 的块组成。在此块中，你定义的段将被分配到二进制文件中。
+链接文件由一个称为 `SECTIONS` 的块组成。在此块中，你定义的段将被按顺序分配到二进制文件中。
 
-- 最重要的段是：
-  - `.text` - 包含你的代码
-  - `.data` - 包含已初始化的全局/静态变量
-  -  `.bss` - 包含未初始化的全局/静态变量
+比较重要的段有：
+
+<table>
+  <tbody>
+    <tr>
+      <td>.text</td>
+      <td>包含你的代码</td>
+    </tr>
+    <tr>
+      <td>.rodata</td>
+      <td>包含 const 定义的常量数据</td>
+    </tr>
+    <tr>
+      <td>.data</td>
+      <td>包含已初始化的全局/静态变量</td>
+    </tr>
+    <tr>
+      <td>.bss</td>
+      <td>包含未初始化的全局/静态变量</td>
+    </tr>
+  </tbody>
+</table>
+
 
 第一个脚本，将只使用 `.text` 。没有数据，没有变量，只有纯代码。
 
@@ -136,12 +156,17 @@ SECTIONS
 
 当 STM32 启动时，它会从 FLASH 读取两个地址（共 8 字节）。第一个是栈顶地址，第二个是入口程序地址。
 
-- `ENTRY(main)` 告诉链接器应该使用哪个符号作为程序的入口点。这也可以防止包含 `main` 函数的 `.text` 部分被链接器作为垃圾“优化”（因为 main 函数没有被其他函数调用）。
+- `ENTRY(main)` 告诉链接器使用 mian 作为程序的入口点。这也可以防止包含 `main` 函数的 `.text` 部分被链接器作为垃圾“优化”（因为 main 函数没有被其它函数调用）。
 
 - `LONG(0x20010000)` 告诉链接器将 `0x20010000` 这四个字节放入输出的二进制文件中。为什么是这四个字节？因为 SRAM 地址从 `0x20000000` 开始，大小有 64KB（0x10000）。 `0x20000000 + 0x10000 = 0x20010000` 就是栈顶的地址。
 
 - `LONG(main | 1)` 将 main 函数的地址输出到二进制文件中。main 与 1 做了或运算生成一个奇数值。在 ARM 体系结构中，函数地址是奇数（最后一位是1）告诉 CPU 使用 thumb 指令集。
 
+> 疑问：SRAM 的范围是 `0x20000000` - `0x2000FFFF`，初始栈顶地址却是 `0x20010000`
+
+> 因为 CM3 使用的是向下生长的满栈，栈顶初始值必须是内存的末地址加 1
+
+> 满栈进栈是先移动指针再存数据
 
 接下来创建 `main.c` 来点亮开发板上的红色 LED ：
 
@@ -266,7 +291,7 @@ $ hexdump Build/led.bin
 0000030 b5f8 bf00
 ```
 
-前面 8 个字节 `0000 2001 0011 0800` 数据从小端转换为大端就是：`2001 0000` ，`0800 0009`
+前面 8 个字节 `0000 2001 0009 0800` 数据从小端转换为大端就是：`2001 0000` ，`0800 0009`
 
 第一个就是在链接脚本中设置的栈顶地址 `0x20010000`
 
@@ -288,9 +313,7 @@ $ make install
 ```
 
 
-### .data
-
-再完善一下链接脚本：
+### 添加 .data
 
 ```c
 MEMORY
@@ -326,7 +349,7 @@ SECTIONS
 - 增加了 MEMORY 块，定义了两个区域 FLASH 和 SRAM
 - 增加了 `.data` 段，可以存放已初始化的全局/静态变量
 - 删除了位置计数器
-- `>FLASH` 表示 `.text` 段放到 FLASH 中
+- `>FLASH` 表示将 `.text` 段放到 FLASH 中
 - `>SRAM AT> FLASH` 表示 `.data` 段的 VMA 在 SRAM 中，LMA 在 FLASH 中
 
 > VMA（虚拟内存地址）：程序运行时的地址，即堆栈上的地址。
@@ -334,6 +357,8 @@ SECTIONS
 > LMA（加载内存地址）：程序数据存储的地址，比如已初始化的全局变量的值在 FLASH 中存储的地址就是 LMA ，当这个值被加载到 SRAM 中栈上的地址就是 VMA 。
 
 > 简单来说：LMA 是在 ROM 中的地址，VMA 是在 RAM 中的地址。
+
+> `.text` 没有使用 `AT>` 指定 LMA，所以它的 LMA = VMA
 
 修改一下 `main.c` 并添加一个全局变量：`int a = 0xAAAABBBB`，
 
@@ -413,8 +438,8 @@ SECTIONS
         _sdata = .;
         *(.data)
         *(.data*)
-        _edata = .;
         /* 获取 .data 在栈上的结束位置的虚拟内存地址 VMA */
+        _edata = .;
     } >SRAM AT> FLASH
 }
 ```
@@ -457,5 +482,7 @@ void Reset_Handler(void){
 通过 `Reset_Handler` 函数初始化 `.data` 后，再调用 `main` 主函数。
 
 OK，成功点亮 LED ！
+
+> 实际中，Reset_Handler 是调用 C 库提供的 `__mian` 函数初始化堆栈，且初始化堆栈前还需要初始化中断向量表和配置系统时钟
 
 > 类似的，初始化 `.bss` 更简单，只需要将 `.bss` 在栈上的区域赋值为 0 即可。
