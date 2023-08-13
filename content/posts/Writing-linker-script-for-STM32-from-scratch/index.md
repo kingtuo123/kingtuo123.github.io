@@ -483,6 +483,50 @@ void Reset_Handler(void){
 
 OK，成功点亮 LED ！
 
-> 实际中，Reset_Handler 是调用 C 库提供的 `__mian` 函数初始化堆栈，且初始化堆栈前还需要初始化中断向量表和配置系统时钟
-
 > 类似的，初始化 `.bss` 更简单，只需要将 `.bss` 在栈上的区域赋值为 0 即可。
+
+## ST 标准库启动文件
+
+- `gcc_ride7/startup_stm32f10x_hd.s`
+- `arm/startup_stm32f10x_hd.s`
+
+对于 `gcc` 编译器，堆栈初始化在 Reset_Handler 中进行，最后会调用 `mian` 函数：
+
+```c
+Reset_Handler:
+/* Copy the data segment initializers from flash to SRAM */
+  movs  r1, #0
+  b  LoopCopyDataInit
+
+...
+
+LoopFillZerobss:
+  ldr  r3, = _ebss
+  cmp  r2, r3
+  bcc  FillZerobss
+/* Call the clock system intitialization function.*/
+  bl  SystemInit
+/* Call the application's entry point.*/
+  bl  main
+  bx  lr
+```
+
+对于 `ARM Compiler`（Keil 自带的编译器）Reset_Handler 是调用 C 库提供的 `__mian` 函数初始化堆栈，`__main` 再调用用户的 `main` 函数：
+```asm
+; Reset handler
+Reset_Handler   PROC
+                EXPORT  Reset_Handler             [WEAK]
+                IMPORT  __main
+                IMPORT  SystemInit
+                ; 调用 SystemInit 配置系统时钟
+                LDR     R0, =SystemInit
+                BLX     R0
+                ; 调用 __main
+                LDR     R0, =__main
+                BX      R0
+                ENDP
+```
+
+
+
+
