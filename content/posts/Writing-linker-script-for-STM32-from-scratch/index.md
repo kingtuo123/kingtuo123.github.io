@@ -318,7 +318,7 @@ $ make install
 ```c
 MEMORY
 {
- /* 名称              起始地址               大小        */
+ /* 名称 (读/写/执行权限)         起始地址     大小        */
     SRAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 64K
     FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
 }
@@ -413,7 +413,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
 MEMORY
 {
 SRAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 64K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 512K
+FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
 }
 
 ENTRY(Reset_Handler);

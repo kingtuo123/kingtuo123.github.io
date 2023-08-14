@@ -130,3 +130,18 @@ v1.7.0
 
  HAL 库导入：`Help` -> `Manage embedded software packages` -> `From Local`
 
+## openocd 安装
+
+Gentoo 软件仓库有：
+
+```
+# emerge -av dev-embedded/openocd
+```
+
+## gdb
+
+> Gentoo 需要启用 USE 标记 `multitarget`，其他发行版安装 `gdb-multiarch` 这个包
+
+```
+# emerge -av sys-devel/gdb
+```

@@ -56,7 +56,7 @@ let Tlist_Ctags_Cmd="/usr/bin/ctags"    " 将 taglist 与 ctags 关联
 
 ### taglist 快捷键
 
-|需要在 taglist 窗口中使用|说明|
+|快捷键|说明|
 |:--|:--|
 |回车|跳转到 tag 定义处|
 |空格|在 vim 底部显示 tag 的函数原型|
