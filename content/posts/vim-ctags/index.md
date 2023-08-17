@@ -7,7 +7,6 @@ categories: [ "linux" ]
 tags: [ "vim" ]
 ---
 
-- [Github 项目地址](https://github.com/universal-ctags/ctags)
 
 ## 安装 ctags taglist
 
