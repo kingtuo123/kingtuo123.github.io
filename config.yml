@@ -61,7 +61,7 @@ params:
     ShowRssButtonInSectionTermList: false
     ShowToc: true
     homeInfoParams:
-        Title: "Notes"
+        Title: ":  )"
         Content: "emmm"
     assets:
       disableHLJS: true
