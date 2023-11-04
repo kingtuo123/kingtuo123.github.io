@@ -34,7 +34,8 @@ jobs:
         with:
           type: 'zip'
           filename: 'Blog.zip'
-          exclusions: './public/*'
+          directory: './public/'
+
 
       - name: Deploy To Github Pages
         uses: peaceiris/actions-gh-pages@v3
