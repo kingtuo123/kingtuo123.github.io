@@ -59,4 +59,4 @@ jobs:
           time: 10s
 
       - name: Remove Blog.zip from OSS
-        run: ossutil rm -f Blog.zip oss://kingtuo123/Blog.zip
+        run: ossutil rm -f oss://kingtuo123/Blog.zip
