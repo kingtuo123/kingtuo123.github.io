@@ -29,12 +29,11 @@ jobs:
         run: hugo --minify
 
       - name: Archive Blog.zip
-      - uses: actions/checkout@v2
-      - uses: vimtor/action-zip@v1.1
+        uses: actions/checkout@v2
+        uses: vimtor/action-zip@v1.1
         with:
           files: ./public
           dest: Blog.zip
-
 
       - name: Deploy To Github Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -42,14 +41,15 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
 
-
       - name: Setup AliyunOSS
         uses: manyuanrong/setup-ossutil@v2.0
         with:
           endpoint: "oss-accelerate.aliyuncs.com"
           access-key-id: ${{ secrets.ID }}
           access-key-secret: ${{ secrets.SECRET }}
+
       - name: Remove old files of OSS
         run: ossutil rm -rf oss://kingtuo123 --include "*"
+
       - name: Upload Zip file to OSS
         run: ossutil cp -f Blog.zip oss://kingtuo123/
