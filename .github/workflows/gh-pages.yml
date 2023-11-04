@@ -50,5 +50,14 @@ jobs:
       - name: Remove old files of OSS
         run: ossutil rm -rf oss://kingtuo123 --include "*"
 
-      - name: Upload Zip file to OSS
+      - name: Upload Blog.zip file to OSS
         run: ossutil cp -f Blog.zip oss://kingtuo123/
+
+      - name: Sleep for 10s
+        uses: juliangruber/sleep-action@v2.0.0
+        with:
+          time: 10s
+
+      - name: Remove Blog.zip from OSS
+        uses: manyuanrong/setup-ossutil@v2.0
+        run: ossutil rm -f Blog.zip oss://kingtuo123/Blog.zip
