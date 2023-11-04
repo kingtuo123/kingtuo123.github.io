@@ -25,10 +25,18 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
-      - name: Build
+      - name: Build Blog
         run: hugo --minify
 
-      - name: Deploy
+      - uses: actions/checkout@master
+      - name: Archive Blog.zip
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: 'Blog.zip'
+          exclusions: './public/*'
+
+      - name: Deploy To Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,5 +50,5 @@ jobs:
           access-key-secret: ${{ secrets.SECRET }}
       - name: Remove old files of OSS
         run: ossutil rm -rf oss://kingtuo123 --include "*"
-      - name: Upload files to OSS
-        run: ossutil cp -rf ./public oss://kingtuo123/
+      - name: Upload Zip file to OSS
+        run: ossutil cp -f Blog.zip oss://kingtuo123/
