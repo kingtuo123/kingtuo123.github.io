@@ -34,7 +34,7 @@ jobs:
         with:
           type: 'zip'
           filename: 'Blog.zip'
-          directory: './public/'
+          directory: './public'
 
 
       - name: Deploy To Github Pages
