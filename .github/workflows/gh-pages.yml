@@ -28,13 +28,12 @@ jobs:
       - name: Build Blog
         run: hugo --minify
 
-      - uses: actions/checkout@master
       - name: Archive Blog.zip
-        uses: thedoctor0/zip-release@0.7.5
+      - uses: actions/checkout@v2
+      - uses: vimtor/action-zip@v1.1
         with:
-          type: 'zip'
-          filename: 'Blog.zip'
-          directory: './public'
+          files: ./public
+          dest: Blog.zip
 
 
       - name: Deploy To Github Pages
@@ -42,6 +41,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+
 
       - name: Setup AliyunOSS
         uses: manyuanrong/setup-ossutil@v2.0
