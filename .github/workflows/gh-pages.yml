@@ -59,5 +59,4 @@ jobs:
           time: 10s
 
       - name: Remove Blog.zip from OSS
-        uses: manyuanrong/setup-ossutil@v2.0
         run: ossutil rm -f Blog.zip oss://kingtuo123/Blog.zip
