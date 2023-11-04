@@ -83,9 +83,9 @@ VIDEO_CARDS="nvidia"
 
 创建 `/etc/modules-load.d/nvidia.conf`：
 
-```
-nvidia
-nvidia-drm
+```bash
+#nvidia
+#nvidia-drm
 nvidia-modeset
 nvidia-uvm
 ```
@@ -94,11 +94,14 @@ nvidia-uvm
 
 ### 方法一
 
-创建 `/etc/modprobe.d/nvidia.conf`：
+编辑 `/etc/modprobe.d/nvidia.conf`，添加：
 
 ```
 options nvidia-drm modeset=1
 ```
+
+> `/etc/modprobe.d/nvidia.conf` 由软件包 `x11-drivers/nvidia-drivers` 安装
+
 
 ### 方法二
 
