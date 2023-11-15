@@ -18,76 +18,52 @@ categories: [ "linux"  ]
 
 ## 内核配置
 
-```text {hl_lines=[1,4,8,13,18,23,31,36,41]}
+### Enable
+
+```text
 CONFIG_MODULES
-[*] Enable loadable module support --->
-
 CONFIG_MTRR
-Processor type and features --->
-   [*] MTRR (Memory Type Range Register) support
-
 CONFIG_VGA_ARB
-Device Drivers --->
-   PCI support --->
-      [*] VGA Arbitration
-
 CONFIG_ACPI_IPMI
-Device Drivers --->
-   Character devices --->
-      [*] IPMI top-level message handler
-
 CONFIG_AGP
-Device Drivers --->
-   Graphics support --->
-      -*- /dev/agpgart (AGP Support) --->
-
-CONFIG_FB_NVIDIA, CONFIG_FB_RIVA (DISABLE)
-Device Drivers --->
-    Graphics support --->
-        Frame buffer Devices --->
-            <*> Support for frame buffer devices --->
-               < > nVidia Framebuffer Support
-               < > nVidia Riva support
-
-CONFIG_DRM_NOUVEAU (DISABLE)
-Device Drivers  --->
-    Graphics support  --->
-        < > Nouveau (nVidia) cards
-
-CONFIG_DRM_SIMPLEDRM (DISABLE)
-Device Drivers --->
-   Graphics support --->
-      < > Simple framebuffer driver
-
-CONFIG_SYSFB_SIMPLEFB, CONFIG_FB_VESA, CONFIG_FB_EFI, CONFIG_FB_SIMPLE
-Device Drivers --->
-   Firmware Drivers  --->
-      [*] Mark VGA/VBE/EFI FB as generic system framebuffer
-   Graphics support --->
-      Frame buffer Devices  --->
-         <*> Support for frame buffer devices  --->
-            [*] VESA VGA graphics support
-            [*] EFI-based Framebuffer Support 
-            <*> Simple framebuffer support
+CONFIG_SYSFB_SIMPLEFB
+CONFIG_FB_VESA
+CONFIG_FB_EFI
+CONFIG_FB_SIMPLE
 ```
 
-## make.conf
+### Disable
+
+```text 
+CONFIG_FB_NVIDIA
+CONFIG_FB_RIVA
+CONFIG_DRM_NOUVEAU
+CONFIG_DRM_SIMPLEDRM
+```
+
+## 安装 nvidia-drivers
+
+编辑 `make.conf`，添加：
 
 ```
 VIDEO_CARDS="nvidia"
 ```
 
-执行 `emerge -avuDN @world` 后会安装 `x11-drivers/nvidia-drivers` 
+执行：
+
+```
+emerge -avuDN @world
+```
 
 ## 开机加载模块
 
 创建 `/etc/modules-load.d/nvidia.conf`：
 
 ```bash
-#nvidia
-#nvidia-drm
 nvidia-modeset
 nvidia-uvm
+# nvidia
+# nvidia-drm
 ```
 
 ## 配置模块
@@ -100,7 +76,7 @@ nvidia-uvm
 options nvidia-drm modeset=1
 ```
 
-> `/etc/modprobe.d/nvidia.conf` 由软件包 `x11-drivers/nvidia-drivers` 安装
+`nvidia.conf` 由软件包 `x11-drivers/nvidia-drivers` 安装
 
 
 ### 方法二
@@ -111,7 +87,11 @@ options nvidia-drm modeset=1
 GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1"
 ```
 
-然后执行 `grub-mkconfig -o /boot/grub/grub.cfg`
+然后执行：
+
+```
+grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 ## 自动生成 Xorg.conf 配置
 
@@ -121,14 +101,13 @@ GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1"
 
 文件路径在 `/etc/X11/`
 
-## startx
+## Startx
 
 修改 `.xinitrc`，添加下列两行至开头：
 
 ```bash
 xrandr --setprovideroutputsource modesetting NVIDIA-0
 xrandr --auto
-#xrandr --output eDP-1-1 --set "PRIME Synchronization" 1
 ```
 
 ## nvidia-settings

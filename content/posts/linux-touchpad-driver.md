@@ -62,13 +62,12 @@ Device 'SynPS/2 Synaptics TouchPad':
 ```
 启用触摸板
 ```bash
-$ input set-prop 14 "Device Enabled" 1
-# 或者使用属性id
 $ xinput set-prop 14 186 1
+$ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Device Enabled' 1
 ```
 禁用触摸板
 ```bash
-$ input set-prop 14 "Device Enabled" 0
 $ xinput set-prop 14 186 0
+$ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Device Enabled' 0
 ```
 其他参数参照上面方法修改

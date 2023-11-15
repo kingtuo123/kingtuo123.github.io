@@ -9,8 +9,9 @@ tags: [ "gentoo","linux" ]
 
 - 参考文章：
   - [Gentoo AMD64 Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64)
-  - [Gentoo安装流程分享](https://zhuanlan.zhihu.com/p/122222365)
-  - [内核总体设置和性能调优](https://zhuanlan.zhihu.com/p/164910411)
+  - [/etc/portage/make.conf](https://wiki.gentoo.org/wiki//etc/portage/make.conf)
+  - [Grub](https://wiki.gentoo.org/wiki/GRUB)
+  - [Power management/Processor](https://wiki.gentoo.org/wiki/Power_management/Processor)
 
 ## 连接无线网
 
@@ -46,7 +47,7 @@ tags: [ "gentoo","linux" ]
 # 创建根分区
 (parted) mkpart root ext4 512MB 100%
 
-# 设置分区1 flag  boot, esp
+# 设置分区1 flag  boot, esp 命令后面按 tab 可以查看 flag
 (parted) set 1                                                            
 
 # 打印分区信息
@@ -108,38 +109,35 @@ Number  Start   End    Size   File system  Name  Flags
 
 修改如下：
 
-```text
+```shell
 # These settings were set by the catalyst build script that automatically
 # built this stage.
 # Please consult /usr/share/portage/config/make.conf.example for a more
 # detailed example.
-COMMON_FLAGS="-march=native -O3 -pipe"
+COMMON_FLAGS="-march=native -O2 -pipe -flto"
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
 FCFLAGS="${COMMON_FLAGS}"
 FFLAGS="${COMMON_FLAGS}"
 
 # NOTE: This stage was built with the bindist Use flag enabled
-PORTDIR="/var/db/repos/gentoo"
-DISTDIR="/var/cache/distfiles"
-PKGDIR="/var/cache/binpkgs"
 
 # This sets the language of build output to English.
 # Please keep this setting intact when reporting bugs.
-LC_MESSAGES=C
+LC_MESSAGES=C.utf8
 
-# 核心数*2
+GENTOO_MIRRORS="https://mirrors.tuna.tsinghua.edu.cn/gentoo"
+
+
 MAKEOPTS="-j8"
 
-# 清华源
-GENTOO_MIRRORS="https://mirrors.tuna.tsinghua.edu.cn/gentoo"
-# 阿里源
-#GENTOO_MIRRORS="https://mirrors.aliyun.com/gentoo/"
+USE="-kde -systemd -gnome -wayland -ipv6 -qt5 -gtk pulseaudio dbus elogind"
 
-USE="-kde -systemd -gnome -wayland -bluetooth efi-64 pulseaudio dbus caps"
-VIDEO_CARDS="i965 intel"
+
+EMERGE_DEFAULT_OPTS="--with-bdeps=y --quiet-build"
+PORTAGE_TMPDIR="/tmp"
+VIDEO_CARDS="nvidia"
 INPUT_DEVICES="libinput synaptics"
-
 GRUB_PLATFORMS="efi-64"
 
 ACCEPT_LICENSE="*"
@@ -155,7 +153,7 @@ ACCEPT_LICENSE="*"
 
 ### 挂载文件系统
 
-``` 
+```text
 # mount --types proc /proc /mnt/gentoo/proc
 # mount --rbind /sys /mnt/gentoo/sys
 # mount --make-rslave /mnt/gentoo/sys
@@ -166,7 +164,7 @@ ACCEPT_LICENSE="*"
 ```
 ### 进入新环境
 
-``` 
+```text
 # chroot /mnt/gentoo /bin/bash
 # source /etc/profile
 # export PS1="(chroot) ${PS1}"
@@ -188,12 +186,8 @@ ACCEPT_LICENSE="*"
 
 ### 选择配置文件
 
-``` 
+```shell-session {hl_lines=[7]}
 # eselect profile list
-```
-输出如下：
-
-```text
 Available profile symlink targets:
   [1]   default/linux/amd64/17.1 (stable)
   [2]   default/linux/amd64/17.1/selinux (stable)
@@ -203,9 +197,6 @@ Available profile symlink targets:
   [6]   default/linux/amd64/17.1/desktop/gnome (stable)
   [7]   default/linux/amd64/17.1/desktop/gnome/systemd (stable)
   ...
-```
-
-``` 
 # eselect profile set 5
 ```
 
@@ -217,8 +208,9 @@ Available profile symlink targets:
 
 ### 预安装一些软件
 
-``` 
-# emerge -av vim \
+```text
+# emerge -av \
+  neovim \
   wpa_supplicant \
   net-misc/dhcp \
   app-text/tree \
@@ -243,22 +235,18 @@ Available profile symlink targets:
 ```text
 en_US.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8
-zh_CN.GBK GBK
 ```
 
-然后执行
+然后执行：
 
 ``` 
 # locale-gen
 ```
 
-语言选择：
+设置语言：
 
-``` 
+```bash-session {hl_lines=[6]}
 # eselect locale list
-```
-
-```text
 Available targets for the LANG variable:
   [1]   C
   [2]   C.utf8
@@ -268,18 +256,13 @@ Available targets for the LANG variable:
   [6]   zh_CN.utf8
   [7]   C.UTF8 *
   [ ]   (free form)
-```
-
-设置 en_US.utf8 ：
-
-``` 
 # eselect locale set 4
 # env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 ```
 
 ## 配置内核
 
-### 下载固件和CPU微代码
+### 可选：下载固件和CPU微代码
 
 ``` 
 # emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode
@@ -288,21 +271,17 @@ Available targets for the LANG variable:
 ### 下载内核源码
 
 ``` 
-# emerge --ask sys-kernel/gentoo-sources
+# emerge --ask sys-kernel/zen-sources
 ```
+
+官方手册使用的内核是 `gentoo-sources`，更多其它内核的介绍查看 [Kernel/Overview](https://wiki.gentoo.org/wiki/Kernel/Overview)
 
 ### 选择内核版本
 
-``` 
+```bash-session
 # eselect kernel list
-```
-
-```text
 Available kernel symlink targets:
-  [1]   linux-5.15.41-gentoo
-```
-
-``` 
+  [1]   linux-5.15.41-zen
 # eselect kernel set 1
 ```
 
@@ -327,47 +306,47 @@ Available kernel symlink targets:
 
 ```
 # emerge --ask sys-kernel/dracut
-# dracut --kver=5.15.41-gentoo
+# dracut --kver=5.15.41-zen
 ```
 
 ## 系统配置
 
-### 配置 /etc/fstab
+### 配置 fstab
 
-```fstab
-/dev/nvme0n1p1		/boot		vfat		defaults,noatime	0 2
+```bash-session
+# vim /etc/fstab
+/dev/nvme0n1p1		/boot/EFI	vfat		defaults,noatime	0 2
 /dev/nvme0n1p2		/		ext4		noatime			0 1
 ```
 
 ### 主机和域信息
 
-```text
+```bash-session
 # vim /etc/conf.d/hostname
-
 hostname="gentoo"
-```
 
-```text
 # vim /etc/conf.d/net
-
 dns_domain_lo="localhost"
-```
 
-```text
 # vim /etc/host
-
 127.0.0.1       gentoo.localhost gentoo localhost
 ```
 
-```
-# vim /etc/rc.conf
+### OpenRC 并行启动
 
+似乎能略微提高启动速度
+
+```bash-session
+# vim /etc/rc.conf
 rc_parallel="YES"
 ```
 
-```
-# vim /etc/conf.d/hwclock
+### 本地时钟
 
+默认是 `UTC` ，如果是 windows 和 linux 双系统，设置为 `local` ，否则会有 8 小时时差
+
+```bash-session
+# vim /etc/conf.d/hwclock
 clock="local"
 ```
 
@@ -380,7 +359,7 @@ clock="local"
 # rc-update add sysklogd default
 ```
 
-### 时钟同步
+### 可选：时钟同步
 
 ```text
 # emerge --ask net-misc/chrony
@@ -393,20 +372,9 @@ clock="local"
 ```text
 # emerge --ask sys-boot/grub
 # grub-install --target=x86_64-efi --efi-directory=/boot/EFI --removable
-```
-
-### grub 内核启动参数
-
-编辑 `/etc/default/grub` ，添加下面一行
-
-```bash
-GRUB_CMDLINE_LINUX="root=/dev/nvme0n1p2"
-```
-生成 grub  配置文件：
-
-```
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
 
 ## 收尾工作
 
@@ -426,58 +394,57 @@ GRUB_CMDLINE_LINUX="root=/dev/nvme0n1p2"
 默认密码强度需要数字大小写字母，你可以修改 `/etc/security/passwdqc.conf` 配置。
 
 
-## wpa_supplicant 配置
+## wpa_supplicant 无线网配置
 
-编辑 `/etc/wpa_supplicant/wpa_supplicant.conf`
+添加网络：
 
+```text
+# wpa_passphrase 网络名称 密码 >> /etc/wpa_supplicant/wpa_supplicant.conf
 ```
-update_config=1
+
+编辑 `/etc/wpa_supplicant/wpa_supplicant.conf`，添加：
+
+```text
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel
+update_config=1
 ```
 
-添加开机启动，编辑 `/etc/local.d/boot.start`
+编辑 `/etc/conf.d/net`，添加：
 
-```
-wpa_supplicant -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B && dhclient wlp2s0 &
-```
-
-执行：
-
-```
-# chmod +x /etc/local.d/boot.start
-# rc-update add local default
-# rc-update del netmount default
-```
-
-> 也可以用 rc-update add wpa_supplicant default 添加开机启动，但是启动时连接 wifi 会阻塞十来秒。暂时只想到上面的方法。
-
-## network
-
-启动时提示 `service 'netmount' needs non existent 'net'` ，解决办法：
-
-```
-# ln -s /etc/init.d/net.lo /etc/init.d/net.wlp2s0
-```
-
-
-## hidpi tty&grub font
-
-安装字体：
-
-```
-# emerge -av terminus-font
-```
-
-编辑 `/etc/conf.d/consolefont`，添加如下：
-
-```
-consolefont="ter-d32n"
+```text
+modules_wlp2s0="wpa_supplicant"
+config_wlp2s0="dhcp"
 ```
 
 添加开机启动：
 
 ```
-# rc-update add consolefont default
+# cd /etc/init.d
+# ln -s net.lo net.wlp2s0
+# rc-update add net.wlp2s0 default
+```
+
+
+
+## HiDPI displays
+
+### 终端界面字体
+
+使高分屏显示更大的文字，内核支持 16x32 字体：
+
+```
+Library routines  --->
+      [*] Select compiled-in fonts
+      [*] Terminus 16x32 font (not supported by all drivers)
+```
+
+
+### grub 引导界面字体
+
+安装 terminus-font：
+
+```
+# emerge --ask media-fonts/terminus-font
 ```
 
 生成 grub 字体：
@@ -486,7 +453,7 @@ consolefont="ter-d32n"
 # grub-mkfont -s 32 -o /boot/grub/fonts/terminus32b.pf2 /usr/share/fonts/terminus/ter-u32b.otb
 ```
 
-编辑 `/etc/default/grub`，如下：
+编辑 `/etc/default/grub`，添加：
 
 ```
 GRUB_FONT="/boot/grub/fonts/terminus32b.pf2"
@@ -498,20 +465,105 @@ GRUB_FONT="/boot/grub/fonts/terminus32b.pf2"
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-## 其他常用程序
-
-```
-app-admin/sudo
-app-portage/pfl
-```
 
 ## xorg
 
 ```
-#emerge --ask x11-base/xorg-server
-#emerge --ask x11-base/xorg-x11
+# emerge --ask x11-base/xorg-server
 ```
 
 至此基本系统就已安装完毕，剩下的就是桌面环境安装配置。
 
-**未完待续...**
+
+## 开机启动项
+
+- sysklogd
+- elogind
+- dbus
+- net.wlp2s0
+- gpm
+
+
+## 常用的程序
+
+- app-admin/sudo
+- doas
+- app-portage/pfl
+- elogind
+- flameshot
+- bash-completion
+- xrandr
+- udisks
+- acpilight
+- alacritty
+- feh
+- terminus-font
+- soruce-code-pro
+- lxapperance
+- nerd-font
+
+
+## 常用的配置
+
+### Udisks
+
+- 参考：
+  - [gentoo wiki/udisks](https://wiki.gentoo.org/wiki/Udisks)
+  - [gentoo wiki/polkit](https://wiki.gentoo.org/wiki/Polkit)
+
+使用 udisks 可以方便挂载设备，udisks 依赖 polkit 和 dubs
+
+配置 polkit 规则，允许用户挂载设备：
+
+```bash-session
+# vim /etc/polkit-1/rules.d/10-udisks.rules
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" &&
+        subject.user == "king") {
+        return polkit.Result.YES;
+    }
+});
+```
+
+### 添加 gentoo-zh 仓库（overlay）
+
+```bash-session
+# emerge -av eselect-repository
+# eselect repository list
+  ...
+  [130] gentoo-unity7 (https://github.com/c4pp4/gentoo-unity7)
+  [131] gentoo-zh * (https://github.com/microcai/gentoo-zh)
+  [132] gerislay (https://cgit.gentoo.org/repo/user/gerislay.git)
+  ...
+# eselect repository enable gentoo-zh
+# emerge --sync -r gentoo-zh
+```
+
+### xHiDPI
+
+- 参考：[Archwiki HiDPI](https://wiki.archlinux.org/title/HiDPI)
+
+4k 屏 scale 配置：
+
+```bash-session
+$ vim ~/.xinitrc
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
+xrdb -merge .Xresources
+
+$ vim ~/.Xresources
+Xft.dpi: 192
+Xcursor.size: 48
+!Xcursor.theme: DMZ-Black
+Xcursor.theme: Bibata-Modern-Ice
+
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+```
+
+`Xcursor.theme` 用的鼠标主题需要支持 HIDPI
