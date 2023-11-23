@@ -56,7 +56,7 @@ jobs:
       - name: Sleep for 10s
         uses: juliangruber/sleep-action@v2.0.0
         with:
-          time: 40s
+          time: 50s
 
       - name: Remove Blog.zip from OSS
         run: ossutil rm -f oss://kingtuo123/Blog.zip

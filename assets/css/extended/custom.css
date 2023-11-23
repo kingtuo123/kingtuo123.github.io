@@ -1,4 +1,5 @@
 :root {
+	--theme: rgb(255, 255, 255);
     --gap: 24px;
     --content-gap: 20px;
     --nav-width: 1024px;
@@ -19,7 +20,7 @@
 	--a-color: rgb(94, 129, 172);
 	--a-hover: rgba(236, 239, 244, 0.45);
 	--border: rgba(216, 222, 233, 0.8);
-	--tertiary: var(--code-bg)
+	--tertiary: rgb(255, 255, 255);
 }
 
 .dark{
@@ -38,7 +39,7 @@
 	--a-color: rgb(136, 192, 208);
 	--a-hover: rgba(76, 86, 106, 0.8); 
 	--border: rgba(59, 66, 82, 0.8);
-	--tertiary: var(--code-bg)
+	--tertiary: rgb(46, 52, 64);
 }
 
 body {
@@ -163,6 +164,11 @@ body {
 
 .post-tags a, .share-buttons, .paginav{
 	border: 0px;
+	box-shadow: var(--toc-shadow);
+}
+
+
+.terms-tags a {
 	box-shadow: var(--toc-shadow);
 }
 
