@@ -62,7 +62,7 @@ params:
     ShowToc: true
     homeInfoParams:
         Title: ":  )"
-        Content: "emmm"
+        Content: "清风徐来，水波不兴"
     assets:
       disableHLJS: true
 
@@ -79,6 +79,6 @@ markup:
       guessSyntax: true
       lineNos: false
       noClasses: false
-      style: dracula
+      style: nord
 
 
