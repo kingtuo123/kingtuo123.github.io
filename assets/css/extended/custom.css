@@ -48,6 +48,28 @@ body {
     line-height: 1.7;
 }
 
+#menu .active {
+	font-weight: 500;
+	border-bottom: 0px;
+	padding: 5px;
+	border-radius: var(--radius);
+	color: var(--theme);
+	background-color: var(--primary);
+}
+
+#menu .menu-logo{
+	display: inline;
+}
+
+#menu span:first-child {
+	display: none;
+}
+
+#menu .logo-svg {
+	position: relative;
+	top: 4px;
+}
+
 .first-entry {
     min-height: 150px;
 	max-width: 700px;
@@ -61,6 +83,7 @@ body {
 	margin-left:auto;
 	margin-right:auto;
 }
+
 
 .post-title {
     margin-bottom: 2px;
@@ -172,15 +195,49 @@ body {
 	box-shadow: var(--toc-shadow);
 }
 
+.top-link {
+	background-color: var(--code-bg);
+}
+
 @media screen and (max-width: 768px) {
 	:root {
         --gap: 14px;
         --gap: 14px;
     }
+
+	.logo a {
+		font-size: 20px;
+	}
+
+	#menu span:first-child {
+		display: none;
+	}
+
+	#menu .menu-logo{
+		display: inline;
+	}
+
+	.main {
+		padding-top: 0;
+	}
+
+	.post-header{
+		margin-top: 10px;
+	}
+
     .first-entry {
         min-height: 50px;
-		display: none;
+		margin: 0 0 10px 0;
+		/*display: none;*/
     }
+
+	.first-entry .entry-header h1 {
+		font-size: 30px;
+	}
+
+	.first-entry .entry-content {
+		/*font-size: 14px;*/
+	}
 
 	.social-icons{
 		display: none;

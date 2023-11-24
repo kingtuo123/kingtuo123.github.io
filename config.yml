@@ -28,16 +28,16 @@ languages:
             main:
                 - name: Archive
                   url: archives
-                  weight: 5
-                - name: Search
-                  url: search/
-                  weight: 15
-                - name: Tags
-                  url: tags/
-                  weight: 12
+                  weight: 1
                 - name: Categories
                   url: categories/
-                  weight: 10
+                  weight: 2
+                - name: Tags
+                  url: tags/
+                  weight: 3
+                - name: Search
+                  url: search/
+                  weight: 4
 
 
 

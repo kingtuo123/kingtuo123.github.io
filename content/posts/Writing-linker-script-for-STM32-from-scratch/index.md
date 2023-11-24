@@ -2,7 +2,7 @@
 title: "从零编写 STM32 链接脚本"
 date: "2023-08-12"
 description: ""
-summary: "linker scripts sucks"
+summary: "writing linker script for stm32 from scratch"
 categories: [ "stm32" ]
 tags: [ "stm32"]
 ---
@@ -156,7 +156,7 @@ SECTIONS
 
 当 STM32 启动时，它会从 FLASH 读取两个地址（共 8 字节）。第一个是栈顶地址，第二个是入口程序地址。
 
-- `ENTRY(main)` 告诉链接器使用 mian 作为程序的入口点。这也可以防止包含 `main` 函数的 `.text` 部分被链接器作为垃圾“优化”（因为 main 函数没有被其它函数调用）。
+- `ENTRY(main)` 告诉链接器使用 mian 作为程序的入口点。这也可以防止包含 main 函数的 `.text` 部分被链接器作为垃圾“优化”（因为 main 函数没有被其它函数调用）。
 
 - `LONG(0x20010000)` 告诉链接器将 `0x20010000` 这四个字节放入输出的二进制文件中。为什么是这四个字节？因为 SRAM 地址从 `0x20000000` 开始，大小有 64KB（0x10000）。 `0x20000000 + 0x10000 = 0x20010000` 就是栈顶的地址。
 
@@ -490,7 +490,7 @@ OK，成功点亮 LED ！
 - `gcc_ride7/startup_stm32f10x_hd.s`
 - `arm/startup_stm32f10x_hd.s`
 
-对于 `gcc` 编译器，堆栈初始化在 Reset_Handler 中进行，最后会调用 `mian` 函数：
+对于 `gcc` 编译器，堆栈初始化在 `Reset_Handler` 中进行，最后会调用 `mian` 函数：
 
 ```c
 Reset_Handler:
@@ -511,7 +511,7 @@ LoopFillZerobss:
   bx  lr
 ```
 
-对于 `ARM Compiler`（Keil 自带的编译器）Reset_Handler 是调用 C 库提供的 `__mian` 函数初始化堆栈，`__main` 再调用用户的 `main` 函数：
+对于 `ARM Compiler 5`（Keil 自带的编译器）`Reset_Handler` 是调用 C 库提供的 `__mian` 函数初始化堆栈，`__main` 再调用用户的 `main` 函数：
 ```asm
 ; Reset handler
 Reset_Handler   PROC
