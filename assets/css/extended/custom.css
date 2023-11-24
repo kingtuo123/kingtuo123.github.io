@@ -78,7 +78,7 @@ body {
 
 .post-entry{
 	border: 0px;
-	box-shadow: var(--box-shadow);
+	/*box-shadow: var(--box-shadow);*/
 	max-width: 700px;
 	margin-left:auto;
 	margin-right:auto;
@@ -170,7 +170,7 @@ body {
 .toc {
 	border: 0px;
 	line-height: 2;
-	box-shadow: var(--toc-shadow);
+	/*box-shadow: var(--toc-shadow);*/
 }
 
 .toc a {
@@ -187,16 +187,17 @@ body {
 
 .post-tags a, .share-buttons, .paginav{
 	border: 0px;
-	box-shadow: var(--toc-shadow);
+	margin-right: 10px;
+	/*box-shadow: var(--toc-shadow);*/
 }
 
 
 .terms-tags a {
-	box-shadow: var(--toc-shadow);
+	/*box-shadow: var(--toc-shadow);*/
 }
 
 .top-link {
-	background-color: var(--code-bg);
+	background-color: var(--toc-hover);
 }
 
 @media screen and (max-width: 768px) {
