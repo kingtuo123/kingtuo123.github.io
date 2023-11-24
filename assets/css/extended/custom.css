@@ -48,26 +48,40 @@ body {
     line-height: 1.7;
 }
 
+#menu {
+	margin-right: 10px;
+}
+
+#menu li + li {
+	margin-inline-start: 0px;
+}
+
 #menu .active {
 	font-weight: 500;
 	border-bottom: 0px;
-	padding: 5px;
 	border-radius: var(--radius);
 	color: var(--theme);
 	background-color: var(--primary);
 }
 
+
 #menu .menu-logo{
+	padding: 5px;
 	display: inline;
 }
 
-#menu span:first-child {
+/*#menu span:first-child {
 	display: none;
-}
+}*/
 
 #menu .logo-svg {
 	position: relative;
 	top: 4px;
+}
+
+#menu .menu-logo:hover:not(.active){
+	border-radius: var(--radius);
+	background-color: var(--toc-hover);
 }
 
 .first-entry {
@@ -130,7 +144,7 @@ body {
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
     min-width: 80px;
     padding: 8px 8px;
-    line-height: 2;
+    line-height: 1.7;
 	border: 1px solid var(--border);
 }
 
@@ -210,9 +224,9 @@ body {
 		font-size: 20px;
 	}
 
-	#menu span:first-child {
+	/*#menu span:first-child {
 		display: none;
-	}
+	}*/
 
 	#menu .menu-logo{
 		display: inline;

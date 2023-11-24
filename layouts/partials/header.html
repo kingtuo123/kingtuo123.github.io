@@ -128,19 +128,6 @@
             <li>
                 <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
                 {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
-                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
-                        {{- .Pre }}
-                        {{- .Name -}}
-                        {{ .Post -}}
-                    </span>
-                    {{- if (findRE "://" .URL) }}&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
-                    {{- end }}
 
 					{{- if (findRE "archives" .URL) }}&nbsp;
 					<span class = "menu-logo {{- if eq $menu_item_url $page_url }} active {{- end }}" >
@@ -154,7 +141,7 @@
 
 					{{- if (findRE "categories" .URL) }}&nbsp;
 					<span class = "menu-logo {{- if eq $menu_item_url $page_url }} active {{- end }}" >
-						<svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none"
+						<svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0.5 0.5 23 23" fill="none"
 							stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
 							<rect x="3" y="3" width="7" height="7"  />
 							<rect x="3" y="14" width="7" height="7" />
