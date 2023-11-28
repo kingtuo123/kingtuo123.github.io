@@ -48,7 +48,7 @@ math: false
 - SCL 上升沿对 SI 输入采样
 
 
-<div align="center">
+<div align="left">
     <img src="7.png" style="max-height:850px"></img>
 </div>
 
@@ -57,22 +57,41 @@ math: false
 
 ## 命令
 
-- /RD 和 /WR 是 8080 和 6800 时序用的，不管它。
-- A0：0 表示低电平发送的是命令，1 高电平是数据
+Command Code：
 
-<div align="center">
+- A0 引脚低电平时发送的数据是命令，高电平时为数据
+- /RD 和 /WR 是 8080 和 6800 时序用的，不管它。
+
+<div align="left">
     <img src="8.png" style="max-height:850px"></img>
 </div>
 
+LCD 行列扫描方向配置命令：
+
+- 行扫描（Common output mode select）
+  - 0xC0：从下到上
+  - 0xC8：从上到下
+
+- 列扫描（ADC select）
+  - 0xA0：从左到右
+  - 0xA1：从右到左
+
+
 ## 字模软件
 
-- PCtoLCD2002
+PCtoLCD2002
 
 <div align="left">
     <img src="9.png" style="max-height:400px"></img>
 </div>
 
-- 选项配置，本文程序使用行列式
+Ascii 字符：
+
+```text
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+```
+
+选项配置，本文程序使用`列行式`：
 
 <div align="left">
     <img src="10.png" style="max-height:300px"></img>
@@ -91,12 +110,12 @@ math: false
                 <img src="g2.gif" style="max-height:100px"></img>
             </div>
         </td>
-        <td>行列式
+        <td>列行式
             <div align="center">
                 <img src="g3.gif" style="max-height:100px"></img>
             </div>
         </td>
-        <td>列行式
+        <td>行列式
             <div align="center">
                 <img src="g4.gif" style="max-height:100px"></img>
             </div>
@@ -104,26 +123,18 @@ math: false
     </tr>
 </table>
 
-LCD 扫描方式通过命令配置：
-- 行扫描（Common output mode select）
-  - 0xC0：从下到上
-  - 0xC8：从上到下
-- 列扫描（ADC select）
-  - 0xA0：从左到右
-  - 0xA1：从右到左
-
 
 ## 程序
 
-- 由于程序中使用的是GB2312编码，所以Keil工程要如下设置
+由于程序中使用的是 GB2312 编码，所以 Keil 工程要如下设置：
 
 <div align="left">
     <img src="11.png" style="max-height:200px"></img>
 </div>
 
-- 汉字使用区位码索引：[GB2312编码对照表](http://tools.jb51.net/table/gb2312)
+汉字使用区位码索引：[GB2312 编码对照表](http://tools.jb51.net/table/gb2312)
 
-- 最终效果如下，能实现任意座标/中英文混合显示：
+最终效果如下，能实现任意座标/中英文混合显示：
 
 <div align="left">
     <img src="1.jpg" style="max-height:150px"></img>

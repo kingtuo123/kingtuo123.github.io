@@ -183,12 +183,12 @@ body {
 
 .toc {
 	border: 0px;
-	line-height: 2;
+	line-height: 1.8;
 	/*box-shadow: var(--toc-shadow);*/
 }
 
 .toc a {
-	padding: 5px 5px;
+	padding: 2px 5px;
 	border-radius: 0.25rem;
 }
 

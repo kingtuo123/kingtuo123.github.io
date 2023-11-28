@@ -1,17 +1,19 @@
 ---
-title: "Makefile基础"
+title: "Makefile 入门"
 date: "2022-05-01"
 description: ""
 summary: "Makefile 的基本语法，规则及命令。"
-categories: [ "makefile" ]
+categories: [ "linux" ]
 tags: [ "makefile" ]
 ---
 
-> 翻译自 [Makefile Tutorial](https://makefiletutorial.com/#getting-started)，部分有增删或修改，仅供参考。
+- 参考文章：
+  - [Makefile Tutorial](https://makefiletutorial.com/#getting-started)
+  - [GNU make](https://www.gnu.org/savannah-checkouts/gnu/make/manual/html_node/)
 
-## Makefile 语法
+## 语法
 
-makefile 由一组规则组成。如下所示：
+makefile 由多个规则组成。规则语法如下：
 
 ```makefile
 targets: prerequisites
@@ -20,22 +22,13 @@ targets: prerequisites
     command
 ```
 
-- targets 是文件名，以空格分隔。通常一个规则只有一个目标。
+- `targets` 目标文件，以空格分隔。通常一个规则只有一个目标。
+- `command` 通常是用于生成 targets 的一系列步骤。以 Tab 开头。
+- `prerequisites` 依赖文件（先决条件），以空格分隔。需要在执行 command 之前存在。
 
-- command 通常是用于生成 targets 的一系列步骤。以 Tab 开头。
-- prerequisites 也是文件名，以空格分隔。这些文件也称为 **依赖** ，需要在执行 command 之前存在。
+## 示例一
 
-## 示例
-
-下面的 makefile 由三个单独的规则组成。当你在终端执行 `make blah` ，会以下面步骤运行并生成 `blan` 文件：
-
-- make 以 `blah` 作为目标，所以它首先搜索这个目标。
-- `blah` 需要 `blah.o` ，make 会搜索 `blah.o` 。
-- `blah.o` 需要 `blah.c` ，make会搜索 `blah.c` 。
-- `blah.c` 不需要依赖，所以会执行 `echo` 命令，生成 `blah.c` 。
-- `blah.o` 的依赖满足，会执行  `cc -c` 命令，生成 `blah.o` 。
-- `blah` 的依赖满足，会执行  `cc` 命令，生成 `blah` 。
-- `blah` 即编译好的C程序。
+下面的 makefile 由三个单独的规则组成
 
 ```makefile
 blah: blah.o
@@ -49,53 +42,67 @@ blah.c:
 ```
 
 
+当你在终端执行 `make blah` ，会以下面步骤运行并生成 `blan` 文件：
 
-下面这个 makefile 有一个目标 `some_file` 。默认目标是第一个目标，所以将执行 `some_file` 下的 `echo`  命令。
+- make 以 `blah` 作为目标，所以它首先搜索这个目标。
+- `blah` 依赖 `blah.o` ，make 会搜索 `blah.o` 。
+- `blah.o` 依赖 `blah.c` ，make 会搜索 `blah.c` 。
+- `blah.c` 无需依赖，会执行 `echo` 命令，生成 `blah.c` 。
+- `blah.o` 的依赖满足，会执行  `cc -c` 命令，生成 `blah.o` 。
+- `blah` 的依赖满足，会执行  `cc` 命令，生成 `blah` 。
+- `blah` 即编译好的 C 程序。
 
-```makefile
-some_file:
-    echo "This line will always print"
+make 的默认目标是规则中的第一个目标，所以直接执行 `make` 亦可：
+
+```bash-session
+$ make
+echo "int main() { return 0; }" > blah.c 
+cc -c blah.c -o blah.o 
+cc blah.o -o blah 
 ```
 
+重复执行 `make` 会提示 `up to date`：
 
-
-下面这个 makefile 第一次运行会生成 `some_file` 。第二次运行由于 `some_file` 已存在，会提示 `make: 'some_file' is up to date` 。
-
-```makefile
-some_file:
-    echo "This line will only print once"
-    touch some_file
+```bash-session
+$ make
+make: 'blah' is up to date.
 ```
 
+当依赖文件的时间戳新于目标文件，目标文件才会按规则重新生成：
 
+```bash-session
+$ touch blah.o && make
+cc blah.o -o blah 
 
-下面这个 makefile 中 `some_file` 依赖 `other_file` 。当第一次执行 `make` ，默认目标是 `some_file` ，它首先会查找依赖文件 `other_file` ，只要依赖文件比目标文件 `some_file` 新，它就会执行这个依赖文件的规则，最后在执行自身的规则。所以当第二次执行时，两条规则下的命令都不会被执行，因为目标文件已存在。
+$ touch blah.c && make
+cc -c blah.c -o blah.o 
+cc blah.o -o blah 
+
+$ rm -f blah.c && make
+echo "int main() { return 0; }" > blah.c 
+cc -c blah.c -o blah.o 
+cc blah.o -o blah 
+```
+
+## 示例二
 
 ```makefile
 some_file: other_file
-    echo "This will run second, because it depends on other_file"
+    echo "This will always run, and runs second"
     touch some_file
 
+# 这里 other_file 不会生成
 other_file:
-    echo "This will run first"
-    touch other_file
+    echo "This will always run, and runs first"
 ```
 
+上面这个 makefile 始终会执行 `touch some_file`，因为 `some_file` 的依赖始终无法满足。
 
+> 疑问：这里可以看出 make 成功执行规则后，不会检查此规则的目标文件是否存在。为何？
 
- 下面这个 `makefile` 始终会执行默认目标的命令，因为它的依赖始终无法满足。
+## Make clean
 
-```makefile
-some_file: other_file
-    touch some_file
-
-other_file:
-    echo "nothing"
-```
-
-
-
-`clean` 常被用来清理一些生成的文件，但它在 make 中并不是一个特殊的词。（一般都是约定俗成的，大家习惯用 clean 清理文件）
+clean 常用来清理文件，但它在 make 中并不是关键词。（一般都是约定俗成的，大家都习惯用 clean 清理文件）
 
 ```makefile
 some_file: 
@@ -104,32 +111,36 @@ some_file:
 clean:
     rm -f some_file
 ```
+- clean 不是规则中的第一个目标，所以需要显式调用 `make clean`。
 
+- 如果碰巧有一个名为 clean 的文件，这个目标将不会被执行，后文 `.PHONY` 一节会有说明。
 
 
 ## 变量
 
-变量只是字符串。类似C语言中的宏定义，运行make的时候会自动替换。
+变量是 **字符串**
 
-使用 `$( )` 调用或 `${ }`。
+### 引用
 
-```
+使用 `$( )` 或 `${ }` 。
+
+```makefile
 obj = a.o b.o c.o
 
 test: $(obj)
     gcc -o test $(obj)
 ```
 
-变量赋值一般有如下符号：
+### 赋值
 
 |符号|作用|
-| :----: | ------------------ |
-|   =    | 变量赋值，仅在使用命令时查找变量并替换，而不是在定义时查找替换。 |
-|   :=   | 变量赋值，与普通的编程语言中的赋值一样。 |
+| :--: | :-- |
+|   =    | 变量赋值，在执行时查找替换 |
+|   :=   | 变量赋值，在定义时查找替换 |
 |   +=   | 变量追加赋值       |
 |   ?=   | 变量为空则给它赋值 |
 
-`=` 与 `:=` 的区别：
+### = 与 := 的区别
 
 ```makefile
 # 这条会在下面打印出 later
@@ -140,42 +151,45 @@ two := two ${later_variable}
 later_variable = later
 
 all: 
-    echo $(one)
-    echo $(two)
+    @echo $(one)
+    @echo $(two)
 ```
 
-`:=` 允许你追加变量，但会导致死循环，如下。
+```bash-session
+$ make
+one later
+two
+```
+
+### 单个空格变量
+
+行尾的空格不会被去掉，但行首的空格会被去掉。 要使用单个空格制作变量，请使用 `$(nullstring)`
 
 ```makefile
-one = hello
-# one gets defined as a simply expanded variable (:=) and thus can handle appending
-one := ${one} there
+with_spaces =     hello     # with_spaces在 "hello" 之后有很多空格
+after = $(with_spaces)there
+
+nullstring =
+space = $(nullstring) # 这里末尾有一个空格，即单个空格变量。
 
 all: 
-    echo $(one)
+    echo "$(after)"
+    echo start"$(space)"end
 ```
 
-`?=` 仅设置尚未设置的变量
-
-```makefile
-one = hello
-one ?= will not be set
-two ?= will be set
-
-all: 
-    echo $(one) # 打印 hello
-    echo $(two) # 打印 will be set
+```bash-session
+$ make
+hello     there
+start end
 ```
-
-
-
-
 
 ## 目标
 
 makefile 以第一个规则的目标为默认目标，通常只有一个。
 
-以下 makefile 使用 `all` 可以生成多个目标。
+### all 目标
+
+以下 makefile 通过 all 可以生成多个目标。
 
 ```makefile
 all: one two three
@@ -191,52 +205,92 @@ clean:
     rm -f one two three
 ```
 
+### 多目标
+
+当一个规则有多个目标时，将为每个目标运行命令。
+
+```makefile
+all: f1.o f2.o
+
+f1.o f2.o:
+    echo $@
+```
+
+相当于：
+
+```makefile
+all: f1.o f2.o
+
+f1.o:
+    echo f1.o
+f2.o:
+    echo f2.o
+```
+
 
 
 ## 通配符
 
-| 通配符 | 作用               |
+| 符号 | 作用               |
 | :----: | ------------------ |
-|   *    | 匹配零或多个字符   |
+|   *    | 匹配零或多个字符 |
 |   %    | 匹配一个或多个字符 |
 |   ?    | 匹配单个字符       |
 
-`*` 和 `%` 在 makefile 中都是通配符，但它们的含义完全不同。
+`*` 一般搭配 `wildcard` 函数使用，用于搜索文件系统匹配文件名。
 
-`*` 会搜索你的文件系统来匹配文件名。个人建议调用 `wildcard` 函数来使用 `*` 。
+`%` 一般在规则中使用作为词干，用于匹配规则中的字符串，不能用于搜索文件系统。
+
+> 注意：在变量定义中直接使用的通配符会被视为字符串
+
+### * 通配符
+
+在变量定义中使用 `*` ，如下（匹配 .o 文件）：
 
 ```makefile
-# 打印出当前路径下所有以.c结尾的文件的信息
-print: $(wildcard *.c)
+thing_wrong := *.o             # 错误做法，* 不会被展开，会被视作 *.o 字符串
+thing_right := $(wildcard *.o) # 正确做法
+```
+
+在规则中使用 `*`，如下（打印 .c 文件）：
+
+```makefile
+# 方式一：不推荐的用法
+print_wrong: *.c
+    ls -la  $?
+
+# 方式二：推荐使用 wildcard
+print_right: $(wildcard *.c)
     ls -la  $?
 ```
 
-> 危险：不要在变量定义中使用 `*` 。
->
-> 危险：当 `*` 没有匹配到文件时，它会保持原样（作为一个字符串）除非使用 `wildcard` 函数。
+> 注意：第一种方式中当 `*` 没有匹配到文件时，它会保持原样（作为一个字符串）除非使用 `wildcard` 函数。
+
+### % 通配符
+
+下面的 makefile 中 `%.c` 会匹配所有 `.c` 文件的规则，就不用给每个 `.c` 文件单独写一条规则。
 
 ```makefile
-thing_wrong := *.o # 不要这样做，'*' 不会被展开，会被视作 "*.o" 字符串
-thing_right := $(wildcard *.o) # 正确做法
+all: f1.c f2.c f3.c
+    @echo "done"
 
-all: one two three four
+%.c:
+    @echo $@
+```
 
-# 这里会出错，因为 $(thing_wrong) 是字符串 "*.o"
-one: $(thing_wrong)
-
-# 如果没有文件以 ".o" 结尾，匹配不到文件时也会被视作字符串 "*.o"
-two: *.o 
-
-# 正确运行
-three: $(thing_right)
-
-# 同规则 "three"
-four: $(wildcard *.o)
+```bash-session
+$ make
+f1.c
+f2.c
+f3.c
+done
 ```
 
 
 
 ## 自动化变量
+
+> 更多自动化变量参考：[Automatic Variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
 
 |符号|描述|
 |:-:|--|
@@ -245,7 +299,7 @@ four: $(wildcard *.o)
 |$<|第一个依赖名|
 |$+|所有依赖名，不去重|
 |$?|比目标新的依赖名|
-|$*|目标中%匹配的部分|
+|$\*|目标中%匹配的部分|
 
 ```makefile
 hey: one two
@@ -270,11 +324,24 @@ clean:
     rm -f hey one two
 ```
 
+```bash-session
+$ make -s
+hey
+one two
+one two
+$ make
+make: 'hey' is up to date.
+$ touch one && make -s
+hey
+one
+one two
+```
+
 ## 规则
 
 ### 隐式规则
 
-隐式规则会让东西变得混乱，不推荐使用，但是要了解。
+隐式规则会让事情变得混乱，不推荐使用，但是要了解：
 
 - 编译 C 程序： `n.o` 由 `n.c` 自动生成，命令形式为 `$(CC) -c $(CPPFLAGS) $(CFLAGS)`
 - 编译 C++ 程序：`n.o` 由 `n.cc` 或 `n.cpp` 自动生成，命令形式为 `$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)`
@@ -282,20 +349,20 @@ clean:
 
 隐式规则常用的几个变量：
 
-- `CC` ：C 程序编译器，默认 `cc` 。
-- `CXX` ：C++ 程序编译器，默认 `g++` 。
-- `CFLAGS` ：提供给 C 编译器的参数。
-- `CXXFLAGS` ：提供给 C++ 编译器的参数。
-- `CPPFLAGS` ：提供给 C 预处理器的参数。
-- `LDFLAGS` ：当编译器调用链接器时提供给编译器的额外参数。
+- `CC` ：C 程序编译器，默认 `cc` 
+- `CXX` ：C++ 程序编译器，默认 `g++` 
+- `CFLAGS` ：提供给 C 编译器的参数
+- `CXXFLAGS` ：提供给 C++ 编译器的参数
+- `CPPFLAGS` ：提供给 C 预处理器的参数
+- `LDFLAGS` ：当编译器调用链接器时提供给编译器的额外参数
 
-下面这个例子无需明确告诉 Make 如何进行编译，就可以构建一个 C 程序。
+下面这个例子无需明确告诉 Make 如何进行编译，就可以构建一个 C 程序：
 
 ```makefile
-CC = gcc # 隐式规则的默认编译器
+CC = gcc    # 隐式规则的默认编译器
 CFLAGS = -g # 编译器参数，-g 启用调试信息
 
-# 隐式规则 #1：blah 是通过 C 链接器隐式规则构建的
+# 隐式规则 #1：blah   是通过 C 链接器隐式规则构建的
 # 隐式规则 #2：blah.o 是通过 C 编译隐式规则构建的，因为 blah.c 存在
 blah: blah.o
 
@@ -309,8 +376,6 @@ clean:
 
 
 ### 静态模式规则
-
-下面是语法：
 
 ```makefile
 targets...: target-pattern: prereq-patterns ...
@@ -361,7 +426,7 @@ clean:
     rm -f *.c *.o all
 ```
 
-静态模式规则和 filter 函数搭配使用，如下
+### 静态模式规则和 filter 过滤器
 
 ```makefile
 obj_files = foo.result bar.o lose.o
@@ -398,13 +463,12 @@ clean:
     $(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 ```
 
-模式规则在目标中包含一个 `%` 。这个 `%` 匹配任何非空字符串，其他字符匹配它们自己。模式规则的先决条件中的 `%` 代表与目标中的 `%` 匹配的相同词干。
+规则目标中的 `%` 匹配任何非空字符，匹配的字符称为 `词干`，上述例子中 `%.o` 与 `%.c` 拥有相同的词干
 
 再看另一个例子：
 
 ```makefile
 # 定义一个没有先决条件的模式规则
-# $@ 表示目标文件
 # 当需要时会创建一个空的 .c 文件
 %.c:
     touch $@
@@ -414,7 +478,7 @@ clean:
 
 ### 双冒号规则
 
-双冒号规则很少使用，但允许为同一个目标定义多个规则。如果这些是单冒号，则会打印一条警告，并且只会运行第二组命令。
+双冒号允许为同一个目标定义多个规则。如果是单冒号，则会打印一条警告，并且只会运行第二组规则。
 
 ```makefile
 all: blah
@@ -430,11 +494,11 @@ blah::
 
 ## 命令
 
-### 不打印命令
+### 命令回显/静默
 
-在命令前加 `@` ，在运行时这条命令不会被打印出来。在 `make` 时加上 `-s` 参数有同样的效果。
+在命令前加 `@` ，在运行时这条命令不会被打印出来。`make -s` 有同样的效果。
 
-```
+```makefile
 all: 
     @echo "This make line will not be printed"
     echo "But this will"
@@ -471,9 +535,9 @@ cool:
 
 ### 错误处理
 
-在运行 make 时添加 `-k` 参数（--keep-going）以在遇到错误时继续运行（错误信息会被打印）。
+在运行 make 时添加 `-k` 参数（\-\-keep-going）以在遇到错误时继续运行（错误信息会被打印）。
 
-在运行 make 时添加 `-i` 参数 （--ignore-errors），执行过程中忽略规则命令执行的错误（错误信息不会被打印）。
+在运行 make 时添加 `-i` 参数 （\-\-ignore-errors），执行过程中忽略规则命令执行的错误（错误信息不会被打印）。
 
 在命令前添加 `-` 以忽略错误 ，如下：
 
@@ -488,86 +552,53 @@ one:
 
 使用 `ctrl+c` ，它会中断 make 并删除新生成的目标文件。
 
-### 嵌套执行 make
+### 递归 make
 
-要递归调用 makefile，请使用特殊的 \$(MAKE) 而不是 make，因为它可以传递 make 的参数并且本身不会受到它们的影响。
+在子目录执行 make，要使用 `$(MAKE)` 而不是 `make`
 
 ```makefile
-# 双引号中的内容等同于
-# hello: 
-# 		touch inside_file
-new_contents = "hello:\n\ttouch inside_file"
-all:
-    mkdir -p subdir
-    printf $(new_contents) | sed -e 's/^ //' > subdir/makefile #去掉第一行的空格并写入subdir/makefile
+subsystem:
     cd subdir && $(MAKE)
-
-clean:
-    rm -rf subdir
 ```
 
-### 使用 export 嵌套
+> 参考此文：[How the MAKE Variable Works](https://www.gnu.org/savannah-checkouts/gnu/make/manual/html_node/MAKE-Variable.html)
 
-使用 make 嵌套执行的时候，变量是否传递也是我们需要注意的。如果需要变量的传递，那么可以这样来使用：
+### export 全局变量
+
+`export` 将变量声明为全局变量，这样子目录的 `make` 就可以引用该变量。`unexport` 取消全局：
 
 ```makefile
-new_contents = "hello:\n\\techo \$$(cooly)"
-
-all:
-    mkdir -p subdir
-    echo $(new_contents) | sed -e 's/^ //' > subdir/makefile
-    @echo "---MAKEFILE CONTENTS---"
-    @cd subdir && cat makefile
-    @echo "---END MAKEFILE CONTENTS---"
-    cd subdir && $(MAKE)
-
-# 注意输出的信息，可以看到 export 全局声明起到了作用
 cooly = "The subdirectory can see me!"
 export cooly
-# 取消全局: unexport cooly
 
-clean:
-    rm -rf subdir
+all:
+    cd subdir && $(MAKE)
 ```
 
-你也可以在 shell 中使用全局变量
+使用 `$$` 可以在 shell 中引用全局变量：
 
 ```makefile
-one=this will only work locally
-export two=we can run subcommands with this
-
 all: 
-    @echo $(one)
-    # $$ 的意思是使用真实的 $ 符号
-    # 即 echo $one，由于one未声明全局环境变量，所以这条打印为空
-    @echo $$one
-    @echo $(two)
-    @echo $$two
+    echo $$one
 ```
 
-也可以使用 `.EXPORT_ALL_VARIABLES` 将所用的变量都声明为全局的。
+```bash-session
+$ export one="hello" && make
+echo $one
+hello
+```
+
+使用 `.EXPORT_ALL_VARIABLES` 将所有的变量都声明为全局的：
 
 ```makefile
 .EXPORT_ALL_VARIABLES:
-new_contents = "hello:\n\techo \$$(cooly)"
-
-cooly = "The subdirectory can see me!"
-
-all:
-    mkdir -p subdir
-    echo $(new_contents) | sed -e 's/^ //' > subdir/makefile
-    @echo "---MAKEFILE CONTENTS---"
-    @cd subdir && cat makefile
-    @echo "---END MAKEFILE CONTENTS---"
-    cd subdir && $(MAKE)
-
-clean:
-    rm -rf subdir
+one = "hello"
+two = "world"
 ```
 
 ### 覆盖命令行参数
 
-你可以使用 `override` 覆盖来自命令行的变量。在这里，我们使用 `make option_one=hi` 运行 `make`
+你可以使用 `override` 覆盖来自命令行的变量：
 
 ```makefile
 # 覆盖命令行参数
@@ -575,27 +606,37 @@ override option_one = did_override
 # 不会覆盖
 option_two = not_override
 all: 
-    echo $(option_one)
-    echo $(option_two)
+    @echo $(option_one)
+    @echo $(option_two)
 ```
 
-### define函数定义
+```bash-session
+$ make option_one=hi
+did_override
+not_override
+$ make option_two=hi
+did_override
+hi
+```
+
+### define 命令列表
+
+`define` 开头，`endef` 结尾：
 
 ```makefile
-one = export blah="I was set!"; echo $$blah
-
-define two
-export blah=set
-echo $$blah
+define say
+echo "hello"
+echo "word"
 endef
 
-# One 和 two 是不一样的
+all:
+    @$(say)
+```
 
-all: 
-    @echo "这条会打印 'I was set'"
-    @$(one)
-    @echo "这条不会打印 'I was set' 因为每条命令运行在不同的shell中"
-    @$(two)
+```bash-session
+$ make
+hello
+word
 ```
 
 ### 指定目标变量
@@ -626,7 +667,18 @@ other:
 
 ## 条件判断
 
-### if/else
+|关键字|说明|
+|:--:|:--|
+|ifeq|是否相等|
+|ifneq|是否不相等|
+|ifdef|是否定义|
+|ifndef|是否未定义|
+
+都以 `endif` 结尾
+
+
+
+### ifeq 判断变量相等
 
 ```makefile
 foo = ok
@@ -639,11 +691,11 @@ else
 endif
 ```
 
-### 判断变量为空
+### ifeq 判断变量为空
 
 ```makefile
 nullstring =
-foo = $(nullstring) # 末尾有一个空格
+foo = $(nullstring) # 末尾有一个空格，单空格变量
 
 all:
 ifeq ($(strip $(foo)),)
@@ -654,7 +706,9 @@ ifeq ($(nullstring),)
 endif
 ```
 
-### 检查变量是否定义
+### ifdef 检查变量是否定义
+
+ifdef 不展开变量引用，它只查看是否定义了某些内容
 
 ```makefile
 bar =
@@ -669,22 +723,34 @@ ifdef bar
 endif
 ```
 
-### 命令行参数 $(MAKEFLAGS)
+### $(MAKEFLAGS) 命令行参数
 
 ```makefile
-bar =
-foo = $(bar)
-
 all:
-# 查找 "-i" 参数。
-ifneq (,$(findstring i, $(MAKEFLAGS)))
-    echo "i was passed to MAKEFLAGS"
+# 搜索 -i 标志。MAKEFLAGS 只是一个单一字符的列表，每个参数一个字符。
+ifneq ($(findstring i, $(MAKEFLAGS)),)
+    @echo $(MAKEFLAGS)
+    @echo "i was passed to MAKEFLAGS"
 endif
+```
+
+```bash-session
+$ make -s -i
+is
+i was passed to MAKEFLAGS
 ```
 
 ## 函数
 
-函数主要只是用于文本处理。使用 `$(fn, arguments)` 或 `${fn, arguments}` 调用函数。
+> 更多函数：[Functions for Transforming Text](https://www.gnu.org/software/make/manual/html_node/Functions.html)
+
+函数主要用于文本处理。使用 `$(fn, arguments)` 或 `${fn, arguments}` 调用函数。
+
+### subst 字符串替换
+
+格式：`$(subst str,replacement,text)`
+
+使用 `str` 匹配 `text` 中的字符，再用 `replacement` 进行替换。
 
 ```makefile
 # 字符串替换，这里 totally 替换 not
@@ -693,7 +759,7 @@ all:
     @echo $(bar)
 ```
 
-如果要替换空格或逗号，请使用变量
+如果要替换空格或逗号，使用变量：
 
 ```makefile
 comma := ,
@@ -707,25 +773,25 @@ all:
     @echo $(bar)
 ```
 
-不要在第一个参数之后包含空格。这将被视为字符串的一部分。
+不要在第 2、3 个参数前后包含空格，这将被视为字符串的一部分：
 
 ```makefile
 comma := ,
 empty:=
 space := $(empty) $(empty)
 foo := a b c
-bar := $(subst $(space), $(comma) , $(foo)) # $(comma) 后面有一个空格
+bar := $(subst $(space), $(comma) , $(foo)) # $(comma) 和 $(foo) 前后有一个空格
 
 all: 
-    # 输出是 ", a , b , c"，注意空格
+    # 输出是 ", a , b , c"
     @echo $(bar)
 ```
 
-### 字符串替换
+### patsubst 字符串替换
 
-`$(patsubst pattern,replacement,text)` 执行以下操作：
+格式：`$(patsubst pattern,replacement,text)`
 
-使用 `pattern` 匹配 `text` 中的文件名，使用 `replacement` 进行替换。
+使用 `pattern` 匹配 `text` 中的字符，再用 `replacement` 进行替换。
 
 ```makefile
 foo := a.o b.o l.a c.o
@@ -735,7 +801,7 @@ two := $(foo:%.o=%.c)
 # 这是仅有后缀的简写，也等价于上述
 three := $(foo:.o=.c)
 
-# 输出 a.c b.c l.a c.c
+# 输出都是 a.c b.c l.a c.c
 all:
     echo $(one)
     echo $(two)
@@ -744,9 +810,9 @@ all:
 
 ### foreach 函数
 
-`$(foreach var,list,text)` ，它将一个单词列表（由空格分隔）转换为另一个单词列表。var 设置为列表中的每个单词，并为每个单词扩展文本。
+格式：`$(foreach var,list,text)` 
 
-这会在每个单词后附加一个感叹号：
+它将一个单词列表（由空格分隔）转换为另一个单词列表。var 设置为列表中的每个单词，并为每个单词扩展文本。
 
 ```makefile
 foo := who are you
@@ -759,6 +825,8 @@ all:
 ```
 
 ### if 函数
+
+格式：`$(if var,yes,no)`
 
 `if` 检查第一个参数是否为非空。如果是，则运行第二个参数，否则运行第三个。
 
@@ -777,11 +845,12 @@ all:
 
 ### call 函数
 
-Make 支持创建基本函数。语法是 `$(call variable,param,param)` 
+格式：`$(call variable,param,param)`
 
-`$(0)` 是变量名，`$(1)` 、`$(2)` 等是参数。
+Make 支持创建基本函数，使用 `call` 调用用户创建的函数：
 
 ```makefile
+# $(0) 是变量名，$(1) 、$(2) ... 等是参数。
 sweet_new_fn = Variable Name: $(0) First: $(1) Second: $(2) Empty Variable: $(3)
 
 all:
@@ -791,11 +860,12 @@ all:
 
 ### shell 函数
 
-这会调用 shell，但它用空格替换了换行符。
+格式：`$(shell command)`
+
+调用 shell 执行 command，command 输出内容中的换行符会被替换为空格，不便阅读。
 
 ```makefile
 all:
-    # 非常难看，因为换行符不见了
     @echo $(shell ls -la) 
 ```
 
@@ -803,48 +873,50 @@ all:
 
 ## 其他特性
 
-### 应用外部makefile
-
-`include` 的语法是
+### include 包含外部 makefile
 
 ```makefile
-include filenames
+include filename1 filename2 ...
 ```
 
 ### vpath 指令
 
-语法 `vpath <pattern> <directories>` ，`<pattern>` 会匹配 `<directories>` 中的文件名，多个目录使用 `空格` 或 `冒号` 分隔。
+make 默认搜索当前目录来匹配依赖文件（不包含子目录），`vpath` 用于添加匹配文件的搜索路径
 
-```
-vpath %.h ../headers ../other-directory
+语法： `vpath <pattern> <directories>`
 
-some_binary: ../headers blah.h
-    touch some_binary
-
-../headers:
-    mkdir ../headers
-
-blah.h:
-    touch ../headers/blah.h
-
-clean:
-    rm -rf ../headers
-    rm -f some_binary
-```
-
-### .phony
-
-make 并不生成“clean”这个文件。“伪目标”并不是一个文件，只是一个 `标签` ，由于“伪目标”不是文件，所以 make 无法生成它的依赖关系和决定它是否要执行。我们只有通过显式地指明这个“目标”才能让其生效（通过 `make clean` 命令）。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义了。
+`<pattern>` 会匹配 `<directories>` 中的文件名，多个目录使用 `空格` 或 `冒号` 分隔。
 
 ```makefile
-.PHONY clean
+# 添加 .c 文件搜索路径 dir1 dir2
+vpath %.c dir1 dir2
+vpath %.c dir1:dir2
+```
+
+### VPATH 变量
+
+作用同上，用法如下：
+
+```makefile
+# 添加所有文件的搜索路径 dir1 dir2
+VPATH := dir1 dir2
+VPATH := dir1:dir2
+
+```
+
+### .PHONY 伪目标
+
+伪目标只是一个标签，表示 make 不会生成该规则的目标文件。伪目标的取名不能和文件重名。
+
+```makefile
+.PHONY: clean
 clean:
     rm -f *.o
 ```
 
-### .delete_on_error
+### .DELETE\_ON\_ERROR
 
-当规则执行失败，`.delete_on_error` 会删除规则已生成的所有目标文件。
+当规则执行失败，`.DELETE_ON_ERROR` 会删除规则已生成的所有目标文件。
 
 ```makefile
 .DELETE_ON_ERROR:
@@ -862,7 +934,6 @@ two:
 ## makefile 模板
 
 ```makefile
-# 感谢 Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
 # 最终要生成的目标文件名
 TARGET_EXEC := final_program
 
@@ -873,7 +944,6 @@ SRC_DIRS := ./src
 
 # 找到所有需要编译的 C 和 C++ 文件
 # 注意 * 表达式周围的单引号。否则 Make 会错误地扩展这些。
-# Note the single quotes around the * expressions. Make will incorrectly expand these otherwise.
 SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 
 # 给每个 C/C++ 文件名加 .o 结尾
@@ -907,14 +977,11 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
     mkdir -p $(dir $@)
     $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-
 .PHONY: clean
 clean:
     rm -r $(BUILD_DIR)
 
-# Include the .d makefiles. The - at the front suppresses the errors of missing
-# Makefiles. Initially, all the .d files will be missing, and we don't want those
-# errors to show up.
+# 包含编译器生成的 .d 文件
 -include $(DEPS)
 ```
 

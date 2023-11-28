@@ -3,8 +3,8 @@ title: "xargs"
 date: "2023-08-08"
 description: ""
 summary: "eXtended ARGuments 参数扩展"
-categories: [ "cmd" ]
-tags: [ "" ]
+categories: [ "linux" ]
+tags: [ "cmd" ]
 ---
 
 - 参考文章：
@@ -22,7 +22,7 @@ xargs 可以将管道或标准输入（stdin）数据转换成命令行参数，
 
 xargs 将上一条命令的标准输出，作为后一条命令的参数
 
-```bash-session {hl_lines=[1]}
+```bash-session
 $ echo "--help" | xargs cat
 Usage: cat [OPTION]... [FILE]...
 ...
@@ -30,7 +30,7 @@ Usage: cat [OPTION]... [FILE]...
 
 管道  将上一条命令的标准输出，作为后一条命令的标准输入
 
-```bash-session {hl_lines=[1]}
+```bash-session
 $ echo "--help" | cat
 --help
 ```

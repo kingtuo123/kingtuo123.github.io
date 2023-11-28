@@ -51,8 +51,8 @@ VIDEO_CARDS="nvidia"
 
 执行：
 
-```
-emerge -avuDN @world
+```bash-session
+# emerge -avuDN @world
 ```
 
 ## 开机加载模块
@@ -89,8 +89,8 @@ GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1"
 
 然后执行：
 
-```
-grub-mkconfig -o /boot/grub/grub.cfg
+```bash-session
+# grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ## 自动生成 Xorg.conf 配置
