@@ -10,4 +10,4 @@ mkdir ./ftp 挂载
 curlftpfs ftp://server/catalog/ ./ftp/ -o user=username:password,utf8,ssl ssl ：使用 SSL/TLS 传输数据
 utf8 ： 使用 utf8 编码
 卸载 fusermount -u ~/example 或者
-umount ~/example</description></item></channel></rss>
+umount ~/example</description></item><item><title>Github 设置 SSH Key</title><link>https://kingtuo123.com/posts/github-set-sshkey/</link><pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/github-set-sshkey/</guid><description>通过 ssh 来操作 github 仓库</description></item><item><title>部署 hugo 至阿里 OSS</title><link>https://kingtuo123.com/posts/hugo-deploy/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>https://kingtuo123.com/posts/hugo-deploy/</guid><description>通过 github action 打包 hugo 静态页面并上传阿里 oss</description></item></channel></rss>
