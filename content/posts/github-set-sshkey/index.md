@@ -3,64 +3,47 @@ title: "Github 设置 SSH Key"
 date: "2021-01-02"
 description: ""
 summary: "通过 ssh 来操作 github 仓库"
-categories: [ "github" ]
+categories: [ "linux" ]
 tags: [ "github" ]
 ---
 
 
 ## 创建 SSH Key
 
-运行下列命令创建 SSH Key，使用 github 帐号的邮箱。
+运行下列命令创建 SSH Key，使用 github 帐号的邮箱：
 
-```text
-ssh-keygen -t rsa -C "kingtuo123@email.com"
-```
-
-输出如下，一路回车
-
-```text
+```bash-session
+$ ssh-keygen -t rsa -C "kingtuo123@email.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/king/.ssh/id_rsa): 
 Enter passphrase (empty for no passphrase): 
 Enter same passphrase again: 
 ```
 
-以上会在 `～/.ssh` 目录下生成 `id_rsa` （私钥）和 `id_rsa.pub` （公钥）文件。
+以上会在 `～/.ssh` 目录下生成 `id_rsa`（私钥）和 `id_rsa.pub`（公钥）
 
 ## 配置 git ssh 默认私钥
 
-`ssh` 默认使用的私钥文件定义在 `/etc/ssh/ssh_config` 或 `~/.ssh/config`，如下：
+ssh 配置文件：`/etc/ssh/ssh_config` 或 `~/.ssh/config`
 
-```bash
-#   这里是默认身份文件路径
-#   IdentityFile ~/.ssh/id_rsa
-#   IdentityFile ~/.ssh/id_dsa
-#   IdentityFile ~/.ssh/id_ecdsa
-#   IdentityFile ~/.ssh/id_ed25519
-```
-
-为 `github.com` 指定密钥，修改 `~/.ssh/config`：
+编辑 `~/.ssh/config`：
 
 ```
 Host github.com
-    IdentityFile /home/user/.ssh/id_rsa_gh
+    IdentityFile /home/king/.ssh/id_rsa
 ```
 
 > 建议给 `id_rsa` 重命名，以免和其他密钥搞混
 
-
-
-
-
 ## Github 添加 SSH Key
 
-查看公钥的内容，执行：
+查看公钥的内容：
 
-```bash
-cat ~/.ssh/id_rsa.pub
+```bash-session
+$ cat ~/.ssh/id_rsa.pub
 ```
 
-打开 github 主页右上角头像，在 **`Settings -> SSH and GPG keys`** 中添加 SSH Key，将上面的输出复制进去。
+打开 github 主页，`头像` -> `Settings` -> `SSH and GPG keys` -> `New SSH Key`，将上面的输出复制进去。
 
 ## 验证
 

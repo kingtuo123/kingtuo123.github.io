@@ -21,6 +21,7 @@
 	--a-hover: rgba(236, 239, 244, 0.45);
 	--border: rgba(216, 222, 233, 0.8);
 	--tertiary: rgb(255, 255, 255);
+	--img-shadow:rgba(184, 194, 215, 0.3) 0px 0px 4px 2px;
 }
 
 .dark{
@@ -40,6 +41,7 @@
 	--a-hover: rgba(76, 86, 106, 0.8); 
 	--border: rgba(59, 66, 82, 0.8);
 	--tertiary: rgb(46, 52, 64);
+	--img-shadow:rgba(15, 17, 21, 0.3) 0px 0px 4px 2px;
 }
 
 body {
@@ -159,7 +161,7 @@ body {
 }
 
 .post-content img:hover{
-	/*box-shadow: var(--box-shadow);*/
+	box-shadow: var(--img-shadow);
 }
 
 .post-content a:not(.anchor) {
