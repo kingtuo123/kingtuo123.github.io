@@ -5,7 +5,7 @@
     --nav-width: 1024px;
     --main-width: 800px;
     --header-height: 60px;
-    --footer-height: 100px;
+    --footer-height: 125px;
     --radius: 8px;
 	--hljs-bg: rgb(46, 52, 64);
 	--code-bg: rgb(242, 244, 248);
@@ -214,6 +214,14 @@ body {
 
 .top-link {
 	background-color: var(--toc-hover);
+}
+
+.footer{
+	padding: 40px 0 0 0;
+}
+
+.post-tags{
+	display: none;
 }
 
 .extend_footer a {
