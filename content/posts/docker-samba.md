@@ -2,7 +2,7 @@
 title: "Docker Samba"
 date: "2023-04-18"
 description: ""
-summary: "构建 Samba 镜像 / 配置"
+summary: "在 docker 中运行 samba"
 tags: [ "samba" ]
 categories: [ "docker" ]
 ---
@@ -25,7 +25,7 @@ RUN set -ex && \
 CMD /etc/init.d/smbd start && /bin/bash
 ```
 
-> 最后一句 `&& /bin/bash` 防止容器直接退出
+> `&& /bin/bash` 防止容器直接退出
 
 ## 构建镜像
 
