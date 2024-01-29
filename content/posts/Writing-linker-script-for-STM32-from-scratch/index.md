@@ -3,22 +3,22 @@ title: "从零编写 STM32 链接脚本"
 date: "2023-08-12"
 description: ""
 summary: "writing linker script for stm32 from scratch"
-categories: [ "stm32" ]
+categories: [ "embedded" ]
 tags: [ "stm32"]
 ---
 
 
-- 参考文章：
-  - [Writing linker script for STM32 from scratch](https://itachi.pl/hardware/writing_linker_script_for_stm32_from_scratch)
-  - [链接脚本(Linker Scripts)语法和规则解析](https://www.cnblogs.com/jianhua1992/p/16852784.html)
-  - [LD链接脚本解析](https://blog.csdn.net/weixin_39177986/article/details/108455827)
-  - [链接脚本中 AT> 的作用 ](https://www.cnblogs.com/LogicBai/p/16982841.html)
-  - **[LD 链接器](https://sourceware.org/binutils/docs/ld/index.html)**
-  - [How to get the load address of .data section](https://stackoverflow.com/questions/68670510/avr-gnu-linker-script-how-to-get-the-load-address-of-data-section)
-  - [C代码中如何使用链接脚本中定义的变量](https://cloud.tencent.com/developer/article/1709022)
-  - [From Zero to main(): Bare metal C](https://interrupt.memfault.com/blog/zero-to-main-1)
-  - [From Zero to main(): Demystifying Firmware Linker Scripts](https://interrupt.memfault.com/blog/how-to-write-linker-scripts-for-firmware)
-  - [STM32的启动](https://www.cnblogs.com/The-explosion/p/13652387.html)
+参考文章
+- [Writing linker script for STM32 from scratch](https://itachi.pl/hardware/writing_linker_script_for_stm32_from_scratch)
+- [链接脚本(Linker Scripts)语法和规则解析](https://www.cnblogs.com/jianhua1992/p/16852784.html)
+- [LD链接脚本解析](https://blog.csdn.net/weixin_39177986/article/details/108455827)
+- [链接脚本中 AT> 的作用 ](https://www.cnblogs.com/LogicBai/p/16982841.html)
+- **[LD 链接器](https://sourceware.org/binutils/docs/ld/index.html)**
+- [How to get the load address of .data section](https://stackoverflow.com/questions/68670510/avr-gnu-linker-script-how-to-get-the-load-address-of-data-section)
+- [C代码中如何使用链接脚本中定义的变量](https://cloud.tencent.com/developer/article/1709022)
+- [From Zero to main(): Bare metal C](https://interrupt.memfault.com/blog/zero-to-main-1)
+- [From Zero to main(): Demystifying Firmware Linker Scripts](https://interrupt.memfault.com/blog/how-to-write-linker-scripts-for-firmware)
+- [STM32的启动](https://www.cnblogs.com/The-explosion/p/13652387.html)
 
 
 ## 硬件平台

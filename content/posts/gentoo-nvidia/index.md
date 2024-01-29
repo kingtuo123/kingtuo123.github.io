@@ -1,20 +1,17 @@
 ---
 title: "Gentoo Nvidia 驱动安装"
 date: "2023-10-30"
-summary: "Nvidia Optimus"
+summary: "笔记本双显卡 Nvidia Optimus 驱动"
 description: ""
-tags: [ "linux" ]
-math: false
 categories: [ "linux"  ]
+tags: [ "gentoo" ]
 ---
 
-- 参考文章：
-  - [NVIDIA/Optimus](https://wiki.gentoo.org/wiki/NVIDIA/Optimus)
-  - [NVIDIA/nvidia-drivers](https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers)
-  - [NVIDIA on Linux](https://comfy.guide/client/nvidia/)
-  - [Nvidia Optimus (youtube)](https://www.youtube.com/watch?v=Pn2iUgW3l6w)
-
-> 笔记本双显卡
+参考文章
+- [NVIDIA/Optimus](https://wiki.gentoo.org/wiki/NVIDIA/Optimus)
+- [NVIDIA/nvidia-drivers](https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers)
+- [NVIDIA on Linux](https://comfy.guide/client/nvidia/)
+- [Nvidia Optimus (youtube)](https://www.youtube.com/watch?v=Pn2iUgW3l6w)
 
 ## 内核配置
 

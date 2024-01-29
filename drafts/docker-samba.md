@@ -7,11 +7,7 @@ tags: [ "samba" ]
 categories: [ "docker" ]
 ---
 
-## 准备
-
-创建 `dockerfile` 和 `start.sh`
-
-### dockerfile
+## Dockerfile 
 
 ```dockerfile
 FROM ubuntu:latest
@@ -20,42 +16,61 @@ LABEL author="king"
 
 EXPOSE 445 139
 
-COPY start.sh /root/
-
 RUN set -ex && \
         sed -i s@/archive.ubuntu.com/@/mirrors.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list && \
         apt clean && \
         apt update && \
-        apt -y install samba && \
-        chmod u+x /root/start.sh
+        apt -y install samba
 
-CMD /root/start.sh
+CMD /etc/init.d/smbd start && /bin/bash
 ```
 
-### start.sh
-
-```shell
-#!/bin/bash
-
-useradd -r -s /usr/sbin/nologin -u $UID $UNAME
-echo -e "$UPASSWD\n$UPASSWD" | smbpasswd -a $UNAME
-/etc/init.d/smbd start
-/bin/bash
-```
-
-> 末尾 `/bin/bash` 防止容器直接退出
+> `&& /bin/bash` 防止容器直接退出
 
 ## 构建镜像
 
-```bash-session
+```
 $ docker build -t mysamba:latest .
 ```
 
+## 添加 Samba 用户
+
+进入容器：
+
+```
+$ docker run -it --rm \
+    -v /etc/passwd:/etc/passwd:ro \
+    -v /etc/group:/etc/group:ro \
+    -v /var/lib/samba/private/:/var/lib/samba/private/:rw \
+    mysamba /bin/bash
+```
+
+
+
+> 注意：添加的 samba 用户是要已存在的 linux 用户，所以要映射`passwd` 和 `group` 两个文件。
+当然也可以不映射直接在容器内新增用户/组。
+
+> `/var/lib/samba/private/` 目录存储了 samba 的用户信息及密码等数据，如果使用一次性的容器（\-\-rm）需要映射该目录。
+
+添加 samba 用户：
+
+```
+# smbpasswd -a king
+```
+
+打印用户列表：
+
+```
+# pdbedit -L
+king:1000:
+```
+
+
 ## 配置 Samba
 
-本地创建 `smb.conf` 配置文件，参考 [Samba 安装及配置](../samba-config/)
+本地创建 `/etc/samba/smb.conf` 配置文件，参考 [Samba 安装及配置](../samba-config/)
 
-```text
+```
 [global]
 workgroup = Home
 netbios name = king's laptop
@@ -70,8 +85,8 @@ map to guest = Bad User
 max connections = 0
 
 # 可guest登录，可读，指定用户可写
-[Shared]
-path = /home/king/Shared
+[public]
+path = /home/king/Public
 security = share
 public = yes
 writable = yes
@@ -80,7 +95,7 @@ available = yes
 browseable = yes
 
 # 需要用户登录，可读写
-[Private]
+[private]
 path = /home/king
 public = no
 valid users = king
@@ -94,20 +109,18 @@ write list = king
 
 ## 运行容器
 
-```text
+```
 $ docker run -it --rm -d \
     --name samba \
-    -e UID=1000 \
-    -e UNAME=king \
-    -e UPASSWD=123456 \
+    -v /etc/passwd:/etc/passwd:ro \
+    -v /etc/group:/etc/group:ro \
+    -v /etc/samba:/etc/samba:ro \
+    -v /var/lib/samba/private/:/var/lib/samba/private/:rw \
     -p 445:445 \
     -p 139:139 \
-    -v /home/king/Docker/samba/:/etc/samba:ro \
     -v /home/king:/home/king:rw \
-    -v /home/king/Shared:/home/king/Shared:rw \
+    -v /home/king/Public:/home/king/Public:rw \
     mysamba
 ```
-
-`/home/king/Docker/samba` 为 `smb.conf` 文件所在目录
 
 `/home/king` 和 `/home/king/Public` 这两个目录是在 `smb.conf` 中配置的共享目录。

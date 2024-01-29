@@ -7,12 +7,10 @@ categories: [ "stm32", "freertos" ]
 tags: [ "" ]
 ---
 
-- 参考文章
-  - [FreeRTOS 官方入门指南](https://freertos.org/zh-cn-cmn-s/FreeRTOS-quick-start-guide.html)
-  - [韦东山 FreeRTOS 系列教程](https://blog.csdn.net/thisway_diy/article/details/121398500)
-  - [FreeRTOS任务调度](https://zhuanlan.zhihu.com/p/554825433)
-
-
+参考文章
+- [FreeRTOS 官方入门指南](https://freertos.org/zh-cn-cmn-s/FreeRTOS-quick-start-guide.html)
+- [韦东山 FreeRTOS 系列教程](https://blog.csdn.net/thisway_diy/article/details/121398500)
+- [FreeRTOS任务调度](https://zhuanlan.zhihu.com/p/554825433)
 - [本文 Demo 下载](https://github.com/kingtuo123/stm32f103x-template)（STM32F103ZET6）
 
 ## 目录结构

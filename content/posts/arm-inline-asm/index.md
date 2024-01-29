@@ -3,20 +3,20 @@ title: "ARM 内联汇编"
 date: "2023-08-19"
 description: ""
 summary: "arm inline assembly"
-categories: [ "asm" ]
-tags: [ "" ]
+categories: [ "embedded" ]
+tags: [ "arm", "asm" ]
 ---
 
-- 参考文章：
-  - [ARM GCC Inline Assembler Cookbook](http://www.ethernut.de/en/documents/arm-inline-asm.html)
-  - [Writing Arm assembly code](https://developer.arm.com/documentation/102694/0100/Introduction)
-  - [ARM内联汇编](https://finsenty54.github.io/2020/09/24/ARM%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/)
-  - [[ARM]内联汇编](https://blog.csdn.net/myprogram_player/article/details/121372941)
-  - [从0学ARM-内联汇编、混合汇编、ATPCS规则](https://zhuanlan.zhihu.com/p/338563574)
-  - [ARM中C语言和汇编语言的混合编程](https://blog.csdn.net/andrewgithub/article/details/79164865)
-  - [内联汇编语句](https://www.ibm.com/docs/zh/openxl-c-and-cpp-aix/17.1.0?topic=features-inline-assembly-statements)
-  - [移动端arm cpu优化学习笔记第4弹--内联汇编入门](https://zhuanlan.zhihu.com/p/143328317)
-  - **[Linux Kernel 源码学习必备知识之：GCC 内联汇编](https://zhuanlan.zhihu.com/p/606376595)** **\<-推荐看这篇**
+参考文章
+- [ARM GCC Inline Assembler Cookbook](http://www.ethernut.de/en/documents/arm-inline-asm.html)
+- [Writing Arm assembly code](https://developer.arm.com/documentation/102694/0100/Introduction)
+- [ARM内联汇编](https://finsenty54.github.io/2020/09/24/ARM%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/)
+- [[ARM]内联汇编](https://blog.csdn.net/myprogram_player/article/details/121372941)
+- [从0学ARM-内联汇编、混合汇编、ATPCS规则](https://zhuanlan.zhihu.com/p/338563574)
+- [ARM中C语言和汇编语言的混合编程](https://blog.csdn.net/andrewgithub/article/details/79164865)
+- [内联汇编语句](https://www.ibm.com/docs/zh/openxl-c-and-cpp-aix/17.1.0?topic=features-inline-assembly-statements)
+- [移动端arm cpu优化学习笔记第4弹--内联汇编入门](https://zhuanlan.zhihu.com/p/143328317)
+- **[Linux Kernel 源码学习必备知识之：GCC 内联汇编](https://zhuanlan.zhihu.com/p/606376595)** **\<-推荐看这篇**
 
 
 ## ARM GCC
