@@ -31,6 +31,8 @@ ssh 配置文件：`/etc/ssh/ssh_config` 或 `~/.ssh/config`
 ```
 Host github.com
     IdentityFile /home/king/.ssh/id_rsa
+    Hostname ssh.github.com
+    Port 443
 ```
 
 > 建议给 `id_rsa` 重命名，以免和其他密钥搞混
