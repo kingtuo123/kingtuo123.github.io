@@ -1,40 +1,37 @@
 ---
 title: "V2rayA 安装配置"
 date: "2022-06-13"
-description: ""
-summary: "Linux下V2rayA安装配置"
+description: "V2rayA 是 V2ray-core 的客户端"
+summary: "V2rayA 是 V2ray-core 的客户端"
 categories: [ "linux" ]
 tags: [ "linux" ]
 ---
 
-参考资料：
+参考文章
 
-- [V2rayA 文档](https://v2raya.org/) 有完整的安装教程
-- [V2rayA 仓库](https://github.com/v2rayA/v2rayA)
-- [v2ray-core 仓库](https://github.com/v2fly/v2ray-core)
+- [V2rayA 主页](https://v2raya.org/)
+- [V2rayA Github 仓库](https://github.com/v2rayA/v2rayA)
+- [v2ray-core Github 仓库](https://github.com/v2fly/v2ray-core)
 
 
+## 安装 V2ray-core
 
-## 安装 v2ray-core
+下载：[v2ray-core release](https://github.com/v2fly/v2ray-core/releases)
 
-V2rayA 是 Linux 的 V2Ray 客户端，依赖 v2ray-core 运行。
-
-从这里下载 [v2ray-core release](https://github.com/v2fly/v2ray-core/releases) 。
-
-解压后文件夹内有 `v2ctl` 和 `v2ray`， `ln` 链接一下即可。
+解压后有 `v2ctl` 和 `v2ray`
 
 ## 安装 V2rayA
 
-从这里下载 [v2raya release](https://github.com/v2rayA/v2rayA/releases)。
+下载：[v2raya release](https://github.com/v2rayA/v2rayA/releases)
 
-解压后文件夹内有 `v2raya`，链接一下。
+解压后有 `v2raya`
 
-## 客户端设置
+## 运行 V2rayA
 
-root 运行 `sudo v2raya` 。
+完整功能需要 root 运行 `sudo v2raya`
 
-非 root 运行 `v2raya --lite` ，但没有透明代理等功能。
+非 root 运行 `v2raya --lite` ，但没有透明代理等功能
 
-浏览器打开 `127.0.0.1:2017`，首次需要设置用户名密码。
+浏览器打开 `127.0.0.1:2017`，首次需要设置用户名密码
 
-忘记密码执行 `sudo v2raya --reset-password` 重置。
+忘记密码执行 `sudo v2raya --reset-password` 重置

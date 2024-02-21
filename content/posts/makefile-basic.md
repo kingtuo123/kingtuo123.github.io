@@ -7,9 +7,10 @@ categories: [ "linux" ]
 tags: [ "makefile" ]
 ---
 
-- 参考文章：
-  - [Makefile Tutorial](https://makefiletutorial.com/#getting-started)
-  - [GNU make](https://www.gnu.org/savannah-checkouts/gnu/make/manual/html_node/)
+参考文章
+
+- [Makefile Tutorial](https://makefiletutorial.com/#getting-started)
+- [GNU make](https://www.gnu.org/savannah-checkouts/gnu/make/manual/html_node/)
 
 ## 语法
 

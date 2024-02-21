@@ -1,14 +1,17 @@
 ---
-title: "Curlftpfs挂载ftp到本地"
+title: "Curlftpfs 挂载 FTP 到本地"
 date: "2021-03-09"
 description: ""
+summary: ""
 categories: [ "linux" ]
-tags: [ "gentoo","linux","ftp"]
+tags: [ "gentoo" ]
 ---
 
-- 参考 [CurlFtpFS](https://wiki.gentoo.org/wiki/CurlFtpFS)
+参考文章
 
-## 内核选项
+- [Gentoo Wiki / CurlFtpFS](https://wiki.gentoo.org/wiki/CurlFtpFS)
+
+## 内核配置
 
 ```text
 File systems --->
@@ -17,36 +20,38 @@ File systems --->
 
 ## 安装
 
-```bash
-emerge -av net-fs/curlftpfs
+```shell-session
+$ emerge -av net-fs/curlftpfs
 ```
 
-## 以普通用户挂载
+## 挂载
 
-首先，创建挂载点
+创建挂载点
 
-```text
-mkdir ./ftp
+```shell-session
+$ mkdir ./ftp
 ```
 
-挂载
+挂载，如果没有用户名和密码则留空，保留冒号
 
-```bash
-curlftpfs ftp://server/catalog/ ./ftp/ -o user=username:password,utf8,ssl
+```shell-session
+$ curlftpfs ftp://server/catalog/ ./ftp/ -o user=username:password,utf8,ssl
 ```
+
+参数说明：
 
 `ssl` ：使用 SSL/TLS 传输数据
 
-`utf8` ： 使用 utf8 编码
+`utf8` ：使用 utf8 编码
 
 ## 卸载
 
-```bash
-fusermount -u ~/example
+```shell-session
+$ fusermount -u ~/example
 ```
 
 或者
 
-```bash
-umount ~/example
+```shell-session
+$ umount ~/example
 ```

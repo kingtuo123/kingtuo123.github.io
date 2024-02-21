@@ -3,9 +3,9 @@ title: "STM32 ISP 一键下载"
 date: "2022-05-11"
 summary: "ISP 一键下载原理，windows 和 linux 平台 ISP 下载方法"
 description: ""
-tags: [ "stm32","linux" ]
+categories: [ "embedded" ]
+tags: [ "stm32" ]
 math: false
-categories: [ "stm32","linux","isp" ]
 ---
 
 ## stm32 启动模式
@@ -24,38 +24,36 @@ categories: [ "stm32","linux","isp" ]
 
 本文以野火霸道V2.0开发板为例
 
-<div align="center">
+<div align="left">
     <img src="3.png" style="max-height:320px"></img>
 </div>
 
-<div align="center">
+<div align="left">
     <img src="2.png" style="max-height:320px"></img>
 </div>
 
-要进入bootloader，有以下流程:
+要进入 bootloader，有以下流程:
 
-1. **BOOT1** 跳线接  **GND**
-2. **DTR** 置高电平，**RTS** 置低电平
-3. **Q3** 被导通，**NRST** 被拉低，单片机复位
-4. **Q5** 被导通，**BOOT0** 被拉高
-5. **DTR** 置低电平，释放复位
-6. 启动进入 **BootLoader**
+1. `BOOT1` 跳线接 `GND`
+2. `DTR` 置高电平，`RTS` 置低电平
+3. `Q3` 被导通，`NRST` 被拉低，单片机复位
+4. `Q5` 被导通，`BOOT0` 被拉高
+5. `DTR` 置低电平，释放复位
+6. 启动进入 BootLoader
 
-**这里注意CH340G 芯片，DTR 和 RTS 输出电平是反向的（芯片图DTR上方有一横线）。所以实际是， DTR 低电平复位，RTS 高电平进入BootLoader。**
+> 这里注意CH340G 芯片，DTR 和 RTS 输出电平是反向的（芯片图DTR上方有一横线）。所以实际是， DTR 低电平复位，RTS 高电平进入BootLoader。
 
 ## Windows ISP 下载
 
-<div align="center">
+<div align="left">
     <img src="1.png" style="max-height:500px"></img>
 </div>
 
-如上图所示：DTR 低电平复位，RTS 高电平进入BootLoader。
+如上图所示：DTR 低电平复位，RTS 高电平进入 BootLoader。
 
 ## Linux ISP 下载
 
-Linux 下使用 [stm32flash](https://sourceforge.net/projects/stm32flash/) 下载。下载解压后文件夹内有 `stm32flash_linux` 。
-
-该命令有以下参数
+使用 [stm32flash](https://sourceforge.net/projects/stm32flash/)，该命令有以下参数
 
 ```bash
 Usage: stm32flash_linux [-bvngfhc] [-[rw] filename] [tty_device|i2c_device]
@@ -94,19 +92,22 @@ GPIO sequence:
 读取芯片信息，执行以下命令（root）：
 
 ```text
-stm32flash_linux -b 115200 -i '-dtr&rts,dtr:-dtr&-rts,dtr' /dev/ttyUSB0
+stm32flash -b 115200 -i '-dtr&rts,dtr:-dtr&-rts,dtr' /dev/ttyUSB0
 ```
+
 参数说明：
-- -b 115200 ，指定115200波特率
-- -dtr&rts,dtr
-   - -dtr& 拉低复位
-   - rts, 拉高 BOOT0，延时100ms
-   - dtr 释放复位，进入 BootLoader
-- -dtr&-rts,dtr
-   - -dtr& 拉低复位
-   - -rts, 拉低 BOOT0，延时100ms
-   - dtr 释放复位，flash启动进入用户程序
-- /dev/ttyUSB0，设备串口
+- `-b 115200` 
+   - 指定 115200 波特率
+- `-dtr&rts,dtr`
+   - `-dtr&` 拉低复位
+   - `rts,` 拉高 BOOT0，延时100ms
+   - `dtr` 释放复位，进入 BootLoader
+- `-dtr&-rts,dtr`
+   - `-dtr&` 拉低复位
+   - `-rts,` 拉低 BOOT0，延时100ms
+   - `dtr` 释放复位，Flash 启动进入用户程序
+- `/dev/ttyUSB0`
+   - 串口设备
 
 上述命令执行成功输出以下信息：
 
@@ -140,5 +141,5 @@ GPIO sequence end
 下载程序，执行以下命令
 
 ```text
-stm32flash_linux -b 115200 -i '-dtr&rts,dtr:-dtr&-rts,dtr' -v -w test.bin /dev/ttyUSB0
+stm32flash -b 115200 -i '-dtr&rts,dtr:-dtr&-rts,dtr' -v -w test.bin /dev/ttyUSB0
 ```

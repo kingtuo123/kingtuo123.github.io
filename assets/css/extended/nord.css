@@ -70,7 +70,7 @@
 /* CommentSingle */ .chroma .c1 { color: #616e87; font-style: normal }
 /* CommentSpecial */ .chroma .cs { color: #616e87; font-style: normal }
 /* CommentPreproc */ .chroma .cp { color: #81a1c1; font-style:normal }
-/* CommentPreprocFile */ .chroma .cpf { color: #a3be8c }
+/* CommentPreprocFile */ .chroma .cpf { color: #a3be8c; font-style:normal }
 /* Generic */ .chroma .g {  }
 /* GenericDeleted */ .chroma .gd { color: #bf616a }
 /* GenericEmph */ .chroma .ge { font-style: normal }

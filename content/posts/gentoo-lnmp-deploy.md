@@ -2,23 +2,23 @@
 title: "Gentoo 搭建 lnmp 环境"
 date: "2021-06-08"
 description: ""
-categories: [ "linux","gentoo" ]
-tags: [ "gentoo","linux" ]
+categories: [ "linux" ]
+tags: [ "gentoo" ]
 ---
 
-## 安装配置Mysql
+## 安装配置 Mysql
 
-```bash
-emerge -av dev-db/mysql
+```bash-session
+# emerge -av dev-db/mysql
 ```
 
 首次安装需配置root密码
 
-```bash
-emerge --config dev-db/mysql
+```bash-session
+# emerge --config dev-db/mysql
 ```
 
-修改配置文件,编辑`/etc/mysql/my.cnf`
+修改配置文件 `/etc/mysql/my.cnf`
 
 ```bash
 [client]
@@ -32,21 +32,21 @@ socket=/var/run/mysqld/mysqld.sock
 datadir=/var/lib/mysql/
 ```
 
-启动mysql
+启动 mysql
 
-```bash
-rc-service mysql start
+```bash-session
+# rc-service mysql start
 ```
 
-登陆mysql
+登陆 mysql
 
-```bash
-mysql -u root -p
+```bash-session
+# mysql -u root -p
 ```
 
-查看端口
+查看端口，port 为 0 表示远程连接关闭
 
-```
+```text
 mysql>  show variables like 'port';
 +---------------+-------+
 | Variable_name | Value |
@@ -56,11 +56,10 @@ mysql>  show variables like 'port';
 1 row in set (0.01 sec)
 ```
 
-port为0,远程连接关闭
 
-查看其他设置
+查看 socket 路径
 
-```
+```text
 mysql>  show variables like 'socket';
 +---------------+-----------------------------+
 | Variable_name | Value                       |
@@ -68,7 +67,11 @@ mysql>  show variables like 'socket';
 | socket        | /var/run/mysqld/mysqld.sock |
 +---------------+-----------------------------+
 1 row in set (0.01 sec)
+```
 
+查看数据库路径
+
+```text
 mysql>  show variables like 'datadir';
 +---------------+-----------------+
 | Variable_name | Value           |
@@ -78,37 +81,36 @@ mysql>  show variables like 'datadir';
 1 row in set (0.00 sec)
 ```
 
-## 安装配置php
+## 安装配置 php
 
-修改USE，编辑文件`/etc/portage/package.use/package.use`，添加如下
+添加 USE 标记，编辑 `/etc/portage/package.use/package.use`，添加如下
 
+```bash-session
+# dev-lang/php fpm mysql mysqli gd
 ```
-dev-lang/php fpm mysql mysqli gd
-```
-按需添加，查看各项USE标记含义，执行`equery u dev-lang/php`
+按需添加，查看各项USE标记含义，执行 `equery u dev-lang/php`
 ```
 fpm     : Enable the FastCGI Process Manager SAPI
 mysql   : Add mySQL Database support
 mysqli  : Add support for the improved mySQL libraries
 gd      : Adds support for gd (bundled with PHP)
 ```
-安装`dev-lang/php`，默认会安装最新的php7
+安装 `dev-lang/php`，默认会安装最新的 php
 
-```
-emerge -av dev-lang/php
+```bash-session
+# emerge -av dev-lang/php
 ```
 
-查看版本，执行`eselect php list cli`或者执行`php -v`
+查看版本，执行 `eselect php list cli` 或者执行 `php -v`
 
-```
+```bash-session
+# eselect php list cli
 [1]   php7.3 *
 ```
 
-php默认配置文件路径`/etc/php/`
+php 默认配置文件路径 `/etc/php/`，修改 `/etc/php/fpm-php7.3/fpm.d/www.conf` 文件
 
-修改`/etc/php/fpm-php7.3/fpm.d/www.conf`文件
-
-```
+```text
 user = nginx
 group = nginx 
 ;默认是开9000端口用TCP连接，没有必要，注释掉改为本地socket连接
@@ -119,25 +121,25 @@ listen.group = nginx
 listen.mode = 0660
 ```
 
-修改`/etc/php/fpm-php7.3/php.ini`,修改下面内容
+编辑 `/etc/php/fpm-php7.3/php.ini`，修改下面内容
 
-```
+```text
 ;去掉下面这行注释并在末尾添加.html，支持解析html
 security.limit_extensions = .php .php4 .php5 .php7 .html
 cgi.fix_pathinfo=0
 ```
 
-> 百度了下cgi.fix_pathinfo，如果PHP的配置里 cgi.fix_pathinfo=1，会导致安全问题，这个问题只存在于 Nginx 服务器中，Apache和IIS都不会有这个问题
+> 百度了下 cgi.fix_pathinfo，如果 PHP 的配置里 cgi.fix_pathinfo=1，会导致安全问题，这个问题只存在于 Nginx 服务器中，Apache 和 IIS 都不会有这个问题
 
-## 安装配置nginx
+## 安装配置 nginx
 
-执行`equery u nginx`检查USE标记`nginx_modules_http_fastcgi`是否默认添加
+执行 `equery u nginx` 检查 USE 标记 `nginx_modules_http_fastcgi` 是否默认添加
 
+```bash-session
+# emerge -av www-servers/nginx
 ```
-emerge -av www-servers/nginx
-```
 
-默认配置文件路径`/etc/nginx/`,修改`nginx.conf`
+默认配置文件路径 `/etc/nginx/`，修改 `nginx.conf`
 
 ```nginx
 server {
@@ -164,28 +166,28 @@ server {
 
 ```
 
-添加nginx到test用户组
+添加 nginx 到 test 用户组
 
-```
-usermod -a -G  test nginx
+```bash-session
+# usermod -a -G  test nginx
 ```
 
 查看用户组
 
-```
-root# groups nginx
+```bash-session
+# groups nginx
 test nginx
 ```
 
-最后，确保网站主目录的`group`有`r`和`x`权限。
+最后，确保网站主目录的 group 有`r`和`x`权限。
 
 ## 测试
 
-启动nginx，执行`rc-service nginx start`，同样再启动php-fpm和mysql。
+启动 nginx，执行`rc-service nginx start`，同样再启动 php-fpm 和 mysql
 
 可以添加开机运行，执行`rc-update add <服务名称> default`
 
-在网站主目录下新建index.html,写入以下内容
+在网站主目录下新建 index.html，写入以下内容
 
 ```php
 <?php
@@ -197,5 +199,5 @@ if ($con){
 
 ```
 
-打开浏览器输入`127.0.0.1`，看到连接成功，配置成功。
+打开浏览器输入`127.0.0.1`，看到连接成功，配置成功
 

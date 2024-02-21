@@ -1,10 +1,10 @@
 ---
-title: "Gentoo ebuild"
+title: "[ unfinished ] Gentoo ebuild"
 date: "2024-01-29"
 summary: "学习编写简单的 ebuild 及建立本地仓库"
 description: ""
 categories: [ "linux" ]
-tags: [ "gentoo" ]
+tags: [ "gentoo", "unfinished" ]
 ---
 
 
@@ -13,6 +13,7 @@ tags: [ "gentoo" ]
 - [Gentoo Devmanual](https://devmanual.gentoo.org/)
 - [Ebuild Writing](https://devmanual.gentoo.org/ebuild-writing/index.html)
 
+> Gentoo 默认 ebuild 仓库路径 `/var/db/repos/gentoo`
 
 ## 概览
 
@@ -35,15 +36,14 @@ SLOT="0"
 KEYWORDS="~mips ~sparc ~x86"
 
 src_configure() {
-	econf --with-posix-regex
+    econf --with-posix-regex
 }
 
 src_install() {
-	emake DESTDIR="${D}" install
+    emake DESTDIR="${D}" install
 
-	dodoc FAQ NEWS README
+    dodoc FAQ NEWS README
 }
-
 ```
 
 ### 基本格式
@@ -54,24 +54,33 @@ ebuild 文件都包含头部信息变量
 
 ebuild 文件使用四个空格长度的 Tab 缩进
 
-### 变量
+### 信息变量
 
 `EAPI`：
 
 `DESCRIPTION`：对包及其用途的描述文字
 
-`HOMEPAGE`：包主页的链接，如 `https://`
+`HOMEPAGE`：主页地址
+
+`SRC_URI`：源码地址
+
+`LICENSE`：许可证
+
+`SLOT`：插槽
+
+`KEYWORDS`：已经通过测试的版本。一般对于新编写的 ebuild 使用 `~关键字`，不会直接提交到稳定版
+
+> 软件包支持同时安装多个版本，这种特性成为插槽
 
 
-## 编写 Ebuild
+### 构建函数
 
-### 文件命名规则
+`src_configure`：Portage 需要配置软件包时会调用该函数
 
-文件名格式：`name-version.ebuild`
+`econf`：`./configure` 的封装函数，如果 `econf` 出错，Portage 会停止安装
 
-version 由一个或多个数字组成，可以用小数点分隔，如 1.2.3，20050108
+`src_install`：Portage 安装软件包时会调用该函数
 
-最后一个数字后面可能有一个字母
+`dodoc`：将文件安装到 `/usr/share/doc` 的函数
 
-
-## 未完待续.......
+## 未完待续 ...
