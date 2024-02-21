@@ -52,6 +52,10 @@ body {
     line-height: 1.7;
 }
 
+.lang-switch{
+	display: none;
+}
+
 #menu {
 	margin-right: 10px;
 }
