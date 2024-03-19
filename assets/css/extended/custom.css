@@ -5,7 +5,8 @@
     --nav-width: 1024px;
     --main-width: 800px;
     --header-height: 60px;
-    --footer-height: 125px;
+	/* 底部高度与 .main 的 min-height 关联 */
+    --footer-height: 150px;
     --radius: 8px;
 	--hljs-bg: rgb(46, 52, 64);
 	--code-block-bg: rgb(46, 52, 64);
