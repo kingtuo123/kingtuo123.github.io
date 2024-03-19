@@ -147,15 +147,15 @@ int main(void)
 }
 ```
 
-## Arm Compiler 6
+## Arm Compiler 6（armclang）
 
-同上面的格式，参考 ARM 官网 [Writing inline assembly code](https://developer.arm.com/documentation/100748/0620/Using-Assembly-and-Intrinsics-in-C-or-C---Code/Writing-inline-assembly-code)
 
-## Arm Compiler 5
+同上面的格式，参考：[Writing inline assembly code](https://developer.arm.com/documentation/100748/0620/Using-Assembly-and-Intrinsics-in-C-or-C---Code/Writing-inline-assembly-code)
 
-Keil 支持 Arm Compiler 5 和 6 两个版本的编译器
+## Arm Compiler 5（armcc）
 
-参考 ARM 官网 [Using inline assembly to improve code efficiency](https://developer.arm.com/documentation/102694/0100/Introduction)
+
+参考：[Using inline assembly to improve code efficiency](https://developer.arm.com/documentation/102694/0100/Introduction)
 
 格式：
 

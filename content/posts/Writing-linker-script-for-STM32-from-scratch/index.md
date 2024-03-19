@@ -40,7 +40,7 @@ ARM GCC 工具链，参考此文安装：[Linux 下搭建 STM32 开发环境](..
 |1|0|系统存储器，BootLoader|
 |0|1|内部SRAM，程序调试|
 
-### 内存映射
+### 存储映射
 
 <div align="left">
     <img src="1.png" style="max-height:350px"></img>
@@ -511,7 +511,7 @@ LoopFillZerobss:
   bx  lr
 ```
 
-对于 `ARM Compiler 5`（Keil 自带的编译器）`Reset_Handler` 是调用 C 库提供的 `__mian` 函数初始化堆栈，`__main` 再调用用户的 `main` 函数：
+对于 `ARM CC`（Keil 自带的编译器 AC5）`Reset_Handler` 是调用 C 库提供的 `__mian` 函数初始化堆栈，`__main` 再调用用户的 `main` 函数：
 ```asm
 ; Reset handler
 Reset_Handler   PROC

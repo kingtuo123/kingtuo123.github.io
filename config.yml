@@ -59,14 +59,14 @@ params:
     displayFullLangName: false
     ShowPostNavLinks: false
     ShowBreadCrumbs: false
-    ShowCodeCopyButtons: true
+    ShowCodeCopyButtons: false
     ShowRssButtonInSectionTermList: false
     ShowToc: true
-    homeInfoParams:
-        Title: ":  )"
-        Content: "清风徐来，水波不兴"
     assets:
       disableHLJS: true
+    homeInfoParams:
+        Title: "<span>:  )</span>"
+        Content: "醉后不知天在水，满船清梦压星河"
 
 
 
@@ -81,6 +81,7 @@ markup:
       guessSyntax: true
       lineNos: false
       noClasses: false
+      tabWidth: 4
       style: nord
 
 

@@ -33,7 +33,7 @@
 /* NameOther */ .chroma .nx {  }
 /* NameProperty */ .chroma .py { color: #8fbcbb }
 /* NameTag */ .chroma .nt { color: #81a1c1 }
-/* NameVariable */ .chroma .nv { font-style: normal }
+/* NameVariable */ .chroma .nv { color: #8be9fd;font-style: normal }
 /* NameVariableClass */ .chroma .vc {  }
 /* NameVariableGlobal */ .chroma .vg {  }
 /* NameVariableInstance */ .chroma .vi {  }
@@ -77,7 +77,7 @@
 /* GenericError */ .chroma .gr { color: #bf616a }
 /* GenericHeading */ .chroma .gh { color: #88c0d0; font-weight: bold }
 /* GenericInserted */ .chroma .gi { color: #a3be8c }
-/* GenericOutput */ .chroma .go {  }
+/* GenericOutput */ .chroma .go { color: #6a768e }
 /* GenericPrompt */ .chroma .gp { color: #eceff4; font-weight: bold }
 /* GenericStrong */ .chroma .gs { font-weight: bold }
 /* GenericSubheading */ .chroma .gu { color: #88c0d0; font-weight: bold }
