@@ -1,5 +1,5 @@
 ---
-title: "使用 CMake 构建 STM32 工程"
+title: "CMake 构建 STM32 工程"
 date: "2024-03-17"
 summary: "STM32 CMakeLists"
 description: ""
