@@ -86,7 +86,7 @@ $ docker exec -it archlinux bash
 定义别名，快速进入：
 
 ```bash
-alias al="docker exec -it archlinux bash || (docker container start archlinux && docker exec -it archlinux bash)"
+alias al="docker exec -it archlinux bash"
 ```
 
 ## 安装 YAY 和其他软件

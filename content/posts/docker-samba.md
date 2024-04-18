@@ -7,11 +7,7 @@ tags: [ "samba" ]
 categories: [ "docker" ]
 ---
 
-## 准备
-
-创建 `dockerfile` 和 `start.sh`
-
-### dockerfile
+## dockerfile
 
 ```dockerfile
 FROM ubuntu:latest
@@ -20,27 +16,18 @@ LABEL author="king"
 
 EXPOSE 445 139
 
-COPY start.sh /root/
-
 RUN set -ex && \
-        sed -i s@/archive.ubuntu.com/@/mirrors.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list && \
-        apt clean && \
-        apt update && \
-        apt -y install samba && \
-        chmod u+x /root/start.sh
+    sed -i s@/archive.ubuntu.com/@/mirrors.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list && \
+    apt clean && \
+    apt update && \
+    apt -y install samba && \
+    echo "useradd -r -s /usr/sbin/nologin -u \$UID \$NAME &> /dev/null" >> /root/start.sh && \
+    echo 'echo "$PASSWD\n$PASSWD" | smbpasswd -a $NAME' >> /root/start.sh && \
+    echo "/etc/init.d/smbd start" >> /root/start.sh && \
+    echo "/bin/bash" >> /root/start.sh && \
+    chmod u+x /root/start.sh
 
 CMD /root/start.sh
-```
-
-### start.sh
-
-```shell
-#!/bin/bash
-
-useradd -r -s /usr/sbin/nologin -u $UID $UNAME
-echo -e "$UPASSWD\n$UPASSWD" | smbpasswd -a $UNAME
-/etc/init.d/smbd start
-/bin/bash
 ```
 
 > 末尾 `/bin/bash` 防止容器直接退出
@@ -98,8 +85,8 @@ write list = king
 $ docker run -it --rm -d \
     --name samba \
     -e UID=1000 \
-    -e UNAME=king \
-    -e UPASSWD=123456 \
+    -e NAME=king \
+    -e PASSWD=abcd12345 \
     -p 445:445 \
     -p 139:139 \
     -v /home/king/Docker/samba/:/etc/samba:ro \
