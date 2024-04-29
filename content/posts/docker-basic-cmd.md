@@ -10,6 +10,21 @@ tags: [ "docker" ]
 
 ## docker镜像
 
+### 镜像仓库源
+
+编辑文件 `/etc/docker/daemon.json`：
+
+```
+{
+    "registry-mirrors": [
+        "https://docker.nju.edu.cn",
+        "https://dockerproxy.com"
+    ]
+}
+```
+
+修改后需要重启 docker
+
 ### 拉取镜像
 
 ```
@@ -23,11 +38,20 @@ docker image ls -a
 docker images
 ```
 
+### 构建镜像
+
+在 `dockerfile` 同目录下执行：
+
+```
+docker build -t myimage:latest .
+```
+
 ### 删除镜像
 
 ```
-docker image rm <repository>:<tag>
-docker image rm <image id>
+docker image rm <name>:<tag>
+docker image rm <name|id>
+docker rmi <name|id>
 ```
 
 `id` 不用补全，比如 `ba6acccedd29` ，只需输入 `ba` ，只要 `id` 前几位没和其他镜像重复。
@@ -59,6 +83,8 @@ docker container run --name <name> -it --rm <repository>:<tag> bash
 - -i：开启标准输入
 - -t：分配伪终端
 - \-\-rm：退出容器后自动删除容器，多用于一次性测试
+- -u：指定用户，\<name\|uid\>
+- -w：指定工作目录
 - -v：挂载路径，格式 -v \<host path>:\<container path>
 - -p：指定端口映射，格式 -p \<host port>:\<container port>
 - -P：随机端口映射，docker 会随机映射一个端口到内部容器的网络端口
@@ -89,9 +115,9 @@ docker container attach <name|container id>
 docker container exec -it <name|container id> bash
 ```
 
-`attach` 在退出容器后会停止容器，`exec` 不会
+`attach` 在退出后 **容器会停止**，相当于进入当前终端
 
-`attach` 相当于进入当前终端，`exec` 相当于新开了一个终端
+`exec` 在退出后 **容器不会停止**，相当于新开了一个终端
 
 ### 停止容器
 
