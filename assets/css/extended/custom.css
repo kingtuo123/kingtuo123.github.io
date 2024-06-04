@@ -208,6 +208,10 @@ body {
 	/*transition: color 200ms ease-in-out 0s, background-color 200ms ease-in-out 0s;*/
 }
 
+.toc details summary {
+    margin-inline-start: 10px;
+}
+
 .post-tags a, .share-buttons, .paginav{
 	border: 0px;
 	margin-right: 10px;

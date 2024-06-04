@@ -66,7 +66,7 @@ params:
       disableHLJS: true
     homeInfoParams:
         Title: "<span>:  )</span>"
-        Content: "醉后不知天在水，满船清梦压星河"
+        Content: "<p>去码头整点薯条 !</p>"
 
 
 
