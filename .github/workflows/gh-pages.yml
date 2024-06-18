@@ -28,35 +28,29 @@ jobs:
       - name: Build Blog
         run: hugo --minify
 
-      - name: Archive Blog.zip
+      - name: Zip Blog
         uses: vimtor/action-zip@v1.1
         with:
           files: ./public
           dest: Blog.zip
 
-      - name: Deploy To Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-
-      - name: Setup AliyunOSS
+      - name: Setup OSS
         uses: manyuanrong/setup-ossutil@v2.0
         with:
           endpoint: "oss-accelerate.aliyuncs.com"
           access-key-id: ${{ secrets.ID }}
           access-key-secret: ${{ secrets.SECRET }}
 
-      - name: Remove old files of OSS
+      - name: Empty OSS
         run: ossutil rm -rf oss://kingtuo123 --include "*"
 
-      - name: Upload Blog.zip file to OSS
+      - name: Upload Blog.zip
         run: ossutil cp -f Blog.zip oss://kingtuo123/
 
-      - name: Sleep for 10s
+      - name: Wait For Unzipping
         uses: juliangruber/sleep-action@v2.0.0
         with:
-          time: 50s
+          time: 60s
 
-      - name: Remove Blog.zip from OSS
+      - name: Remove Blog.zip From OSS
         run: ossutil rm -f oss://kingtuo123/Blog.zip

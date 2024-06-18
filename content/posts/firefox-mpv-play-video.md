@@ -2,7 +2,7 @@
 title: "Firefox 使用 mpv 播放视频"
 date: "2024-06-04"
 description: ""
-summary: "ff"
+summary: "firefox mpv"
 categories: [ "linux" ]
 ---
 
@@ -23,7 +23,7 @@ mpv 默认调用 `youtube-dl` 缓存视频，这里用 `yt-dlp` 替代：
 
 ```bash
 # 优先硬解码
-hwdec=auto
+hwdec=vaapi
 
 # 缓存
 cache=yes
@@ -41,6 +41,8 @@ script-opts-append=ytdl_hook-ytdl_path=/usr/bin/yt-dlp
 # 指定默认播放hevc格式4K的在线视频
 ytdl-format="((bestvideo[height<=?3840][vcodec^=hev1]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
 ```
+
+## 配置 yt-dlp
 
 编辑 `.config/yt-dlp/config`：
 

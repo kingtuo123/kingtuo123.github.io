@@ -81,32 +81,32 @@ set(CPU_FLAGS
 
 # 链接脚本
 set(LINK_SCRIPT
-    ${CMAKE_CURRENT_SOURCE_DIR}/STM32F103ZETx_FLASH.ld
+    ${CMAKE_SOURCE_DIR}/STM32F103ZETx_FLASH.ld
 )
 
 
 # 启动文件
 set(STARTUP_SCRIPT
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd.s
+    ${CMAKE_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd.s
 )
 
 
 # CMSIS 内核文件
 set(CMSIS_CORE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/CMSIS/CM3/CoreSupport/core_cm3.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
+    ${CMAKE_SOURCE_DIR}/Libraries/CMSIS/CM3/CoreSupport/core_cm3.c
+    ${CMAKE_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
 )
 
 
 # 标准库外设源文件
 file(GLOB STDPERIPH_DRIVER
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/STM32F10x_StdPeriph_Driver/src/*.c
+    ${CMAKE_SOURCE_DIR}/Libraries/STM32F10x_StdPeriph_Driver/src/*.c
 )
 
 
 # 用户程序的源文件
 file(GLOB_RECURSE USER_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/User/*.c
+    ${CMAKE_SOURCE_DIR}/User/*.c
 )
 
 
@@ -121,11 +121,11 @@ add_executable(${ELF_TARGET}
 
 # 头文件路径
 target_include_directories(${ELF_TARGET} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/CMSIS/CM3/CoreSupport/
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/
-    ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/STM32F10x_StdPeriph_Driver/inc/
-    ${CMAKE_CURRENT_SOURCE_DIR}/User/
-    ${CMAKE_CURRENT_SOURCE_DIR}/User/led/
+    ${CMAKE_SOURCE_DIR}/Libraries/CMSIS/CM3/CoreSupport/
+    ${CMAKE_SOURCE_DIR}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/
+    ${CMAKE_SOURCE_DIR}/Libraries/STM32F10x_StdPeriph_Driver/inc/
+    ${CMAKE_SOURCE_DIR}/User/
+    ${CMAKE_SOURCE_DIR}/User/led/
 )
 
 

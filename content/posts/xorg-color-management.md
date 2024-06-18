@@ -104,6 +104,8 @@ xiccd &
 icc-profile=/usr/share/color/icc/colord/Sharp_L24.icm
 ```
 
+或者使用 `--icc-profile-auto=yes` 参数
+
 ### FIREFOX
 
 打开 `about:config` 配置如下：
