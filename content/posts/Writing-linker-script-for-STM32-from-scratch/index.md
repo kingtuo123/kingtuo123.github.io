@@ -473,7 +473,9 @@ void Reset_Handler(void){
     int* stack_ptr = &_sdata;
     while(stack_ptr < &_edata){
         // 搬运数据
-        *stack_ptr++ = *init_data++;
+        *stack_ptr = *init_data;
+        stack_ptr++;
+        init_data++;
     }
     main();
 }
