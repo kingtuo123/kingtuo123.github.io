@@ -6,23 +6,29 @@ summary: "firefox mpv"
 categories: [ "linux" ]
 ---
 
-参考文章
-
-- [mpv使用yt-dlp播放在线视频的配置](https://www.bilibili.com/read/cv27371446/)
-
 ## 安装 yt-dlp
 
-mpv 默认调用 `youtube-dl` 缓存视频，这里用 `yt-dlp` 替代：
+mpv 默认调用 `youtube-dl` 解析视频链接，这里用 `yt-dlp` 替代：
 
 ```bash-session
 # emerge -av net-misc/yt-dlp
 ```
+
+安装的 `/usr/bin/youtube-dl`，实际调用的 `yt-dlp`：
+
+
+```bash-session
+$ cat /usr/bin/youtube-dl
+ #!/bin/sh
+ exec yt-dlp --compat-options youtube-dl "$@"
+```
+
 ## 配置 mpv
 
 编辑 `~/.config/mpv/mpv.conf`：
 
 ```bash
-# 优先硬解码
+# 硬解码
 hwdec=vaapi
 
 # 缓存
@@ -32,14 +38,8 @@ demuxer-max-bytes=500MiB
 # 视频已播放部分缓存上限
 demuxer-max-back-bytes=200MiB
 
-# 使用 yt-dlp 替代默认的 youtube-dl
-script-opts=ytdl_hook-ytdl_path=/usr/bin/yt-dlp
-script-opts-append=ytdl_hook-ytdl_path=/usr/bin/yt-dlp
-
-# 指定默认播放h264格式1080p的在线视频
-#ytdl-format="((bestvideo[height<=?1080][vcodec^=avc1]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
-# 指定默认播放hevc格式4K的在线视频
-ytdl-format="((bestvideo[height<=?3840][vcodec^=hev1]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
+# 指定默认播放avc/h264格式4K的在线视频
+ytdl-format="((bestvideo[height<=?3840][vcodec^=avc]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
 ```
 
 ## 配置 yt-dlp
@@ -51,19 +51,16 @@ ytdl-format="((bestvideo[height<=?3840][vcodec^=hev1]/bestvideo)+(bestaudio[acod
 --cookies-from-browser Firefox
 # 指定下载目录以及命名规则
 -o ~/Videos/%(title)s.%(ext)s
-# 指定下载视频格式及分辨率，与 mpv.conf 写法相同
--f "((bestvideo[height<=?3840][vcodec^=avc1]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
+# 指定使用aria2c下载器
+--external-downloader aria2c
+# 8线程、分片，每份1M
+--downloader-args aria2c:"-x 8 -k 1M"
+# 指定下载视频格式及分辨率
+-f "((bestvideo[height<=?3840][vcodec^=avc]/bestvideo)+(bestaudio[acode=aac]/bestaudio))"
 ```
 
 ## 安装 ff2mpv 扩展
 
-[Firefox 扩展地址](https://addons.mozilla.org/en-US/firefox/addon/ff2mpv/)
+第一步：安装 [Firefox ff2mpv 浏览器扩展](https://addons.mozilla.org/en-US/firefox/addon/ff2mpv/)
 
-### 扩展配置
-
-参考：[ff2mpv wiki / Installation](https://github.com/woodruffw/ff2mpv/wiki/)
-
-下载：[ff2mpv](https://github.com/woodruffw/ff2mpv/tags)
-
-安装：解压后当前用户执行 `./install.sh`
-
+第二步：安装 [ff2mpv](https://github.com/woodruffw/ff2mpv/tags)，下载解压后当前用户执行 `./install.sh`

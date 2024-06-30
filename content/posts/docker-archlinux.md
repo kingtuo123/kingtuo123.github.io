@@ -2,7 +2,7 @@
 title: "Docker ArchLinux"
 date: "2024-04-18"
 description: ""
-summary: "快速安装并配置可用的 archlinux"
+summary: "快速配置可用的 archlinux 容器"
 categories: [ "docker" ]
 tags: [ "archlinux" ]
 ---
@@ -12,32 +12,46 @@ tags: [ "archlinux" ]
 ## dockerfile
 
 ```dockerfile
-FROM archlinux:latest
-
-LABEL author="king"
+FROM archlinux:latest as base
 
 ARG NAME="arch"
-ARG PASSWD="linux"
 ARG UID="1000"
 ARG MAKEFLAGS="-j16"
-ARG INSTALL_YAY_SH="/home/${NAME}/install-yay.sh"
-ARG INSTALL_APP_SH="/home/${NAME}/install-app.sh"
 
-RUN set -ex \
-    && useradd -m -s /bin/bash -u ${UID} -p `openssl passwd -1 ${PASSWD}` ${NAME} \
-    && mkdir -p /home/${NAME}/.config \
-    && chown -R ${UID}:${UID} /home/${NAME} \
-    && echo "Server = https://mirror.sjtu.edu.cn/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist \
-    && pacman -Syyu --noconfirm \
-    && pacman -S --noconfirm vim git xorg base-devel \
-    && pacman -Scc --noconfirm \
-    && echo "${NAME}	ALL=(ALL)	ALL" >> /etc/sudoers \
-    && echo "MAKEFLAGS=${MAKEFLAGS}" >> /etc/makepkg.conf \
-    && echo "git clone https://aur.archlinux.org/yay-git.git && cd yay-git && makepkg -si && cd ~" >> ${INSTALL_YAY_SH} \
-    && chmod u+x ${INSTALL_YAY_SH} && chown ${NAME}:${NAME} ${INSTALL_YAY_SH} \
-    && echo "sudo pacman -S hugo" >> ${INSTALL_APP_SH} \
-    && chmod u+x ${INSTALL_APP_SH} && chown ${NAME}:${NAME} ${INSTALL_APP_SH}
+RUN useradd -m -s /bin/bash -u ${UID} ${NAME} && \
+    mkdir -p /home/${NAME}/.config && \
+    chown -R ${NAME}:${NAME} /home/${NAME} && \
+    echo "Server = https://mirror.sjtu.edu.cn/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && \
+    pacman -Syu --noconfirm base-devel git && \
+    pacman -Scc --noconfirm && \
+    echo "${NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    echo "MAKEFLAGS=${MAKEFLAGS}" >> /etc/makepkg.conf
 
+USER ${NAME}
+WORKDIR /home/${NAME}
+
+
+FROM base as yay
+
+RUN git clone "https://aur.archlinux.org/yay-git.git" /tmp/yay && \
+    cd /tmp/yay && \
+    makepkg -s --noconfirm
+
+
+FROM base as minimal
+
+COPY --from=yay /tmp/yay /tmp/yay
+USER root
+RUN pacman -U --noconfirm /tmp/yay/*.pkg.tar.zst && \
+    rm /tmp/yay -rf
+
+
+FROM minimal as regular
+
+RUN pacman -S --noconfirm xorg vim bash-completion
+
+
+USER ${NAME}
 CMD /bin/bash
 ```
 
@@ -47,35 +61,58 @@ CMD /bin/bash
 $ docker build -t myarch:latest .
 ```
 
+采用多阶段构建，例如不需要 yay，使用 `--target` 指定阶段：
+
+```bash-session
+$ docker build -t myarch:latest . --target base
+```
+
+另外 yay 的安装需要从 github 拉取源码，可能需要配置代理，例如：
+
+```
+$ docker build -t myarch:latest . \
+    --network host \
+    --build-arg "HTTP_PROXY=http://127.0.0.1:1080" \
+    --build-arg "HTTPS_PROXY=http://127.0.0.1:1080" \
+    --build-arg "NO_PROXY=localhost,127.0.0.1"
+```
+
 ## 创建容器
 
-```text
-$ name="arch" && docker create \
+创建 `setup.sh` ：
+
+```bash
+#!/bin/bash
+
+name="arch"
+host="king"
+
+docker create \
     -it \
     --name archlinux \
-    -u arch \
     --privileged \
     --network host \
-    -w /home/$name \
     -e DISPLAY=$DISPLAY \
     -e GDK_SCALE=2 \
     -e GDK_DPI_SCALE=0.5 \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /home/king/.bashrc:/home/$name/.bashrc:ro \
-    -v /home/king/.fonts:/home/$name/.fonts:ro \
-    -v /home/king/.icons:/home/$name/.icons:ro \
-    -v /home/king/.themes:/home/$name/.themes:ro \
-    -v /home/king/.gtkrc-2.0:/home/$name/.gtkrc-2.0:ro \
-    -v /home/king/.config/gtk-3.0:/home/$name/.config/gtk-3.0:ro \
-    -v /home/king/.config/gtk-2.0:/home/$name/.config/gtk-2.0:ro \
-    -v /home/king/.config/awesome/icons/:/home/$name/.config/awesome/icons/:rw \
-    -v /home/king/Pictures:/home/$name/Pictures:rw \
-    -v /home/king/Github:/home/$name/Github:rw \
-    -v /home/king/Downloads:/home/$name/Downloads:rw \
-    -v /home/king/Shared:/home/$name/Shared:rw \
-    -v /home/king/Work:/home/$name/Work:rw \
+    -v /home/$host/.bashrc:/home/$name/.bashrc:ro \
+    -v /home/$host/.fonts:/home/$name/.fonts:ro \
+    -v /home/$host/.icons:/home/$name/.icons:ro \
+    -v /home/$host/.themes:/home/$name/.themes:ro \
+    -v /home/$host/.gtkrc-2.0:/home/$name/.gtkrc-2.0:ro \
+    -v /home/$host/.config/gtk-3.0:/home/$name/.config/gtk-3.0:ro \
+    -v /home/$host/.config/gtk-2.0:/home/$name/.config/gtk-2.0:ro \
+    -v /home/$host/.config/awesome/icons/:/home/$name/.config/awesome/icons/:rw \
+    -v /home/$host/Pictures:/home/$name/Pictures:rw \
+    -v /home/$host/Github:/home/$name/Github:rw \
+    -v /home/$host/Downloads:/home/$name/Downloads:rw \
+    -v /home/$host/Shared:/home/$name/Shared:rw \
+    -v /home/$host/Work:/home/$name/Work:rw \
     myarch
 ```
+
+然后执行 `./setup.sh`
 
 ## 启动容器
 
@@ -89,7 +126,7 @@ $ docker container start archlinux
 $ docker exec -it archlinux bash
 ```
 
-`.bashrc` 添加如下，方便进入：
+`.bashrc` 添加如下，终端输入 `al` 即可进入容器：
 
 ```shell
 function al(){
@@ -100,13 +137,6 @@ function al(){
         docker exec -it archlinux bash
     fi
 }
-```
-
-## 安装 YAY 和其他软件
-
-```bash-session
-$ ./install-yay.sh
-$ ./install-app.sh
 ```
 
 ## 其他
@@ -125,13 +155,11 @@ $ sudo su
 $ xhost +
 ```
 
-### 常用软件包列表
+### 常用软件
 
-官方仓库：
+仓库：
 
 ```text
-hugo
-cmake
 arm-none-eabi-gcc
 arm-none-eabi-newlib
 arm-none-eabi-binutils
@@ -139,7 +167,7 @@ stlink
 bash-completion
 ```
 
-AUR：
+aur：
 
 ```text
 gdb-multiarch
@@ -156,7 +184,7 @@ gdb-multiarch
 |pacman -S|安装软件包|
 |pacman -R|卸载包及其依赖|
 |pacman -Qdtq \| pacman -Rs -|删除系统中无用依赖项|
-|pacman -Scc|清除缓存|
+|pacman -Scc|清除所有缓存|
 
 ### yay 常用命令
 
