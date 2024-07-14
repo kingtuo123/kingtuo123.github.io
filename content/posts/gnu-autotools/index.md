@@ -1,6 +1,6 @@
 ---
 title: "GNU Autotools 入门"
-date: "2024-07-02"
+date: "2024-07-14"
 description: ""
 summary: "GNU 构建系统"
 categories: [ "linux" ]
