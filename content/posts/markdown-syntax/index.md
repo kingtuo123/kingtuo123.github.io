@@ -138,3 +138,34 @@ tags: [ "markdown" ]
   代码...
 ​```
 ```
+
+## 左右分隔代码块
+
+<div align="left">
+    <img src="split.png" style="max-height:425px"></img>
+</div>
+
+
+<div align="left" style="width:100%;display:flex;flex-flow:row wrap;">
+<div align="left" style="max-width:400px;flex:1;padding:3px;">
+
+这是左边：
+
+```c
+/* This is the foobar value */
+#define FOOBAR 42
+```
+
+</div>
+<div align="left" style="max-width:400px;flex:1;padding:3px;">
+
+这是右边：
+
+```c
+/* This is the foobar value */
+#define FOOBAR 42
+```
+
+</div>
+</div>
+

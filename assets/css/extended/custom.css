@@ -168,7 +168,7 @@ body {
 }
 
 .post-content img:hover{
-	box-shadow: var(--img-shadow);
+	/* box-shadow: var(--img-shadow); */
 }
 
 .post-content a:not(.anchor) {

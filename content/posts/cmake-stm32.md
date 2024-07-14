@@ -47,6 +47,7 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 
+# 编译器
 set(CMAKE_C_COMPILER   arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
@@ -64,10 +65,11 @@ set(CMAKE_C_STANDARD_REQUIRED OFF)
 set(CMAKE_C_EXTENSIONS OFF)
 
 
+# ELF 文件名称
 set(ELF_TARGET ${CMAKE_PROJECT_NAME}.elf)
 
 
-# 预定义参数
+# 预定义宏
 add_definitions(
     -D STM32F10X_HD
     -D USE_STDPERIPH_DRIVER
@@ -104,13 +106,13 @@ file(GLOB STDPERIPH_DRIVER
 )
 
 
-# 用户程序的源文件
+# 用户程序的源文件（递归查找）
 file(GLOB_RECURSE USER_SRC
     ${CMAKE_SOURCE_DIR}/User/*.c
 )
 
 
-# 目标程序
+# 添加目标文件
 add_executable(${ELF_TARGET}
     ${CMSIS_CORE}
     ${STARTUP_SCRIPT}
@@ -189,7 +191,10 @@ $ cd Build
 $ mingw32-make
 ```
 
+
 ## 遇到的问题
+
+### CMAKE 编译器检查出错
 
 下面两句必需放在开头
 
@@ -205,3 +210,18 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 ```
 
 总之，`project()` 之前的语句位置不要改动，否则会导致编译器检查失败，至于原因还有待探究。
+
+### GCC 编译报错
+
+```text
+/tmp/cceEC3n9.s:599: Error: registers may not be the same -- `strexb r0,r0,[r1]'
+/tmp/cceEC3n9.s:629: Error: registers may not be the same -- `strexh r0,r0,[r1]'
+```
+
+修改标准库中 `Libraries/CMSIS/CM3/CoreSupport/core_cm3.c` 文件
+
+将 `__STREXB` 和 `__STREXH` 函数中的 `=r` 改为 `=&r` ，一共有两处：
+
+```asm
+__ASM volatile ("strexb %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) );
+```
