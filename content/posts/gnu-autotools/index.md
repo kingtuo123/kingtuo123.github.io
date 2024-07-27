@@ -267,7 +267,7 @@ config.h        config.log   configure
 `src/main.c` ：
 
 ```c
-#include "config.h"
+#include "../config.h"
 #include <stdio.h>
 
 int main(void){
@@ -296,10 +296,6 @@ if test $opt_chinese = yes; then
     # 定义宏 ENABLE_CHINESE
     AC_DEFINE([ENABLE_CHINESE], [], [print in chinese])
 fi
-
-BUILD_DIR=`pwd`
-# 输出 BUILD_DIR 这个 shell 变量
-AC_SUBST([BUILD_DIR])
 
 # 声明 config.h 为输出头文件
 AC_CONFIG_HEADERS([config.h])
@@ -331,8 +327,8 @@ SUBDIRS = src
 ```makefile
 # 构建 hello 这个可执行文件
 bin_PROGRAMS = hello
-# 构建 hello 这个目标所需的源文件，BUILD_DIR 变量在 configure.ac 中定义输出，所以这里能用到
-hello_SOURCES = main.c $(BUILD_DIR)/config.h
+# 构建 hello 这个目标所需的源文件
+hello_SOURCES = main.c
 ```
 
 
@@ -427,9 +423,14 @@ AM_INIT_AUTOMAKE([foreign -Wall -Werror dist-xz])
 
 
 
-## 备注
+## 备忘
 
-Autotools 涉及的的东西实在庞杂，至此也只是简述了大致的流程，还有交叉编译、动态库、libtool、自定义宏等等，以后有机会再研究吧！
+Autotools 涉及的的东西太多，以后再研究：
+
+- [ ] 交叉编译
+- [ ] 动态库
+- [ ] libtool
+- [ ] 自定义宏
 
 
 
