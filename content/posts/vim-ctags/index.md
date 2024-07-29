@@ -55,6 +55,8 @@ let Tlist_Ctags_Cmd="/usr/bin/ctags"    " 将 taglist 与 ctags 关联
 
 ### taglist 快捷键
 
+<div class="table-container">
+
 |快捷键|说明|
 |:--|:--|
 |回车|跳转到 tag 定义处|
@@ -73,3 +75,4 @@ let Tlist_Ctags_Cmd="/usr/bin/ctags"    " 将 taglist 与 ctags 关联
 |q|关闭窗口|
 |F1|显示帮助|
 
+</div>

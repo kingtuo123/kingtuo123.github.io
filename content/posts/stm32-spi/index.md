@@ -44,6 +44,8 @@ math: false
 
 ## SPI 模式
 
+<div class="table-container">
+
 |SPI 模式|CPOL|CPHA|SCK 空闲电平|采样沿|
 |:-:|:-:|:-:|:-:|:-:|
 |0|0|0|低电平|上升沿|
@@ -51,6 +53,7 @@ math: false
 |2|1|0|高电平|下降沿|
 |3|1|1|高电平|上升沿|
 
+</div>
 
 ## SPI 读写 Flash
 - 硬件

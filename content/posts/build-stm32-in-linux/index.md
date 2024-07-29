@@ -242,6 +242,8 @@ arm-none-eabi-size ./Build/LED-BLINK.elf
 
 ### GCC 参数说明
 
+<div class="table-container">
+
 |参数|说明|
 |:--|:--|
 |-D STM32F10X\_HD|表示芯片容量|
@@ -263,6 +265,7 @@ arm-none-eabi-size ./Build/LED-BLINK.elf
 |--cref|Cross Reference 的简写，输出交叉引用表|
 |--gc-sections|不链接未用函数，减小可执行文件大小|
 
+</div>
 
 ## 使用 HAL 库
 

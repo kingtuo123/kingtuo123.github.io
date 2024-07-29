@@ -177,6 +177,8 @@ gdb-multiarch
 
 参考：[Arch Linux 的 pacman 命令入门](https://linux.cn/article-13099-1.html)
 
+<div class="table-container">
+
 |命令|说明|
 |:--|:--|
 |pacman -Syu|同步仓库并升级软件包|
@@ -185,6 +187,8 @@ gdb-multiarch
 |pacman -R|卸载包及其依赖|
 |pacman -Qdtq \| pacman -Rs -|删除系统中无用依赖项|
 |pacman -Scc|清除所有缓存|
+
+</div>
 
 ### yay 常用命令
 

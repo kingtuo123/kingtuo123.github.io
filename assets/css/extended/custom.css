@@ -120,6 +120,10 @@ body {
 	padding: 5rem 10rem;
 }*/
 
+.post-content hr {
+	margin: 20px 0;
+}
+
 .post-content h1 {
     margin: 40px auto 32px;
     font-size: 30px;
@@ -132,6 +136,11 @@ body {
 
 .post-content h3 {
     font-size: 20px;
+}
+
+.post-content h4 {
+    margin: 10px auto 0px;
+    font-size: 18px;
 }
 
 .post-content blockquote{
@@ -149,22 +158,45 @@ body {
 	font-weight: 500;
 }
 
+
+/*
 .post-content table th,
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
-    min-width: 80px;
-    padding: 8px 8px;
+    min-width: 150px;
+    font-size: 0.9em;
+    padding: 8px 40px 8px 0px;
+	width:auto;
     line-height: 1.7;
 	border: 1px solid var(--border);
 }
+*/
+.post-content .table-container {
+	width: 100%;
+	overflow: hidden;
+	overflow-x: scroll;
+	margin: -5px 0px;
+}
+
+.post-content table th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+	padding: 8px 10px 8px 0px;
+}
 
 .post-content table {
-    margin-top: 10px;
-    margin-bottom: 15px;
+	display: table;
+	font-size: 0.9em;
+	white-space: nowrap;
+	margin: 5px 0px;
 }
+
 
 .post-content p{
 	margin-top: 10px;
 	margin-bottom: 0px;
+}
+
+.post-content img{
+	user-select: none;
 }
 
 .post-content img:hover{
@@ -188,6 +220,16 @@ body {
 	background-color: var(--a-hover);
 	border-radius: 0.25rem;
 }
+
+/*
+.post-content dt {
+	width: 15%;
+}
+
+.post-content dd {
+	width: 85%;
+}
+*/
 
 
 .toc {
