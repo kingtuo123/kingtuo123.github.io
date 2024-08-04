@@ -53,6 +53,10 @@ body {
     line-height: 1.7;
 }
 
+.logo a {
+	font-size: 22px;
+}
+
 .lang-switch{
 	display: none;
 }
