@@ -140,7 +140,6 @@ target_compile_options(${ELF_TARGET} PRIVATE
     -gdwarf-2 
     -mthumb 
     -Os 
-    -Wall 
     -fdata-sections 
     -ffunction-sections
     -fmessage-length=0
@@ -159,7 +158,7 @@ target_link_options(${ELF_TARGET} PRIVATE
 )
 
 
-# 添加自定义 makefile 规则，用于生成 hex bin 格式文件
+# 添加自定义命令，用于生成 hex bin 格式文件，POST_BUILD 表示生成 TARGET 后执行命令
 add_custom_command(TARGET ${ELF_TARGET} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O ihex ${ELF_TARGET} ${CMAKE_PROJECT_NAME}.hex
     COMMAND ${CMAKE_OBJCOPY} -O binary -S ${ELF_TARGET} ${CMAKE_PROJECT_NAME}.bin
