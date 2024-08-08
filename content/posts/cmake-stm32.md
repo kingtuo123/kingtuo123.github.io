@@ -3,7 +3,7 @@ title: "CMake 构建 STM32 工程"
 date: "2024-03-17"
 summary: "STM32 CMakeLists"
 description: ""
-categories: [ "linux" ]
+categories: [ "embedded" ]
 tags: [ "cmake", "stm32" ]
 ---
 
@@ -112,7 +112,7 @@ file(GLOB_RECURSE USER_SRC
 )
 
 
-# 添加目标文件
+# 添加 ELF 目标文件
 add_executable(${ELF_TARGET}
     ${CMSIS_CORE}
     ${STARTUP_SCRIPT}
