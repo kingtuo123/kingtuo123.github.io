@@ -13,7 +13,7 @@ tags: [ "stm32"]
 - [链接脚本(Linker Scripts)语法和规则解析](https://www.cnblogs.com/jianhua1992/p/16852784.html)
 - [LD链接脚本解析](https://blog.csdn.net/weixin_39177986/article/details/108455827)
 - [链接脚本中 AT> 的作用 ](https://www.cnblogs.com/LogicBai/p/16982841.html)
-- **[LD 链接器](https://sourceware.org/binutils/docs/ld/index.html)**
+- [LD 链接器](https://sourceware.org/binutils/docs/ld/index.html)
 - [How to get the load address of .data section](https://stackoverflow.com/questions/68670510/avr-gnu-linker-script-how-to-get-the-load-address-of-data-section)
 - [C代码中如何使用链接脚本中定义的变量](https://cloud.tencent.com/developer/article/1709022)
 - [From Zero to main(): Bare metal C](https://interrupt.memfault.com/blog/zero-to-main-1)
@@ -27,7 +27,7 @@ tags: [ "stm32"]
 
 ## 准备工具
 
-ARM GCC 工具链，参考此文安装：[Linux 下搭建 STM32 开发环境](../linux-stm32-development/)
+ARM GCC 工具链
 
 
 ## 预备知识
@@ -62,7 +62,7 @@ FLASH 起始地址是 `0x08000000`，SRAM 起始地址是 `0x20000000`
     <img src="3.png" style="max-height:130px"></img>
 </div>
 
-从 FLASH 启动时，CPU 将地址 `0x00000000` 映射到 `0x08000000`，然后 CPU 就可以从 `0x00000000` 读取 FLASH 上的数据，当然 `0x08000000` 依然是可以被 CPU 访问的。
+从 FLASH 启动时，地址 `0x00000000` 被映射到 `0x08000000`，然后 CPU 就可以从 `0x00000000` 读取 FLASH 上的数据，当然 `0x08000000` 依然是可以被 CPU 访问的。
 
 > `0x00000000` 中的值会被加载到 SP 寄存器，`0x00000004` 中的值会被加载到 PC 寄存器
 

@@ -1,20 +1,14 @@
 ---
-title: "Linux 使用 stlink 下载 stm32"
+title: "Linux 下使用 stlink 烧录程序"
 date: "2022-07-01"
-summary: "几个常用的命令行下载工具"
+summary: "stlink 命令行下载工具"
 description: ""
-tags: [ "stm32","linux" ]
-math: false
-categories: [ "stm32","linux" ]
+categories: [ "embedded" ]
+tags: [ "stm32" ]
 ---
-
-## 安装
-
-参考：[Linux 下搭建 STM32 开发环境](../linux-stm32-development/)
 
 ## 命令
 
-stlink 安装后有这几个命令：
   - st-info
   - st-flash
   - st-trace
@@ -37,7 +31,7 @@ stlink 安装后有这几个命令：
 
 常用示例：
 
-```makefile
+```bash
 # 烧录 bin 文件
 st-flash --format binary write firmware.bin 0x08000000
 # 烧录 hex 文件
@@ -47,11 +41,3 @@ st-flash read firmware.bin 0x08000000 0x1000
 # 擦除 FLASH
 st-flash erase
 ```
-
-### st-trace
-
-未完待续
-
-### st-util
-
-未完待续

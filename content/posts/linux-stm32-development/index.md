@@ -1,47 +1,28 @@
 ---
-title: "Linux 下搭建 stm32 开发环境"
+title: "Linux 下 stm32 开发工具"
 date: "2022-06-30"
 summary: "安装 gcc 工具链，isp / stlink 下载工具"
 description: ""
-tags: [ "stm32","linux" ]
-math: false
-categories: [ "stm32","linux"]
+categories: [ "embedded" ]
+tags: [ "stm32" ]
 ---
 
-## arm gcc 工具链
-
-- [下载地址](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads)
+## ARM GCC 工具链
 
 <div align="left">
     <img src="1.png" style="max-height:150px"></img>
 </div>
 
+- [**下载地址**](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
-解压：
-
-```
-$ tar xvf gcc-arm-*-arm-none-eabi.tar.xz
-```
-
-安装：
-
-```
-$ sudo mv gcc-arm-*-arm-none-eabi /opt/arm-none-eabi-gcc
-```
-
-添加 `PATH` 到 `/etc/profile`：
-
-```
-export PATH=${PATH}:/opt/arm-none-eabi-gcc/bin
-```
 
 ## ISP 串口下载工具
-
-- [下载地址](https://sourceforge.net/projects/stm32flash/)
 
 <div align="left">
     <img src="2.png" style="max-height:190px"></img>
 </div>
+
+- [**下载地址**](https://sourceforge.net/projects/stm32flash/)
 
 解压：
 
@@ -68,11 +49,11 @@ $ sudo make install
 
 ## ST-LINK 下载工具
 
-- [下载地址](https://github.com/stlink-org/stlink/releases)：选择 `Source Code`
-
-<div align="center">
+<div align="left">
     <img src="3.png" style="max-height:190px"></img>
 </div>
+
+- [**下载地址**](https://github.com/stlink-org/stlink/releases)
 
 解压：
 
@@ -105,16 +86,16 @@ $ st-info --version
 v1.7.0
 ```
 
-- 使用方法详见：[使用 stlink 烧录程序](../stlink-linux/)
+使用方法详见：[使用 stlink 烧录程序](../stlink-linux/)
 
-## STM32CubeMX 安装
-
-- [CubeMX 下载地址](https://www.st.com/en/development-tools/stm32cubemx.html#get-software)
-- [HAL 库下载地址](https://www.st.com/en/embedded-software/stm32cube-mcu-mpu-packages.html)
+## STM32CubeMX
 
 <div align="left">
     <img src="4.png" style="max-height:250px"></img>
 </div>
+
+- [**CubeMX 下载地址**](https://www.st.com/en/development-tools/stm32cubemx.html#get-software)
+- [**HAL 库下载地址**](https://www.st.com/en/embedded-software/stm32cube-mcu-mpu-packages.html)
 
 解压：
 
@@ -130,7 +111,7 @@ v1.7.0
 
  HAL 库导入：`Help` -> `Manage embedded software packages` -> `From Local`
 
-## openocd 安装
+## OPENOCD
 
 Gentoo 软件仓库有：
 
@@ -138,9 +119,9 @@ Gentoo 软件仓库有：
 # emerge -av dev-embedded/openocd
 ```
 
-## gdb
+## GDB
 
-> Gentoo 需要启用 USE 标记 `multitarget`，其他发行版安装 `gdb-multiarch` 这个包
+Gentoo 需要启用 use 标记 `multitarget`，其他发行版安装 `gdb-multiarch` 这个包
 
 ```
 # emerge -av sys-devel/gdb
