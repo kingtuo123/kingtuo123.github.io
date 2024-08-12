@@ -352,6 +352,13 @@ body {
 	.social-icons{
 		display: none;
 	}
+
+	.post-content ul {
+		padding-inline-start: 20px;
+	}
+	.post-content ol {
+		padding-inline-start: 24px;
+	}
 }
 
 
