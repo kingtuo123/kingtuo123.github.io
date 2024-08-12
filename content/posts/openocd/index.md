@@ -1,17 +1,17 @@
 ---
-title: "OpenOCD"
+title: "OpenOCD + GDB 调试"
 date: "2023-08-13"
 description: ""
 summary: "Open On-Chip Debugger 开源片上调试器" 
-categories: [ "linux", "stm32" ]
-tags: [ "" ]
+categories: [ "embedded" ]
+tags: [ "stm32", "openocd", "gdb" ]
 ---
 
 ## 启动 OpenOCD
 
 OpenOCD 需要读取配置文件启动，通常安装目录下自带了配置文件
 
-调试器配置文件路径：`/usr/share/openocd/scripts/interface/`
+接口配置文件路径：`/usr/share/openocd/scripts/interface/`
 
 ```bash-session
 $ ls /usr/share/openocd/scripts/interface/ | grep stlink
@@ -38,24 +38,13 @@ stm32f7x.cfg
 
 将需要的配置文件拷贝到当前目录下，使用 `-f` 参数指定配置文件启动：
 
-```bash-session {hl_lines=[4,5,12]}
+```bash-session
 $ openocd -f stlink.cfg -f stm32f1x.cfg
-Open On-Chip Debugger 0.12.0
-Licensed under GNU GPL v2
-Info : Listening on port 6666 for tcl connections
-Info : Listening on port 4444 for telnet connections
-Info : clock speed 1000 kHz
-Info : STLINK V2J38S7 (API v2) VID:PID 0483:3748
-Info : Target voltage: 3.178506
-Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
-Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
-Info : starting gdb server for stm32f1x.cpu on 3333
-Info : Listening on port 3333 for gdb connections
 ```
 
-> OpenOCD 启动后默认会打开 3 个端口：`3333`，`4444`，`6666`
+- OpenOCD 启动后默认会打开 3 个端口：`3333`（gdb），`4444`（telnet），`6666`（tcl）
 
-> 可以使用 `netstat -ltpn | grep openocd` 命令查看端口
+- 可以使用 `netstat -ltpn | grep openocd` 命令查看端口
 
 ### 方法二
 
@@ -70,7 +59,7 @@ source [find target/stm32f1x.cfg]
 
 
 
-## 使用 telnet 连接
+## 使用 Telnet 连接
 
 ```console
 $ telnet localhost 4444
@@ -120,12 +109,12 @@ pc 0x00000000 sp 0x00001000
 > exit # 退出
 ```
 
-> 更多指令参考：[General Commands](https://openocd.org/doc/html/General-Commands.html)
+更多指令参考：[General Commands](https://openocd.org/doc/html/General-Commands.html)
 
 
 
 
-## 使用 gdb 连接
+## 使用 GDB 连接
 
 ### 方法一
 
@@ -163,33 +152,46 @@ continue
 
 然后当前目录下运行 `gdb` 即可
 
-### gdb 常用指令
 
-```bash-session
-$ gdb
+## GDB 常用指令
 
-> load               # 下载程序 
-> run                # 从头运行程序
-> break main         # main 函数设置断点
-> break 14           # 第14行设置断点
-> break 14 if a = 2  # 当变量a=2在14行打断
-> delete breakpoints # 删除所有断点
-> step               # 执行一条C语句，进入函数
-> next               # 执行一条C语句，不进入函数
-> stepi              # 执行一条汇编语句，进入函数
-> nexti              # 执行一条汇编语句，不进入函数
-> continue           # 继续执行
-> print a            # 打印变量a
-> until              # 跳出循环
-> finish             # 跳出当前函数
-> call func(1,2)     # 直接调用func函数
+<div class="table-container">
 
-> tui enable         # 打开字符图形窗口
-> tui disable        # 关闭字符图形窗口
-> tui reg all        # 在窗口中显示所有寄存器
-> info win           # 查看有哪些窗口
-> focus cmd          # 聚焦到cmd窗口
-> winheight src -2   # 调整源码窗口高度-2
-> layout next        # 显示下一个窗口
-```
+|指令|简写|说明|
+|:--|:--|:--|
+|`help`|`h`|打印帮助信息|
+|||`h next` ：打印 next 指令的用法说明|
+|`file`||指定程序文件|
+|`load`||加载 file 指定的程序文件|
+|`break`|`b`|设置断点|
+|||`b main` ：在 main 函数处设置断点|
+|||`b 10` ：在第 10 行设置断点|
+|||`b test.c:10` ： 在 test.c 的第 10 行设置断点|
+|||`b if a == 1` ： 当 a 等于 1 时打断|
+|`tbreak`|`tb`|设置临时断点，只作用一次|
+|`info`|`i`|显示调试信息|
+|||`i b` ：显示所有断点|
+|||`i display` ：显示所有表达式|
+|`delete`|`d`|删除断点等|
+|||`d` ：删除所有断点|
+|||`d 2` ：删除 2 号断点|
+|`run`|`r`|从头开始执行程序|
+|`next`|`n`|执行一条 C 语句，不进入函数|
+|`step`|`s`|执行一条 C 语句，进入函数|
+|`nexti`|`ni`|执行一条汇编语句，不进入函数|
+|`stepi`|`si`|执行一条汇编语句，进入函数|
+|`continue`|`c`|继续执行|
+|`finish`|`fin`|跳出当前函数|
+|`until`|`u`|跳出当前循环|
+|`backtrace`|`bt`|打印所有栈帧|
+|`frame`|`f`|打印当前栈帧|
+|`print`|`p`|打印变量或表达式的值|
+|`display`||增加要显示值的表达式|
+|`call`||调用函数|
+|||`call func(1, 2)` ：调用 func 函数|
+|`tui enable`|`-`|启用字符图形窗口|
+|||`focus cmd` ：聚焦到 cmd 窗口|
+|||`layout asm` ：显示汇编窗口，其他还有 src、regs、split|
+|||`winheight src -2` ：调整源码窗口高度-2|
 
+</div>
