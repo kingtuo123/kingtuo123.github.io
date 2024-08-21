@@ -145,16 +145,17 @@ body {
 }
 
 .post-content h2 {
-    margin: 32px auto 24px;
+    margin: 32px auto 10px;
     font-size: 25px;
 }
 
 .post-content h3 {
     font-size: 20px;
+    margin: 25px auto 10px;
 }
 
 .post-content h4 {
-    margin: 10px auto 0px;
+    margin: 20px auto 0px;
     font-size: 18px;
 }
 
