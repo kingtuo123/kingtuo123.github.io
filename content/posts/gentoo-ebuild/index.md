@@ -126,7 +126,7 @@ BDEPEND         # 构建时依赖的可执行程序
 ```bash
 P               # 包名和版本号，如 vim-6.3
 PN              # 包名，如 vim
-PV              # 修订版本，如 r2 ，若无修订版则为 r0
+PV              # 版本号，如 6.3
 PVR             # 软件包版本和修订版本，如 6.3-r2
 PF              # 完整的文件名，即不含 .ebuild 后缀的部分，如 vim-6.3-r2
 CATEGORY        # 类目名，如 app-shells
@@ -566,3 +566,5 @@ Hello World!
 ## 遇到的问题
 
 二进制包可能需要在 ebuild 中添加 `RESTRICT="binchecks"` 以跳过某些无意义的检查
+
+参考：[Ebuild](https://devmanual.gentoo.org/eclass-reference/ebuild/) 中 `RESTRICT` 一节
