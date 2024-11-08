@@ -4,7 +4,7 @@ date: "2024-07-29"
 summary: "学习编写简单的 ebuild 及创建本地仓库"
 description: ""
 categories: [ "linux" ]
-tags: [ "gentoo" ]
+tags: [ "gentoo", "ebuild" ]
 ---
 
 
@@ -106,42 +106,86 @@ inherit autotools bash-completion-r1 flag-o-matic
 
 ### 变量
 
-```bash
-EAPI            # 告诉 ebuild 使用哪个版本的 EAPI 语法规则
-DESCRIPTION 	# 软件包及其用途的简短描述
-HOMEPAGE        # 软件包官网主页
-SRC_URI         # 软件包的下载链接
-LICENSE         # 软件包许可证
-SLOT 	        # 同一软件可以安装多少个不同版本，如果不使用就声明为 0
-KEYWORDS        # 软件包可以安装的平台，~keyword 表示软件包没有经过广泛测试
-IUSE            # 可用的 use 标志，+use 表示默认启用
-S               # 解压后源码所在目录，默认值：${WORKDIR}/${P}
-RDEPEND         # 运行时需要的依赖，即需要这些依赖软件才能正常运行
-DEPEND          # 构建时依赖的库或头文件
-BDEPEND         # 构建时依赖的可执行程序
-```
+<div class="table-container">
 
-只读变量：
+|用户定义的变量|说明|
+|:--|:--|
+|`EAPI`            | 告诉 ebuild 使用哪个版本的 EAPI 语法规则|
+|`DESCRIPTION`     | 软件包及其用途的简短描述|
+|`HOMEPAGE`        | 软件包官网主页|
+|`SRC_URI`         | 软件包的下载链接|
+|`LICENSE`         | 软件包许可证|
+|`SLOT`            | 同一软件可以安装多少个不同版本，如果不使用就声明为 0|
+|`KEYWORDS`        | 软件包可以安装的平台，~keyword 表示软件包没有经过广泛测试|
+|`IUSE`            | 可用的 use 标志，+use 表示默认启用|
+|`REQUIRED_USE`    | USE 标志的配置必须满足的断言列表，才能对此 ebuild 有效|
+|`PROPERTIES`      | 以空格分隔的属性列表，支持条件语法|
+|`RESTRICT`        | 要限制的 Portage 功能的空格分隔列表，参考[man Ebuild](https://devmanual.gentoo.org/eclass-reference/ebuild/) 中 `RESTRICT` 一节|
+|`DEPEND`          | 软件包的 build 依赖项列表，仅适用于 CHOST，参考 [Dependencies](https://devmanual.gentoo.org/general-concepts/dependencies/index.html)|
+|`RDEPEND`         | 运行时需要的依赖，即需要这些依赖软件才能正常运行|
+|`DEPEND`          | 构建时依赖的库或头文件|
+|`BDEPEND`         | 构建时依赖的可执行程序|
+|`S`               | 解压后源码所在路径，默认 `${WORKDIR}/${P}`|
+|`DOCS`            | 使用 `dodoc` 安装的默认 `src_install` 函数的文档文件的数组或以空格分隔的列表|
 
-```bash
-P               # 包名和版本号，如 vim-6.3
-PN              # 包名，如 vim
-PV              # 版本号，如 6.3
-PVR             # 软件包版本和修订版本，如 6.3-r2
-PF              # 完整的文件名，即不含 .ebuild 后缀的部分，如 vim-6.3-r2
-CATEGORY        # 类目名，如 app-shells
-FILESDIR        # ${PORTAGE_TMPDIR}/${CATEGORY}/${PF}/files
-T               # ${PORTAGE_TMPDIR}/portage/${CATEGORY}/${PF}/temp
-D               # ${PORTAGE_BUILDDIR}/image
-ED              # ${PORTAGE_TMPDIR}/portage/${CATEGORY}/${PF}/image/${EPREFIX}/
-WORKDIR         # ${PORTAGE_TMPDIR}/portage/${CATEGORY}/${PF}/work
-DISTDIR         # 下载的文件所在目录
-EPREFIX         # 偏移安装目录，例如 --prefix=${EPREFIX}/usr
-```
+</div>
 
-`PORTAGE_BUILDDIR` 应该是 `${PORTAGE_TMPDIR}/portage/${CATEGORY}/${PF}`（wiki 没找到，我的猜测）
+
+<div class="table-container">
+
+|预定义的只读变量|说明|
+|:--|:--|
+|`P`              | 包名和版本号，如 vim-6.3|
+|`PN`             | 包名，如 vim|
+|`PV`             | 版本号，如 6.3|
+|`PVR`            | 版本号和修订版本，如 6.3-r2|
+|`PF`             | 完整的文件名，即不含 .ebuild 后缀的部分，如 vim-6.3-r2|
+|`A`              | 包的所有源文件，即 ebuild 下载的文件|
+|`CATEGORY`       | 类目名，如 app-shells|
+|`FILESDIR`       | 路径 `${PORTAGE_BUILDDIR}/files`，通常存放小补丁和其他文件|
+|`WORKDIR`        | 路径 `${PORTAGE_BUILDDIR}/work`|
+|`T`              | 路径 `${PORTAGE_BUILDDIR}/temp`|
+|`D`              | 路径 `${PORTAGE_BUILDDIR}/image`|
+|`HOME`           | 路径 `${PORTAGE_BUILDDIR}/homedir`|
+|`ROOT`           | 要将 `${D}` 下的文件合并到的根目录的绝对路径，一般就是系统的根路径 `/`，仅允许在 `pkg_*` 阶段进行|
+|`DISTDIR`        | 下载的文件所在路径 `${PORTAGE_BUILDDIR}/distdir`|
+|`EPREFIX`        | 偏移安装目录，例如 `--prefix=${EPREFIX}/usr`|
+|`ED`             | 路径 `${D%/}${EPREFIX}/` |
+|`EROOT`          | 路径 `${ROOT%/}${EPREFIX}/`|
+
+</div>
+
+`PORTAGE_BUILDDIR` 应该是 `${PORTAGE_TMPDIR}/portage/${CATEGORY}/${PF}`
 
 更多参考：[Variables](https://devmanual.gentoo.org/ebuild-writing/variables/index.html)
+
+### SRC\_URI
+
+#### 条件源
+
+```bash
+SRC_URI="https://example.com/files/${P}-core.tar.bz2
+	x86?   ( https://example.com/files/${P}/${P}-sse-asm.tar.bz2 )
+	ppc?   ( https://example.com/files/${P}/${P}-vmx-asm.tar.bz2 )
+	sparc? ( https://example.com/files/${P}/${P}-vis-asm.tar.bz2 )
+	doc?   ( https://example.com/files/${P}/${P}-docs.tar.bz2 )"
+```
+
+#### 重命名源
+
+使用 `->` 重命名文件：
+
+```bash
+SRC_URI="https://example.com/files/${PV}.tar.gz -> ${P}.tar.gz"
+```
+
+### REQUIRED\_USE
+
+必须满足 `REQUIRED_USE` 中的这些 USE 条件，此 ebuild 才有效
+
+```bash
+REQUIRED_USE="foo? ( !bar )"
+```
 
 ### 依赖
 
@@ -269,7 +313,7 @@ ebuild 构建时会按下图顺序调用函数
 
 - `src_unpack` 解压软件包到 `${WORKDIR}` 目录，即 `work` 目录
 
-- `src_configure`、`src_compile` 在 `${WORKDIR}/${P}` 目录，即 `work/zsh-5.9` 中配置、编译程序
+- `src_configure`、`src_compile` 在 `${s}` = `${WORKDIR}/${P}` 目录，即 `work/zsh-5.9` 中配置、编译程序
 
 - `src_install` 将文件临时安装到 `${D}`，即 `image` 目录 
 
@@ -499,6 +543,7 @@ Hello World!
 [gentoo-kt]
 location = /var/db/repos/gentoo-kt
 sync-type = git
+auto-sync = false
 sync-uri = https://gitee.com/kingtuo123/gentoo-kt.git
 
 # mkdir -p /var/db/repos/gentoo-kt/app-misc/hello
