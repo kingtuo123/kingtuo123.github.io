@@ -206,6 +206,9 @@ body {
 	margin: 5px 0px;
 }
 
+.post-content iframe {
+	border: none;
+}
 
 .post-content p{
 	margin-top: 10px;
