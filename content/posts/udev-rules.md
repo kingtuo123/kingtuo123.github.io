@@ -341,10 +341,8 @@ KERNEL=="fd0", ENV{an_env_var}=="yes", SYMLINK+="floppy"
 
 ## 实例
 
-当 `u盘` 插入时以 larry 用户身份执行程序。
-
-`/etc/udev/rules.d/10-usb.rules`：
+当 `u盘` 插入时以 larry 用户身份执行程序，`/etc/udev/rules.d/10-usb.rules`：
 
 ```bash
-KERNEL=="sd*", SUBSYSTEM=="block", RUN+="/usr/bin/su larry -c /usr/local/bin/my_program"
+ACTION=="add", KERNEL=="sd*", SUBSYSTEM=="block", RUN+="/usr/bin/su larry -c /usr/local/bin/my_program"
 ```

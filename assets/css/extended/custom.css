@@ -122,6 +122,7 @@ body {
 }
 .post-content ol {
 	padding-inline-start: 20px;
+	margin-top: 0px;
 }
 
 .entry-header h2 {
