@@ -18,6 +18,10 @@ minify:
     disableXML: false
     # minifyOutput: true
 
+
+#languageCode: zh
+#defaultContentLanguage: zh
+
 languages:
     en:
         languageName: "English"
@@ -40,6 +44,27 @@ languages:
                 - name: Search
                   url: search/
                   weight: 4
+                  #zh:
+                  #    languageName: "Chinese"
+                  #    weight: 1
+                  #    taxonomies:
+                  #      category: categories
+                  #      tag: tags
+                  #      series: series
+                  #    menu:
+                  #        main:
+                  #            - name: Archive
+                  #              url: archives
+                  #              weight: 1
+                  #            - name: Categories
+                  #              url: categories/
+                  #              weight: 2
+                  #            - name: Tags
+                  #              url: tags/
+                  #              weight: 3
+                  #            - name: Search
+                  #              url: search/
+                  #              weight: 4
 
 
 
