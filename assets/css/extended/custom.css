@@ -194,6 +194,18 @@ body {
 	margin: -5px 0px;
 }
 
+.post-content .table-container::-webkit-scrollbar {
+  width: 0px; /* 垂直滚动条宽度 */
+  height: 0px; /* 水平滚动条高度 */
+}
+
+
+
+
+.no-thead thead {
+	display: none;
+}
+
 .post-content table th,
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
 	padding: 8px 10px 8px 0px;
@@ -217,6 +229,10 @@ body {
 
 .post-content img{
 	user-select: none;
+	-webkit-user-drag: none;
+	-moz-user-drag: none;
+	user-drag: none;
+	pointer-events: none;
 }
 
 .post-content img:hover{
