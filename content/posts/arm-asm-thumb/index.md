@@ -1,17 +1,12 @@
 ---
-title: "ARM 汇编 Cortex-M3/M4"
-date: "2025-03-04"
-summary: "ARM Cortex-M3 / M4 权威指南 - 学习笔记"
+title: "ARM Cortex-M3/M4 汇编"
+date: "2025-03-30"
+summary: "ARM Cortex-M3 / M4 权威指南 - 笔记"
 description: ""
 categories: [ "embedded " ]
 tags: [ "arm", "asm"]
 ---
 
-
-相关链接：
-
-- [Arm 汇编在线模拟运行](https://cpulator.01xz.net/?sys=arm)
-- [ARM Cortex-M3/4 指令流水线](https://blog.csdn.net/kouxi1/article/details/123318182)
 
 
 ## 寄存器
@@ -451,6 +446,11 @@ my_function:
 </div>
 
 
+> 前变址寻址中，`!` 表示将更新后的值写回寄存器，后变址则不需要 `!`
+> 
+> 类似的 `LDMIA SP!, {R0-R3, PC}` 表示指令完成时，将 SP 更新的值写回 SP
+
+
 ## 地址对齐
 
 
@@ -475,7 +475,7 @@ my_function:
 |`Z == 1` |结果为零、比较相等                                                                 |
 |`C == 1` |无符号加法溢出、被减数 >= 减数，被比较数 >= 另一个数、移位时最后一个被移出的位为 1 |
 |`V == 1` |有符号运算结果溢出                                                                 |
-|`Q == 1` |                                                                 |
+|`Q == 1` |饱和运算                                                                    |
 
 </div>
 
@@ -539,6 +539,19 @@ beq equal       /* 如果 r0 == r1，跳转到标签 equal */
 |`MOVW`|`R6, #0x1234` |设置 `R6` 为 16 位常量 `0x1234`              |
 |`MOVT`|`R6, #0x8765` |设置 `R6` 的高 16 位为 `0x8765`              |
 |`MVN` |`R3, R7`      |将 `R7` 中数据取反后送至 `R3`                |
+
+</div>
+
+
+## 加载标签地址
+
+<div class="table-container no-thead">
+
+|                            |                                                          |
+|:---------------------------|:---------------------------------------------------------|
+|`LDR` ` R0, [PC, #offset]`  |PC 相对寻址，这种方法需要手动计算偏移量，不推荐直接使用   |
+|`LDR` ` R0, =label`         |最常用的方法，汇编器将其会转换为 PC 相对寻址              |
+|`ADR` ` R0, label`          |ADR 会计算标签相对于 PC 的偏移，适用于小范围内的地址加载（±4KB）  |
 
 </div>
 
@@ -898,6 +911,8 @@ UBFX R1, R0, #4, #8  /* R1 = 0x00000088 */
 > 以上指令均不保存计算结果，且总是会更新 APSR，因此这些指令没有 S 后缀
 
 
+> `TST` 与 `TEQ` 会更新 `N`、`Z`，若使用了桶形移位还会更新 `C`
+
 ## 程序流程控制
 
 
@@ -1018,19 +1033,47 @@ USAT R2, #16, R0      /* R2 = 0x0000FFFF */
 ```
 
 
-## 异常相关指令
+## NOP 指令
+
+用于指令对齐或延时，用 C 可写作 `_NOP();`
+
+
+## 桶形移位器
+
+一些数据处理指令可以在数据处理前选择移位操作，如 `LDR Rd, [Rn, Rm, LSL #n]`
+
+```asm
+.global _start
+_start:
+        ldr  r0, =my_array
+        mov  r1, #5
+        ldrb r2, [r0, r1, lsl #2]    /* r2 = r0+(r1<<2) = my_array[5*4] = 0x24  */
+
+.section .rodata
+my_array:
+        .byte 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
+        .byte 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17
+        .byte 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27
+        .byte 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37
+```
+
+## 未完待续
+
+- [ ] 架构（特殊寄存器,及其读写指令）
+- [ ] APSR 标志位读写
+- [ ] 异常指令
+- [ ] 休眠模式指令
+- [ ] 存储器屏障指令
+- [ ] 程序调用流程 push pop
 
 
 
 
 
+## 参考链接
+
+- [Arm 汇编在线模拟运行](https://cpulator.01xz.net/?sys=arm)
+- [ARM Cortex-M3/4 指令流水线](https://blog.csdn.net/kouxi1/article/details/123318182)
 
 
-## 读写 APSR ,组合程序状态字, P56
-## ADR 获取标签地址
-## 清除标志位 C N Z Q
-## 感叹号
-## mov 能使用 32 位的立即数
-## 常用操作
-## 分支跳转太多，就需要分支预测？
-## 分支预测是硬件还是软件的工作
+
