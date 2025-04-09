@@ -117,6 +117,10 @@ body {
     font-size: 30px;
 }
 
+.post-content dl {
+	margin: 10px 0 0 0;
+}
+
 .post-content ul {
 	padding-inline-start: 14px;
 }
@@ -176,31 +180,6 @@ body {
 }
 
 
-/*
-.post-content table th,
-.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
-    min-width: 150px;
-    font-size: 0.9em;
-    padding: 8px 40px 8px 0px;
-	width:auto;
-    line-height: 1.7;
-	border: 1px solid var(--border);
-}
-*/
-.post-content .table-container {
-	width: 100%;
-	overflow: hidden;
-	overflow-x: scroll;
-	margin: -5px 0px;
-}
-
-.post-content .table-container::-webkit-scrollbar {
-  width: 0px; /* 垂直滚动条宽度 */
-  height: 0px; /* 水平滚动条高度 */
-}
-
-
-
 
 .no-thead thead {
 	display: none;
@@ -214,9 +193,35 @@ body {
 .post-content table {
 	display: table;
 	font-size: 0.9em;
-	white-space: nowrap;
 	margin: 5px 0px;
 }
+
+/*
+.post-content table th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+    min-width: 150px;
+    font-size: 0.9em;
+    padding: 8px 40px 8px 0px;
+	width:auto;
+    line-height: 1.7;
+	border: 1px solid var(--border);
+}
+*/
+.post-content .table-container {
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	overflow-x: scroll;
+	margin: -5px 0px;
+}
+
+.post-content .table-container::-webkit-scrollbar {
+  width: 0px; /* 垂直滚动条宽度 */
+  height: 0px; /* 水平滚动条高度 */
+}
+
+
+
 
 .post-content iframe {
 	border: none;
