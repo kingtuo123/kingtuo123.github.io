@@ -125,9 +125,6 @@ fruits=("apple" "banana" "orange")
 colors[0]="red"
 colors[1]="green"
 colors[2]="blue"
-
-# 从命令输出创建
-files=(*.txt)  # 当前目录所有txt文件
 ```
 
 
@@ -161,6 +158,13 @@ echo ${#fruits[@]}
 
 ### 管道
 
+```bash-session
+$ ls /temp | grep -o "file"
+ls: cannot access '/temp': No such file or directory
+$ ls /temp |& grep -o "file"
+file
+```
+
 <div class="table-container no-thead">
 
 |      |                                                                  |
@@ -170,12 +174,6 @@ echo ${#fruits[@]}
 
 </div>
 
-```bash-session
-$ ls /temp | grep -o "file"
-ls: cannot access '/temp': No such file or directory
-$ ls /temp |& grep -o "file"
-file
-```
 
 
 ### 命令列表操作符
@@ -190,6 +188,289 @@ file
 |`&`    |后台执行                         |
 
 </div>
+
+
+### 文件描述符
+
+每个进程都有自己独立的文件描述符表（File Descriptor Table）
+
+<div align="left">
+    <img src="fdt.svg" style="max-height:1000px"></img>
+</div>
+
+<div class="table-container no-thead">
+
+|      |                         |
+|:-----|:------------------------|:--|:--|:--|:--|
+|`0`   |标准输入 `stdin`         |
+|`1`   |标准输出 `stdout`        |
+|`2`   |标准错误 `stderr`        |
+|`3-8` |自定义文件描述符，共 6 个|
+
+</div>
+
+```bash-session
+$ ls -l /dev/std*
+lrwxrwxrwx 1 root root 15 Apr 11  2025 /dev/stderr -> /proc/self/fd/2
+lrwxrwxrwx 1 root root 15 Apr 11  2025 /dev/stdin -> /proc/self/fd/0
+lrwxrwxrwx 1 root root 15 Apr 11  2025 /dev/stdout -> /proc/self/fd/1
+$ ls -l /proc/self
+lrwxrwxrwx 1 root root 0 Apr 11  2025 /proc/self -> 6719
+$ ls -l /proc/self/fd/
+lrwx------ 1 king king 64 Apr 10 18:46 0 -> /dev/pts/1
+lrwx------ 1 king king 64 Apr 10 18:46 1 -> /dev/pts/1
+lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
+```
+
+<div align="left">
+    <img src="link.svg" style="max-height:1000px"></img>
+</div>
+
+
+`/proc/self` 是一个动态变化的符号链接，由内核动态生成，
+当不同进程访问 `/proc/self` 时，它们看到的是各自进程的信息，且始终指向当前进程 `PID` 的目录即 `/proc/[进程PID]`
+
+
+
+### 重定向
+
+重定向的本质是修改进程的文件描述符表，`command > file` （等同于 `command 1> file`）如下：
+
+<div align="left">
+    <img src="c1.svg" style="max-height:1000px"></img>
+</div>
+
+
+
+<div class="table-container no-thead">
+
+|||
+|:-----|:--|
+|**输入重定向**|**n 默认为 0**|
+|`n<file`|复制 `file` 的 `fd` → `n`|
+|`n<&m`|复制 `m` → `n`|
+|`n<<eof`|创建临时 `file`，逐行写入内容直到定界符 `eof`，然后复制 `file` 的 `fd` → `n`|
+|`n<<<string`|创建临时 `file`，写入一行 `string`（包含空格要加引号），然后复制 `file` 的 `fd` → `n`|
+|**输出重定向**|**n 默认为 1**|
+|`n>file`|复制 `file` 的 `fd` → `n`|
+|`n>&m`|复制 `m` → `n`|
+|`n>>file`|追加，复制 `file` 的 `fd` → `n`|
+|**标准输出/错误重定向**||
+|`&>file`|复制 `file` 的 `fd` → `1` `2`  |
+|`&>>file`|追加，复制 `file` 的 `fd` → `1` `2`  |
+
+</div>
+
+> 这一节可能理解得还有问题，官方文档看得头晕，先插个眼
+
+
+
+
+### 命令分组 ( ) 与 { }
+
+```bash-session
+$ a=123;(echo $a)
+123
+$ a=123;(a=456);echo $a
+123
+```
+
+- `( )` 中的命令在 `子Shell` 中运行，`子Shell` 能继承 `父Shell` 的环境变量，但不会影响 `父Shell` 的环境变量 
+- `( )` 一般用于隔离环境，避免影响当前 Shell
+- `$( )` 的内部实现就是使用子 Shell
+
+```bash-session
+$ { ls /var; ls /usr; } | grep lib
+lib
+lib
+lib64
+libexec
+```
+
+- `{ }` 中的命令在当前 Shell 执行
+- `{ command; }` 中的命令左右都要有空格，必须以 `;` 或换行结尾
+- `{  }` 一般用于合并多条命令的输出，方便一起处理
+
+
+### (( 表达式 ))
+
+
+```bash
+(( i++ ))
+(( --i ))
+(( a = b + c ))
+(( a += 2 ))
+result=$(( 2**4 ))
+
+(( a > b && c < d ))
+(( a > b || c < d ))
+(( !(a > b) ))
+
+(( a = 5 & 3 ))
+(( b = 5 | 3 ))
+(( c = 5 ^ 3 ))
+
+(( hex = 0xFF ))
+(( oct = 077 ))
+(( bin = 2#1010 ))
+
+(( a = 5, b = 10, c = a + b ))  # 逗号分隔多个表达式
+```
+
+- 表达式中的变量名前不需要加 `$`
+- 表达式中的空格是可选的，但建议添加以提高可读性
+- `(( ))` 只支持整数运算，浮点运算需要使用 `bc` 或 `awk` 等其他工具
+- `(( ))` 不返回计算结果，只返回退出状态。要获取计算结果，应使用 `$(( ))`
+
+<div class="table-container no-thead">
+
+|||
+|:--|:--|
+|**算术运算**   |`+-*/%`&ensp;`++`&ensp;`--`&ensp;`**`（幂运算）&ensp;`+=`&ensp;`-=` 等等           |
+|**比较运算**   |`==`&ensp;`!=`&ensp;`<`&ensp;`<=`&ensp;`>`&ensp;`>=`                               |
+|**逻辑运算**   |`\|\|`&ensp;`&&`&ensp;`!`                                              |
+|**位运算**     |`&`&ensp;`\|`&ensp;`^`&ensp;`~`&ensp;`>>`&ensp;`<<`                                |
+|**三元运算符** |`(( max = a > b ? a : b ))` 如果 a 大于 b，max=a，否则 max=b   |
+|**数值进制**   | 十六进制 `0x` `FF`&ensp;八进制 `0` `77`，二进制 `2#` `1010`       |
+
+</div>
+
+### [[ 表达式 ]]
+
+```bash
+[[ "$a" == "$b" ]]      # 字符串相等	    
+[[ -z "$a" ]]           # 字符串为空	    
+[[ -n "$a" ]]           # 字符串非空	      
+[[ "$a" =~ ^[0-9]+$ ]]  # 正则表达式匹配	
+```
+
+<div class="table-container">
+
+|区别              |`[ ]`                           |`[[ ]]`               |
+|:-----------------|:-------------------------------|:---------------------|
+|**POSIX 兼容**    |是（sh）                        |否（仅 Bash/Ksh/Zsh） |
+|**变量双引号要求**|是                              |可选，最好加上        |
+|**逻辑操作符**    |`-a`，`-o`                      |`&&`，`\|\|`          |
+|**模式匹配**      |不支持                          |支持 `==`、`=~`       |
+|**通配符展开**    |不展开                          |展开                  |
+
+</div>
+
+-  `[ ]` 等同 `test` 命令，如果编写可移植的 POSIX shell 脚本（如 sh），使用 `[ ]`
+- 如果使用 Bash，优先用 `[[ ]]`，因为它更安全、功能更强
+- 变量引用最好用双引号括起来，防止空变量或包含空格的变量
+
+<div class="table-container no-thead">
+
+|                          |                                |
+|:-------------------------|:-------------------------------|
+|**逻辑操作符**            |                                |
+|`[ ! condition ]`         |非，`!` 前后都要加空格          |
+|`[ cond1 -a cond2 ]`      |与                              |
+|`[ cond1 -o cond2 ]`      |或                              |
+|`[[ ! condition ]]`       |非，`!` 前后都要加空格          |
+|`[[ cond1 && cond2 ]]`    |与                              |
+|`[[ cond1 \|\| cond2 ]]`  |或                              |
+|**文件测试操作符**        |                                |    
+|`-e file`                 |文件存在                        |
+|`-f file`                 |是普通文件（不是目录或设备文件）|
+|`-d file`                 |是目录                          |
+|`-L file`                 |文件是符号链接，或者 `-h`       |
+|`-s file`                 |文件大小不为零                  |
+|`-r file`                 |文件可读                        |
+|`-w file`                 |文件可写                        |
+|`-x file`                 |文件可执行                      |
+|`file1 -nt file2`         |file1 比 file2 新               |
+|`file1 -ot file2`         |file1 比 file2 旧               |
+|**字符串比较**            |                                |
+|`-z string`               |字符串长度为 0                  |
+|`-n string`               |字符串长度不为 0                |
+|`string1 = string2`       |字符串相等                      |
+|`string1 == string2`      |字符串相等                      |
+|`string1 != string2`      |字符串不相等                    |
+|`string1 < string2`       |string1 按字典顺序小于 string2  |
+|`string1 > string2`       |string1 按字典顺序大于 string2  |
+|**数值比较**              |                                |
+|`num1 -eq num2`           |等于                            |
+|`num1 -ne num2`           |不等于                          |
+|`num1 -lt num2`           |小于                            |
+|`num1 -le num2`           |小于等于                        |
+|`num1 -gt num2`           |大于                            |
+|`num1 -ge num2`           |大于等于                        |
+|**正则表达式匹配**        |                                |
+`string =~ pattern`        |当 pattern 成功匹配到 string 中的字符则返回真，pattern 包含特殊字符时不加双引号|
+
+</div>
+
+
+### 条件结构
+
+#### If 语句
+
+```bash
+if [ -f "file1" ]; then
+    echo "文件 file1 存在"
+elif test -f "file2"; then
+    echo "文件 file2 存在"
+elif [[ -f "file3" ]]; then
+    echo "文件 file3 存在"
+else
+    echo "nothing"
+fi
+```
+
+
+#### Case 语句
+
+```bash
+echo -n "The $1 has "
+case $1 in
+    d*g | "cat")
+        echo -n "4"
+        ;;
+    "man")
+        echo -n "2"
+        ;;
+    *)
+        echo -n "?"
+        ;;
+esac
+echo " legs"
+```
+
+```bash-session
+$ ./test.sh cat
+The cat has 4 legs
+$ ./test.sh dog
+The dog has 4 legs
+$ ./test.sh dooog
+The dooog has 4 legs
+$ ./test.sh man
+The man has 2 legs
+$ ./test.sh snake
+The snake has ? legs
+```
+
+#### Select 语句
+
+```bash
+select fruit in Apple Banana Cherry "Dragon Fruit"
+do
+    echo "Your selected: $fruit"
+    break  # 退出选择循环
+done
+```
+
+```bash-session
+$ ./test.sh
+1) Apple
+2) Banana
+3) Cherry
+4) Dragon Fruit
+#? 2
+Your selected: Banana
+```
+
 
 
 ### 循环结构
@@ -274,7 +555,7 @@ for i in {1..10..2}; do
 done
 
 # 遍历命令输出
-for file in $(ls); do
+for file in "$(ls)"; do
     echo "File: $file"
 done
 
@@ -286,7 +567,7 @@ done
 
 #### 循环控制
 
-<div class="table-container no-thead">
+<div class="table-container">
 
 |           |                              |
 |:----------|:-----------------------------|
@@ -296,123 +577,29 @@ done
 
 </div>
 
-### 条件结构
-
-#### If 语句
-
-```bash
-if [ -f "file1" ]; then
-    echo "文件 file1 存在"
-elif test -f "file2"; then
-    echo "文件 file2 存在"
-elif [[ -f "file3" ]]; then
-    echo "文件 file3 存在"
-else
-    echo "nothing"
-fi
-```
 
 
-<div class="table-container">
+### 协进程
 
-|                  |`[ ]`                           |`[[ ]]`               |
-|:-----------------|:-------------------------------|:---------------------|
-|**POSIX 兼容**    |是（sh）                        |否（仅 Bash/Ksh/Zsh） |
-|**变量双引号要求**|是                              |可选，最好加上        |
-|**逻辑操作符**    |`-a`，`-o`                      |`&&`，`\|\|`          |
-|**模式匹配**      |不支持                          |支持 `==`、`=~`       |
-|**通配符展开**    |不展开                          |展开                  |
-
-</div>
-
--  `[ ]` 等同 `test` 命令，如果编写可移植的 POSIX shell 脚本（如 sh），使用 `[ ]`
-- 如果使用 Bash，优先用 `[[ ]]`，因为它更安全、功能更强
-- 变量引用最好用双引号括起来，如 `[ "$var1" = "$var2" ]`，防止空变量或包含空格的问题
-
-> 总之，尽量用 `[[ ]]`，用 `[ ]` 总会遇到奇怪的问题，变量一定要用双引号括起来
-
-
-
-<div class="table-container no-thead">
-
-|                          |                                |
-|:-------------------------|:-------------------------------|
-|**逻辑操作符**            |                                |
-|`! [ condition ]`         |非，`!` 前后都要加空格          |
-|`[ cond1 -a cond2 ]`      |与                              |
-|`[ cond1 -o cond2 ]`      |或                              |
-|`! [[ condition ]]`       |非，`!` 前后都要加空格          |
-|`[[ cond1 && cond2 ]]`    |与                              |
-|`[[ cond1 \|\| cond2 ]]`  |或                              |
-|**文件测试操作符**        |                                |    
-|`-e file`                 |文件存在                        |
-|`-f file`                 |是普通文件（不是目录或设备文件）|
-|`-d file`                 |是目录                          |
-|`-s file`                 |文件大小不为零                  |
-|`-r file`                 |文件可读                        |
-|`-w file`                 |文件可写                        |
-|`-x file`                 |文件可执行                      |
-|`-L file`                 |文件是符号链接                  |
-|`file1 -nt file2`         |file1 比 file2 新               |
-|`file1 -ot file2`         |file1 比 file2 旧               |
-|**字符串比较**            |                                |
-|`-z string`               |字符串长度为 0                  |
-|`-n string`               |字符串长度不为 0                |
-|`string1 = string2`       |字符串相等                      |
-|`string1 == string2`      |字符串相等                      |
-|`string1 != string2`      |字符串不相等                    |
-|`string1 < string2`       |string1 按字典顺序小于 string2  |
-|`string1 > string2`       |string1 按字典顺序大于 string2  |
-|**数值比较**              |                                |
-|`num1 -eq num2`           |等于                            |
-|`num1 -ne num2`           |不等于                          |
-|`num1 -lt num2`           |小于                            |
-|`num1 -le num2`           |小于等于                        |
-|`num1 -gt num2`           |大于                            |
-|`num1 -ge num2`           |大于等于                        |
-
-</div>
-
-#### Case 语句
-
-```bash
-echo -n "The $1 has "
-case $1 in
-    d*g | "cat")
-        echo -n "4"
-        ;;
-    "man")
-        echo -n "2"
-        ;;
-    *)
-        echo -n "?"
-        ;;
-esac
-echo " legs"
-```
-
-```bash-session
-$ ./test.sh cat
-The cat has 4 legs
-$ ./test.sh dog
-The dog has 4 legs
-$ ./test.sh dooog
-The dooog has 4 legs
-$ ./test.sh man
-The man has 2 legs
-$ ./test.sh snake
-The snake has ? legs
-```
+协进程（coprocess），允许你在脚本中启动一个子进程并与它进行双向通信
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+## IFS 与 双引号的关系
 
 ## Shell 扩展
-
-
-
 
 ## Bash 调试
 
@@ -421,3 +608,5 @@ set -x
 bash -x 
 set -e
 ```
+
+## bash 编程常犯错误

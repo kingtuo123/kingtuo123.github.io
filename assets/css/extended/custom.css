@@ -212,7 +212,7 @@ body {
 	white-space: nowrap;
 	overflow: hidden;
 	overflow-x: scroll;
-	margin: -5px 0px;
+	margin: -5px 0px 0px 0px;
 }
 
 .post-content .table-container::-webkit-scrollbar {
