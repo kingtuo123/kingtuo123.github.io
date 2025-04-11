@@ -234,7 +234,7 @@ lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
 
 ### 重定向
 
-重定向的本质是修改进程的文件描述符表，`command > file` （等同于 `command 1> file`）如下：
+重定向的本质是修改进程的文件描述符表，`command >file` （等同于 `command 1>file`）如下：
 
 <div align="left">
     <img src="c1.svg" style="max-height:1000px"></img>
@@ -246,22 +246,28 @@ lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
 
 |||
 |:-----|:--|
-|**输入重定向**|**n 默认为 0**|
+|**输入重定向**|**n 默认为 0（只读）**|
 |`n<file`|复制 `file` 的 `fd` → `n`|
 |`n<&m`|复制 `m` → `n`|
-|`n<<eof`|创建临时 `file`，逐行写入内容直到定界符 `eof`，然后复制 `file` 的 `fd` → `n`|
+|`n<&m-`|复制 `m` → `n`，然后关闭 `m`|
+|`n<&-`|关闭 `n`|
+|`n<<eof`|创建临时 `file`，逐行写入内容直到 `eof`，然后复制 `file` 的 `fd` → `n`|
 |`n<<<string`|创建临时 `file`，写入一行 `string`（包含空格要加引号），然后复制 `file` 的 `fd` → `n`|
-|**输出重定向**|**n 默认为 1**|
+|**输出重定向**|**n 默认为 1（只写）**|
 |`n>file`|复制 `file` 的 `fd` → `n`|
 |`n>&m`|复制 `m` → `n`|
-|`n>>file`|追加，复制 `file` 的 `fd` → `n`|
-|**标准输出/错误重定向**||
+|`n>&m-`|复制 `m` → `n`，然后关闭 `m`|
+|`n>&-`|关闭 `n`|
+|`n>>file`|复制 `file` 的 `fd` → `n` ，追加模式|
+|**输出+错误重定向**|**只写**|
 |`&>file`|复制 `file` 的 `fd` → `1` `2`  |
-|`&>>file`|追加，复制 `file` 的 `fd` → `1` `2`  |
+|`&>>file`|复制 `file` 的 `fd` → `1` `2` ，追加模式|
+|**自定义文件描述符**|**读写**|
+|`n<>file`|关联 `n` → `file`|
 
 </div>
 
-> 这一节可能理解得还有问题，官方文档看得头晕，先插个眼
+> 之前习惯在 `>` 右侧加空格，但像 `command 1> file1 2> file2` 和 `command 1>file1 2>file2` 明显后者更易阅读和理解，`file` 应是 `>` 的参数而不是 `command` 的参数，所以还是不加吧
 
 
 
@@ -583,13 +589,121 @@ done
 
 协进程（coprocess），允许你在脚本中启动一个子进程并与它进行双向通信
 
+如果不指定 `NAME`，Bash 会使用默认名称 `COPROC`：
 
+```bash
+coproc NAME { command; }
+```
 
+协进程启动后，Bash 会创建两个文件描述符及 PID 变量：
 
+- `NAME[0]` - 协进程的标准输出
+- `NAME[1]` - 协进程的标准输入
+- `NAME_PID` - 协进程的 PID
 
+```bash
+#!/bin/bash
 
+coproc data_processor {
+    while read input; do
+        sleep 1  # 模拟处理延迟
+        echo "$input" | tr 'a-z' 'A-Z'  # 处理数据 - 这里简单转换为大写
+    done
+}
 
+for i in {1..5}; do
+    echo "data packet $i" >&"${data_processor[1]}"  # 非阻塞发送
+done
+echo "数据发送完成"
 
+echo "干点别的事..."
+sleep 3
+
+for i in {1..5}; do
+    read -t 5 response <&"${data_processor[0]}"
+    echo "Received: $response"
+done
+echo "数据接收完成"
+
+exec {data_processor[0]}<&-  # 无阻塞风险也可不关闭
+exec {data_processor[1]}>&-  # 关闭协程的输入 fd，避免协进程的 read 无限等待输入（阻塞）
+
+# 关闭文件描述符后，协进程通常会自行终止，也可 kill ${data_processor_PID}
+wait $data_processor_PID     # 确保协进程正确退出并回收其资源
+```
+
+```bash-session
+$ ./test.sh
+数据发送完成
+干点别的事...
+Received: DATA PACKET 1
+Received: DATA PACKET 2
+Received: DATA PACKET 3
+Received: DATA PACKET 4
+Received: DATA PACKET 5
+数据接收完成
+```
+
+### 函数
+
+```bash
+# 语法：不加 function 也可以
+function func_name() {
+    commands
+}
+```
+
+```bash
+# 函数参数：使用 位置参数变量 访问，$1 $2 ...
+greet() {
+    echo "Hello, $1!"
+}
+greet "Alice"
+```
+
+```bash
+# 返回值：使用 echo 返回一个数组
+create_array() {
+    local arr=(1 2 3 4 5)
+    echo "${arr[@]}"
+}
+my_array=($(create_array))
+echo "Array elements: ${my_array[@]}"
+```
+
+```bash
+# 返回函数执行状态：使用 return（0-255），0 表示成功，大于 1 表示失败
+is_number() {
+    [[ "$1" =~ ^[0-9]+$ ]] && return 0 || return 1
+}
+is_number "123" && echo "Valid number"
+```
+
+```bash
+# 作用域：使用 local 创建局部变量，默认是全局变量
+demo() {
+    local var1="local"  # 局部变量
+    var2="global"       # 全局变量
+}
+```
+
+```bash
+# 递归
+factorial() {
+    if (( $1 <= 1 )); then
+        echo 1
+    else
+        local prev=$(factorial $(( $1 - 1 )))
+        echo $(( $1 * prev ))
+    fi
+}
+echo "计算阶乘： 5! = $(factorial 5)"
+```
+
+```bash
+# 调用外部函数：使用 source 引入函数库
+source functions.sh
+```
 
 
 
