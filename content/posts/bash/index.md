@@ -11,29 +11,43 @@ tags: [ "bash" ]
 
 ### 变量使用
 
-#### 变量定义
 
-等号两边不能有空格
 
 ```bash
+# 变量定义，等号两边不能有空格
 name="king"
-age=30
-PI=3.14159
-```
+var=30
 
-#### 将命令输出赋值给变量
-
-```bash
+# 将命令的输出赋值给变量，如果输出包含空格最好加上双引号
 name=$(whoami)
 name=`whoami`
-```
 
-#### 变量引用
-
-
-```bash
+# 变量引用
 echo $name
 echo ${name}
+
+# 只读变量
+readonly name="king"
+declare -r name="king"
+
+# 删除变量
+unset variable_name
+
+# 变量默认值，如果 var 未设置或为空，使用 default
+echo ${var:-default}  
+
+# 字符串拼接
+a="$str1$str2"
+
+
+```
+
+#### 字符串操作
+
+```bash
+str="01234567"
+length=${#str}          # 字符串长度 8
+substring=${str:0:4}    # 子字符串 1234
 ```
 
 #### 双引号 vs 单引号
@@ -47,45 +61,21 @@ $ echo 'hello $(whoami)'
 hello $(whoami)
 ```
 
-### 变量操作
+### 特殊变量
 
-#### 只读变量
+<div class="table-container no-thead colfirst-50">
 
-```bash
-readonly name="king"
-
-```
-
-#### 删除变量
-
-```bash
-unset variable_name
-```
-
-#### 默认值
-
-```bash
-echo ${variable:-default_value}  # 如果 variable 未设置或为空，使用 default_value
-```
-
-#### 字符串操作
-
-```bash
-str="01234567"
-length=${#str}          # 字符串长度 8
-substring=${str:0:4}    # 子字符串 1234
-```
-
-### 位置参数变量（内置变量）
-
-<div class=" no-thead">
-
-|    |                                   |   |   |
-|:---|:----------------------------------|:--|:--|
-|`0`|脚本名                             |   |   |
-|`1`|第 1 个参数，参数大于 10 用 `${10}`|   |   |
-|`#`|参数个数                           |   |   |
-|`@`|所有参数                           |   |   |
+|    |                                     |
+|:---|:------------------------------------|
+|`0` |脚本名                               |
+|`1` |第 1 个参数，参数大于 10 用 `${10}`  |
+|`#` |参数个数                             |
+|`@` |所有参数 （每个参数都是独立的字符串）|
+|`*` |所有参数 （所有参数作为一个字符串）  |
+|`?` |上一个命令的退出状态                 |
+|`$` |当前 shell 的进程 ID                 |
+|`!` |最近被放入后台的进程 ID              |
+|`-` |set 命令或 shell 自身设置的选项      |
 
 </div>
 
@@ -165,7 +155,7 @@ $ ls /temp |& grep -o "file"
 file
 ```
 
-<div class="table-container no-thead">
+<div class="table-container no-thead colfirst-50">
 
 |      |                                                                  |
 |:-----|:-----------------------------------------------------------------|
@@ -178,7 +168,7 @@ file
 
 ### 命令列表操作符
 
-<div class="table-container no-thead">
+<div class="table-container no-thead colfirst-50">
 
 |       |                                 |
 |:------|:--------------------------------|
@@ -198,10 +188,10 @@ file
     <img src="fdt.svg" style="max-height:1000px"></img>
 </div>
 
-<div class="table-container no-thead">
+<div class="table-container no-thead colfirst-50">
 
 |      |                         |
-|:-----|:------------------------|:--|:--|:--|:--|
+|:-----|:------------------------|
 |`0`   |标准输入 `stdin`         |
 |`1`   |标准输出 `stdout`        |
 |`2`   |标准错误 `stderr`        |
@@ -244,26 +234,26 @@ lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
 
 <div class="table-container no-thead">
 
-|||
-|:-----|:--|
-|**输入重定向**|**n 默认为 0（只读）**|
-|`n<file`|复制 `file` 的 `fd` → `n`|
-|`n<&m`|复制 `m` → `n`|
-|`n<&m-`|复制 `m` → `n`，然后关闭 `m`|
-|`n<&-`|关闭 `n`|
-|`n<<eof`|创建临时 `file`，逐行写入内容直到 `eof`，然后复制 `file` 的 `fd` → `n`|
-|`n<<<string`|创建临时 `file`，写入一行 `string`（包含空格要加引号），然后复制 `file` 的 `fd` → `n`|
-|**输出重定向**|**n 默认为 1（只写）**|
-|`n>file`|复制 `file` 的 `fd` → `n`|
-|`n>&m`|复制 `m` → `n`|
-|`n>&m-`|复制 `m` → `n`，然后关闭 `m`|
-|`n>&-`|关闭 `n`|
-|`n>>file`|复制 `file` 的 `fd` → `n` ，追加模式|
-|**输出+错误重定向**|**只写**|
-|`&>file`|复制 `file` 的 `fd` → `1` `2`  |
-|`&>>file`|复制 `file` 的 `fd` → `1` `2` ，追加模式|
-|**自定义文件描述符**|**读写**|
-|`n<>file`|关联 `n` → `file`|
+|                     |                                                                                       |
+|:--------------------|:--------------------------------------------------------------------------------------|
+|**输入重定向**       |**n 默认为 0（只读）**                                                                 |
+|`n<file`             |复制 `file` 的 `fd` → `n`                                                              |
+|`n<&m`               |复制 `m` → `n`                                                                         |
+|`n<&m-`              |复制 `m` → `n`，然后关闭 `m`                                                           |
+|`n<&-`               |关闭 `n`                                                                               |
+|`n<<eof`             |创建临时 `file`，逐行写入内容直到 `eof`，然后复制 `file` 的 `fd` → `n`                 |
+|`n<<<string`         |创建临时 `file`，写入一行 `string`（包含空格要加引号），然后复制 `file` 的 `fd` → `n`  |
+|**输出重定向**       |**n 默认为 1（只写）**                                                                 |
+|`n>file`             |复制 `file` 的 `fd` → `n`                                                              |
+|`n>&m`               |复制 `m` → `n`                                                                         |
+|`n>&m-`              |复制 `m` → `n`，然后关闭 `m`                                                           |
+|`n>&-`               |关闭 `n`                                                                               |
+|`n>>file`            |复制 `file` 的 `fd` → `n` ，追加模式                                                   |
+|**输出+错误重定向**  |**只写**                                                                               |
+|`&>file`             |复制 `file` 的 `fd` → `1` `2`                                                          |
+|`&>>file`            |复制 `file` 的 `fd` → `1` `2` ，追加模式                                               |
+|**自定义文件描述符** |**读写**                                                                               |
+|`n<>file`            |关联 `n` → `file`                                                                      |
 
 </div>
 
@@ -323,21 +313,20 @@ result=$(( 2**4 ))
 (( a = 5, b = 10, c = a + b ))  # 逗号分隔多个表达式
 ```
 
-- 表达式中的变量名前不需要加 `$`
+- 表达式中的变量名前不需要加 `$`，加了也不影响，但函数参数像 `$1` 是要加的
 - 表达式中的空格是可选的，但建议添加以提高可读性
 - `(( ))` 只支持整数运算，浮点运算需要使用 `bc` 或 `awk` 等其他工具
 - `(( ))` 不返回计算结果，只返回退出状态。要获取计算结果，应使用 `$(( ))`
 
 <div class="table-container no-thead">
 
-|||
-|:--|:--|
-|**算术运算**   |`+-*/%`&ensp;`++`&ensp;`--`&ensp;`**`（幂运算）&ensp;`+=`&ensp;`-=` 等等           |
-|**比较运算**   |`==`&ensp;`!=`&ensp;`<`&ensp;`<=`&ensp;`>`&ensp;`>=`                               |
-|**逻辑运算**   |`\|\|`&ensp;`&&`&ensp;`!`                                              |
-|**位运算**     |`&`&ensp;`\|`&ensp;`^`&ensp;`~`&ensp;`>>`&ensp;`<<`                                |
-|**三元运算符** |`(( max = a > b ? a : b ))` 如果 a 大于 b，max=a，否则 max=b   |
-|**数值进制**   | 十六进制 `0x` `FF`&ensp;八进制 `0` `77`，二进制 `2#` `1010`       |
+|            |                                                                                                     |
+|:-----------|:----------------------------------------------------------------------------------------------------|
+|**算术运算**|`+ - * / %`&ensp;`++`&ensp;`--`&ensp;`**`（幂运算）&ensp;`+=`&ensp;`-=`&ensp;`/=`&ensp;`*=`&ensp;`%=`|
+|**比较运算**|`==`&ensp;`!=`&ensp;`<`&ensp;`<=`&ensp;`>`&ensp;`>=`                                                 |
+|**逻辑运算**|`\|\|`&ensp;`&&`&ensp;`!`&ensp;`(( max = a > b ? a : b ))`                                           |
+|**位运算**  |`&`&ensp;`\|`&ensp;`^`&ensp;`~`&ensp;`>>`&ensp;`<<`                                                  |
+|**数值进制**| 十六进制 `0x` `FF`，八进制 `0` `77`，二进制 `2#` `1010`                                             |
 
 </div>
 
@@ -573,7 +562,7 @@ done
 
 #### 循环控制
 
-<div class="table-container">
+<div class="table-container no-thead colfirst-90">
 
 |           |                              |
 |:----------|:-----------------------------|
@@ -597,9 +586,15 @@ coproc NAME { command; }
 
 协进程启动后，Bash 会创建两个文件描述符及 PID 变量：
 
-- `NAME[0]` - 协进程的标准输出
-- `NAME[1]` - 协进程的标准输入
-- `NAME_PID` - 协进程的 PID
+<div class="table-container no-thead colfirst-90">
+
+|           |                  |
+|:----------|:-----------------|
+|`NAME[0]`  | 协进程的标准输出 |
+|`NAME[1]`  | 协进程的标准输入 |
+|`NAME_PID` | 协进程的 PID     |
+
+</div>
 
 ```bash
 #!/bin/bash
@@ -705,15 +700,178 @@ echo "计算阶乘： 5! = $(factorial 5)"
 source functions.sh
 ```
 
+```bash
+# 重定向
+log_to_file() {
+    echo "This is a log message"
+} > output.log
+# 调用函数，输出会写入output.log
+log_to_file
+```
 
 
 
+## Shell 扩展
+
+### 花括号扩展
+
+```bash
+echo a{b,c,d}e      # 输出: abe ace ade
+echo {1..5}         # 输出: 1 2 3 4 5
+echo {a..d}         # 输出: a b c d
+echo {01..10}       # 输出: 01 02 03 04 05 06 07 08 09 10
+echo {a..d}{1..3}   # 输出: a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3
+echo {1..10..2}     # 输出: 1 3 5 7 9
+echo {a..z..3}      # 输出: a d g j m p s v y
+```
+
+### 波浪号扩展
+
+```bash
+echo ~              # 当前用户的主目录，输出: /home/username 
+echo ~root          # 指定用户的主目录，输出: /root
+```
+
+### 参数扩展
+
+```bash
+# 默认值
+${var:-default}      # 如果 var 未设置或为空，返回 default，不修改 var
+${var-default}       # 仅当 var 未设置时，返回 default，不修改 var
+
+# 赋值默认值
+${var:=default}      # 如果 var 未设置或为空，返回 default，修改 var=default
+
+# 变量存在检查
+${var:+replacement}  # 如果 var 已设置且非空，返回 replacement，不修改 var
+
+# 错误检查
+${var:?error_msg}    # 如果 var 未设置或为空，打印 error_msg 并退出
+
+# 字符串长度
+${#var}              # 返回变量值的长度
+
+# 子字符串
+${var:offset}        # 从 offset 开始截取到结尾，返回截取的部分
+${var:offset:length} # 从 offset 开始，截取长度为 length，返回截取的部分
+```
+
+```bash
+# 查找替换
+${var/pattern/replacement}  # 替换第一个匹配
+${var//pattern/replacement} # 替换所有匹配
+${var/#pattern/replacement} # 替换行首匹配（^abc）
+${var/%pattern/replacement} # 替换行尾匹配（abc$）
+
+# 模式匹配
+${var#pattern}     # 删除最短匹配前缀（^abc），返回剩下的部分
+${var##pattern}    # 删除最长匹配前缀（^abc），返回剩下的部分
+${var%pattern}     # 删除最短匹配后缀（abc$），返回剩下的部分
+${var%%pattern}    # 删除最长匹配后缀（abc$），返回剩下的部分
+
+# 示例
+file="backup.tar.gz"
+echo ${file#*.}      # 输出: tar.gz
+echo ${file##*.}     # 输出: gz
+echo ${file%.*}      # 输出: backup.tar
+echo ${file%%.*}     # 输出: backup
+```
+
+### 文件名扩展
+
+<div class="table-container no-thead colfirst-100">
+
+|            |                               |
+|:-----------|:------------------------------|
+|`*`         |匹配 `>=0` 个字符              |
+|`?`         |匹配 `1` 个字符                |
+|`[abc]`     |匹配 `abc` 中的 `1` 个字符     |
+|`[!0-9]`    |不匹配 `0-9` 中的 `1` 个字符   |
+|`{jpg,png}` |匹配 `jpg` 或 `png`            |
+
+</div>
+
+文件名匹配有个问题，例如 `files=(*.jpg)`，当目录下没有 `jpg` 文件时，`*.jpg` 就会做为字面量赋值给 `files`：
+
+```bash-session
+$ touch {a,b,c}.txt
+$ files=(*.txt)
+$ echo ${files[@]}
+a.txt  b.txt  c.txt
+$ files=(*.jpg)
+$ echo ${files[@]}
+*.jpg
+```
+
+解决办法，启用 Bash 的 `nullglob` 选项，可以让通配符在没有匹配时扩展为空：
+
+```bash
+$ shopt -s nullglob
+$ files=(*.jpg)
+$ echo ${files[@]}   # 输出为空
+```
+
+
+### 进程替换
+
+```bash
+<(cmd)   # 作为输入文件
+>(cmd)   # 作为输出文件
+```
+
+
+当 Bash 遇到进程替换时，它会创建一个匿名管道并使用符号链接指向管道：
+
+```bash-session
+$ ls -l <(cat)
+lr-x------ 1 king king 64 Apr 12 22:01 /dev/fd/63 -> 'pipe:[521085]'
+$ ls -l >(cat)
+l-wx------ 1 king king 64 Apr 12 22:02 /dev/fd/63 -> 'pipe:[525267]'
+```
+
+把 `<(cmd)` 和 `>(cmd)` 看作文件，主命令可以从 `<(cmd)` 文件读取数据，向 `>(cmd)` 文件写入数据
+
+```bash-session
+示例一：tee 命令能将标准输入的数据同时向多个文件及标准输出传送
+$ cat 0<<eof 1>file
+foo123
+bar123
+eof
+$ tee >(grep foo >foo.txt) >(grep bar >bar.txt) 0<file 1>/dev/null
+$ cat foo.txt
+foo123
+$ cat bar.txt
+bar123
+```
+
+```bash-session
+示例二：使用重定向发送数据到进程替换
+$ echo "foobar" 1> >(tr 'a-z' 'A-Z' >foobar.txt)
+$ cat foobar.txt
+FOOBAR
+
+错误示例：后面的重定向会覆盖前面的重定向，应该使用 tee 命令（见示例一）
+$ echo "foobar" 1> >(tr 'a-z' 'A-Z' >foobar.txt) 1> >(sed s/$/BAD/ >bad.txt)
+$ cat foobar.txt
+$ cat bad.txt
+foobarBAD
+```
+
+```bash-session
+示例三：处理多个命令的输出
+$ sed -e 's/foo/FOO/' -e 's/bar/BAR/' <(echo foo) <(echo bar)
+FOO
+BAR
+```
+
+> 有些命令如 `tr` 只支持标准输入不能直接操作文件，`ls` 则不支持标准输入，
+> `sed` 既支持标准输入又能直接操作文件，要看情况使用重定向和进程替换
 
 
 
 ## IFS 与 双引号的关系
 
-## Shell 扩展
+## 匿名管道
 
 ## Bash 调试
 
