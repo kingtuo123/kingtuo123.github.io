@@ -70,8 +70,8 @@ hello $(whoami)
 |`0` |脚本名                               |
 |`1` |第 1 个参数，参数大于 10 用 `${10}`  |
 |`#` |参数个数                             |
-|`@` |所有参数 （每个参数都是独立的字符串）|
-|`*` |所有参数 （所有参数作为一个字符串）  |
+|`@` |所有参数 （有双引号时，每个参数都是独立的字符串）|
+|`*` |所有参数 （有双引号时，所有参数作为一个字符串）  |
 |`?` |上一个命令的退出状态                 |
 |`$` |当前 shell 的进程 ID                 |
 |`!` |最近被放入后台的进程 ID              |
@@ -81,7 +81,6 @@ hello $(whoami)
 
 
 ```bash
-#!/bin/bash
 echo "脚本名 = $0"
 echo "第一个参数 = $1"
 echo "第二个参数 = $2"
@@ -98,6 +97,33 @@ $ ./test.sh f1 f2 f3
 所有参数 = f1 f2 f3
 ```
 
+### `$@` 与 `$*` 的区别
+
+在无引号时，`$@` 和 `$*` 的行为相同
+
+有双引号时，`"$@"` 保持每个参数的独立性，相当于 `"$1" "$2" "$3"` ，而 `"$*"` 会将所有参数合并成一个字符串，相当于 `"$1 $2 $3"`
+
+```bash
+echo "Using \"\$@\":"
+for arg in "$@"; do
+  echo "[$arg]"
+done
+
+echo "Using \"\$*\":"
+for arg in "$*"; do
+  echo "[$arg]"
+done
+```
+
+```bash-session
+$ ./test.sh a b 'c d'
+Using "$@":
+[a]
+[b]
+[c d]
+Using "$*":
+[a b c d]
+```
 
 
 
@@ -588,11 +614,11 @@ coproc NAME { command; }
 
 <div class="table-container no-thead colfirst-90">
 
-|           |                  |
-|:----------|:-----------------|
-|`NAME[0]`  | 协进程的标准输出 |
-|`NAME[1]`  | 协进程的标准输入 |
-|`NAME_PID` | 协进程的 PID     |
+|           |                                     |
+|:----------|:------------------------------------|
+|`NAME[0]`  | 用于从协进程读取（协进程的标准输出）|
+|`NAME[1]`  | 用于向协进程写入（协进程的标准输入）|
+|`NAME_PID` | 协进程的 PID                        |
 
 </div>
 
@@ -713,83 +739,87 @@ log_to_file
 
 ## Shell 扩展
 
-### 花括号扩展
 
-```bash
-echo a{b,c,d}e      # 输出: abe ace ade
-echo {1..5}         # 输出: 1 2 3 4 5
-echo {a..d}         # 输出: a b c d
-echo {01..10}       # 输出: 01 02 03 04 05 06 07 08 09 10
-echo {a..d}{1..3}   # 输出: a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3
-echo {1..10..2}     # 输出: 1 3 5 7 9
-echo {a..z..3}      # 输出: a d g j m p s v y
-```
+<div class="table-container no-thead">
 
-### 波浪号扩展
+|                       |                                                           |
+|:----------------------|:----------------------------------------------------------|
+|**花括号扩展**         |                                                           |
+|`a{b,c,d}e`            | `abe ace ade`                                             |
+|`{1..5}`               | `1 2 3 4 5`                                               |
+|`{a..d}`               | `a b c d`                                                 |
+|`{01..10}`             | `01 02 03 04 05 06 07 08 09 10`                           |
+|`{a..d}{1..3}`         | `a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3`                     |
+|`{1..10..2}`           | `1 3 5 7 9`                                               |
+|`{a..z..3}`            | `a d g j m p s v y`                                       |
+|**波浪号扩展**         |                                                           |
+|`~`                    | 当前用户的家目录                                          |
+|`~user`                | `user` 用户的家目录                                       |
+|`~+`                   | 当前目录，等同 `$PWD`                                     |
+|`~-`                   | 之前目录，等同 `$OLDPWD`                                  |
+|**参数扩展**           |                                                           |
+|`${var:-default}`      | 当 `var` 未设置或为空，返回 `default`，不修改 `var`       |
+|`${var-default}`       | 当 `var` 未设置，返回 `default`，不修改 `var`             |
+|`${var:=default}`      | 当 `var` 未设置或为空，返回 `default`，修改 `var=default` |
+|`${var:+replacement}`  | 当 `var` 已设置且非空，返回 `replacement`，不修改 `var`   |
+|`${var:?error_msg}`    | 当 `var` 未设置或为空，打印 `error_msg` 并退出脚本        |
+|`${#str}`              | 返回 `str` 的长度                                         |
+|`${str:offset}`        | 截取 `str` 从 `offset` 到末尾的部分                       |
+|`${str:offset:length}` | 截取 `str` 从 `offset` 到 `offset + length` 的部分        |
 
-```bash
-echo ~              # 当前用户的主目录，输出: /home/username 
-echo ~root          # 指定用户的主目录，输出: /root
-```
+</div>
 
-### 参数扩展
-
-```bash
-# 默认值
-${var:-default}      # 如果 var 未设置或为空，返回 default，不修改 var
-${var-default}       # 仅当 var 未设置时，返回 default，不修改 var
-
-# 赋值默认值
-${var:=default}      # 如果 var 未设置或为空，返回 default，修改 var=default
-
-# 变量存在检查
-${var:+replacement}  # 如果 var 已设置且非空，返回 replacement，不修改 var
-
-# 错误检查
-${var:?error_msg}    # 如果 var 未设置或为空，打印 error_msg 并退出
-
-# 字符串长度
-${#var}              # 返回变量值的长度
-
-# 子字符串
-${var:offset}        # 从 offset 开始截取到结尾，返回截取的部分
-${var:offset:length} # 从 offset 开始，截取长度为 length，返回截取的部分
-```
-
-```bash
-# 查找替换
-${var/pattern/replacement}  # 替换第一个匹配
-${var//pattern/replacement} # 替换所有匹配
-${var/#pattern/replacement} # 替换行首匹配（^abc）
-${var/%pattern/replacement} # 替换行尾匹配（abc$）
-
-# 模式匹配
-${var#pattern}     # 删除最短匹配前缀（^abc），返回剩下的部分
-${var##pattern}    # 删除最长匹配前缀（^abc），返回剩下的部分
-${var%pattern}     # 删除最短匹配后缀（abc$），返回剩下的部分
-${var%%pattern}    # 删除最长匹配后缀（abc$），返回剩下的部分
-
-# 示例
-file="backup.tar.gz"
-echo ${file#*.}      # 输出: tar.gz
-echo ${file##*.}     # 输出: gz
-echo ${file%.*}      # 输出: backup.tar
-echo ${file%%.*}     # 输出: backup
-```
-
-### 文件名扩展
 
 <div class="table-container no-thead colfirst-100">
 
 |            |                               |
 |:-----------|:------------------------------|
+|**通配符**  |                               |
 |`*`         |匹配 `>=0` 个字符              |
 |`?`         |匹配 `1` 个字符                |
 |`[abc]`     |匹配 `abc` 中的 `1` 个字符     |
-|`[!0-9]`    |不匹配 `0-9` 中的 `1` 个字符   |
+|`[^0-9]`    |不匹配 `0-9` 中的 `1` 个字符   |
 |`{jpg,png}` |匹配 `jpg` 或 `png`            |
 
 </div>
+
+
+<div class="table-container no-thead">
+
+|                              |                          |                |                     |
+|:-----------------------------|:-------------------------|:---------------|:--------------------|
+|**模式匹配**                  |                          |                |                     |
+|`${var#pattern}`              |从开头删除最短匹配        |`${var#*.}`     |~~backup.~~ `tar.gz` |
+|`${var##pattern}`             |从开头删除最长匹配        |`${var##*.}`    |~~backup.tar.~~ `gz` |
+|`${var%pattern}`              |从末尾删除最短匹配        |`${var%.*}`     |`backup.tar` ~~.gz~~ |
+|`${var%%pattern}`             |从末尾删除最长匹配        |`${var%%.*}`    |`backup` ~~.tar.gz~~ |
+|`${var/pattern/replacement}`  |替换第一个匹配            |`${var/h/H}`    |`H` olahola          |
+|`${var//pattern/replacement}` |替换所有匹配              |`${var//h/H}`   |`H` ola `H` ola      |
+|`${var/#pattern/replacement}` |替换行首匹配              |`${var/#ho/HO}` |`HO` lahola          |
+|`${var/%pattern/replacement}` |替换行尾匹配              |`${var/%la/LA}` |holaho `LA`          |
+|`${var^pattern}`              |匹配行首字符并转换为大写  |`${var^}`       |`H` olahola          |
+|`${var^^pattern}`             |匹配的所有字符转换为大写  |`${var^^}`      |`HOLAHOLA`           |
+|`${var,pattern}`              |匹配行首字符并转换为小写  |`${var,}`       |`h` OLAHOLA          |
+|`${var,,pattern}`             |匹配的所有字符转换为小写  |`${var,,}`      |`holahola`           |
+
+</div>
+
+<div class="table-container no-thead">
+
+|                              |                                            |
+|:-----------------------------|:-------------------------------------------|
+|**变量名匹配**                |                                            |
+|`${!prefix@}`                 |匹配所有以 `prefix` 开头的变量名作为独立单词，类似 `$@` |
+|`${!prefix*}`                 |匹配所有以 `prefix` 开头的变量名作为一个字符串，类似 `$*` |
+|**数组索引匹配**              |                                            |
+|`${!name[@]}`                 |匹配所有索引/键作为独立单词，类似 `$@`      |
+|`${!name[*]}`                 |匹配所有索引/键作为一个字符串，类似 `$*`  |
+
+</div>
+
+
+
+### 文件名匹配
 
 文件名匹配有个问题，例如 `files=(*.jpg)`，当目录下没有 `jpg` 文件时，`*.jpg` 就会做为字面量赋值给 `files`：
 
@@ -810,6 +840,8 @@ $ shopt -s nullglob
 $ files=(*.jpg)
 $ echo ${files[@]}   # 输出为空
 ```
+
+> 另外 `*.jpg` 这种方式获取文件列表，当文件名中包含空格，就需要另作处理
 
 
 ### 进程替换
@@ -836,8 +868,8 @@ l-wx------ 1 king king 64 Apr 12 22:02 /dev/fd/63 -> 'pipe:[525267]'
 $ cat 0<<eof 1>file
 foo123
 bar123
-eof
-$ tee >(grep foo >foo.txt) >(grep bar >bar.txt) 0<file 1>/dev/null
+eof                    # 可以看作 tee 文件1 文件2 <file >/dev/null
+$ tee >(grep foo >foo.txt) >(grep bar >bar.txt) 0<file 1>/dev/null 
 $ cat foo.txt
 foo123
 $ cat bar.txt
@@ -845,7 +877,7 @@ bar123
 ```
 
 ```bash-session
-示例二：使用重定向发送数据到进程替换
+示例二：使用重定向发送数据到进程替换，可以看作 echo "foobar" > 文件
 $ echo "foobar" 1> >(tr 'a-z' 'A-Z' >foobar.txt)
 $ cat foobar.txt
 FOOBAR
@@ -858,7 +890,7 @@ foobarBAD
 ```
 
 ```bash-session
-示例三：处理多个命令的输出
+示例三：可以看作 sed 参数 文件1 文件2
 $ sed -e 's/foo/FOO/' -e 's/bar/BAR/' <(echo foo) <(echo bar)
 FOO
 BAR
@@ -866,6 +898,182 @@ BAR
 
 > 有些命令如 `tr` 只支持标准输入不能直接操作文件，`ls` 则不支持标准输入，
 > `sed` 既支持标准输入又能直接操作文件，要看情况使用重定向和进程替换
+
+
+### 字段分隔符 IFS
+
+`IFS`（Internal Field Separator），是 Bash 中的一个特殊环境变量，用于字符串的分割
+
+`IFS` 默认值为空格、制表符 `\t` 和换行符 `\n`
+
+`IFS` 会影响 `read` 命令、`$( )` 命令替换、`$str` 参数扩展等行为
+
+
+`IFS` 查看和修改：
+
+```bash
+printf "%q\n" "$IFS"
+IFS=$' \t\n'
+```
+
+`$' '` 允许在字符串中使用转义序列来表示特殊字符，即 `\t` 会被转化为真正的制表符存入 `IFS` 中
+
+`IFS` 只影响 **不加引号** 的变量扩展，如 `$str` ：
+
+```bash
+str="one:two:three"
+IFS=:
+for word in $str; do
+    echo "[$word]"
+done
+```
+
+```bash-session
+[one]
+[two]
+[three]
+```
+
+若加了引号，则引号里面内容被视作为一个元素：
+
+```bash
+str="one:two:three"
+IFS=:
+for word in "$str"; do
+    echo "[$word]"
+done
+```
+
+```bash-session
+[one:two:three]
+```
+
+`IFS` 不会影响字面量：
+
+```bash
+IFS=:
+for word in one:two:three; do
+    echo "[$word]"
+done
+```
+
+```bash-session
+[one:two:three]
+```
+
+`IFS` 配合 `read` 命令使用：
+
+```bash
+IFS=: read user pass shell <<< "root:secret:/bin/bash"
+echo -e "User=$user,  Passwd=$pass,  Shell=$shell"
+```
+
+```bash-session
+User=root,  Passwd=secret,  Shell=/bin/bash
+```
+
+`IFS` 在数组中的使用：
+
+```bash
+str="apple:banana:orange"
+IFS=: arr=($str)
+echo "arr[0]=${arr[0]},  arr[1]=${arr[1]},  arr[2]=${arr[2]}"
+```
+
+```bash-session
+arr[0]=apple,  arr[1]=banana,  arr[2]=orange
+```
+
+`IFS` 在文件名（含空格）匹配中的应用：
+
+```bash
+IFS=$'\n'
+files=$(ls -1 *.txt)  # 每个文件名占一行
+for f in $files; do
+    echo "处理文件: $f"
+done
+```
+
+```bash-session
+$ touch {'a b c',d,e}.txt
+$ ./test.sh
+处理文件: a b c.txt
+处理文件: d.txt
+处理文件: e.txt
+```
+
+如果不使用 `IFS=$'\n'` ，输出如下：
+
+```bash-session
+处理文件: a
+处理文件: b
+处理文件: c.txt
+处理文件: d.txt
+处理文件: e.txt
+```
+
+
+`IFS` 对位置参数变量 `$*` 的影响：
+
+```bash
+set -- "one" "two" "three"    # set -- 用于手动设置位置参数 $1, $2, $3 ...
+IFS=:
+# $* 会按 IFS 的第一个字符为分隔符展开变量
+echo "Using \$*: $*"
+# $@ 不受 IFS 影响
+echo "Using \$@: $@"
+```
+
+```bash-session
+Using $*: one:two:three
+Using $@: one two three
+```
+
+
+## 临时环境变量
+
+```bash-session
+$ VAR1=value1 VAR2=value2 ... command
+```
+
+命令前添加 `VAR=value` 的形式，表示这个变量赋值仅对该 `command` 有效
+
+```bash-session
+$ echo 'echo $var' > test.sh
+$ var=123
+$ var=456 ./test.sh
+456
+$ echo $var
+123
+```
+
+错误用法，`echo` 输出前 `$var` 就被展开为 `123` ：
+
+```bash-session
+$ var=123
+$ var=456 echo $var
+123
+```
+
+## 间接变量引用
+
+```bash
+${!var}
+```
+
+```bash-session
+$ x="hello"
+$ var="x"
+$ echo ${!var}  # 相当于 $x
+hello
+```
+
+
+
+
+
+
+
 
 
 
@@ -881,4 +1089,9 @@ bash -x
 set -e
 ```
 
+## 命令前缀临时环境变量
+
+## bash 的关键字有哪些
+
 ## bash 编程常犯错误
+
