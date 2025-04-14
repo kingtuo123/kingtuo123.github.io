@@ -7,52 +7,42 @@ categories: [ "programming" ]
 tags: [ "bash" ]
 ---
 
-## 基本语法
 
-### 变量使用
+## 变量
 
 
+<div class="table-container no-thead colfirst-50">
+
+|    |                                     |
+|:---|:------------------------------------|
+|变量定义|`name="king"`|
+|变量引用|`$name` &ensp; `${name}` |
+|只读变量|`readonly name="king"` &ensp; `declare -r name="king"`
+|删除变量|`unset name`|
+
+</div>
+
+### 命令替换
+
+将命令的输出赋值给变量
 
 ```bash
-# 变量定义，等号两边不能有空格
-name="king"
-var=30
-
-# 将命令的输出赋值给变量，如果输出包含空格最好加上双引号
 name=$(whoami)
 name=`whoami`
-
-# 变量引用
-echo $name
-echo ${name}
-
-# 只读变量
-readonly name="king"
-declare -r name="king"
-
-# 删除变量
-unset variable_name
-
-# 变量默认值，如果 var 未设置或为空，使用 default
-echo ${var:-default}  
-
-# 字符串拼接
-a="$str1$str2"
-
-
 ```
 
-#### 字符串操作
+### 间接变量引用
 
-```bash
-str="01234567"
-length=${#str}          # 字符串长度 8
-substring=${str:0:4}    # 子字符串 1234
+```bash-session
+$ x="hello"
+$ var="x"
+$ echo ${!var}  # 相当于 $x
+hello
 ```
 
-#### 双引号 vs 单引号
+### 双引号 vs 单引号
 
-单引号不会扩展变量、命令替换或输出部分特殊字符
+单引号不会扩展变量、命令替换或转义字符
 
 ```bash-session
 $ echo "hello $(whoami)"
@@ -70,8 +60,8 @@ hello $(whoami)
 |`0` |脚本名                               |
 |`1` |第 1 个参数，参数大于 10 用 `${10}`  |
 |`#` |参数个数                             |
-|`@` |所有参数 （有双引号时，每个参数都是独立的字符串）|
-|`*` |所有参数 （有双引号时，所有参数作为一个字符串）  |
+|`@` |所有参数 （有双引号时，`"$@"` 相当于 `"$1" "$2" "$3"`，每个参数都是独立的字符串）|
+|`*` |所有参数 （有双引号时，`"$*"` 相当于 `"$1 $2 $3"`，所有参数作为一个字符串）  |
 |`?` |上一个命令的退出状态                 |
 |`$` |当前 shell 的进程 ID                 |
 |`!` |最近被放入后台的进程 ID              |
@@ -81,6 +71,7 @@ hello $(whoami)
 
 
 ```bash
+#!/bin/bash
 echo "脚本名 = $0"
 echo "第一个参数 = $1"
 echo "第二个参数 = $2"
@@ -97,11 +88,6 @@ $ ./test.sh f1 f2 f3
 所有参数 = f1 f2 f3
 ```
 
-### `$@` 与 `$*` 的区别
-
-在无引号时，`$@` 和 `$*` 的行为相同
-
-有双引号时，`"$@"` 保持每个参数的独立性，相当于 `"$1" "$2" "$3"` ，而 `"$*"` 会将所有参数合并成一个字符串，相当于 `"$1 $2 $3"`
 
 ```bash
 echo "Using \"\$@\":"
@@ -129,44 +115,32 @@ Using "$*":
 
 ## 数组
 
-### 索引数组
-
-使用数字作为索引（从 0 开始）
-
-```bash
-# 直接赋值
-fruits=("apple" "banana" "orange")
-
-# 逐个元素赋值
-colors[0]="red"
-colors[1]="green"
-colors[2]="blue"
-```
 
 
-### 关联数组
+<div class="table-container no-thead colfirst-120">
 
-使用字符串作为键，使用 `declare -A` 声明
+|              |                                                |
+|:-------------|:-----------------------------------------------|
+|**索引数组**  |**使用数字作为索引（从 0 开始）**               |
+|声明方式      |`declare -a a`                                  |
+|赋值          |`a=(1 2 3)` &ensp; `a[0]=1`                     |
+|**关联数组**  |**使用字符串作为键**                            |
+|声明方式      |`declare -A a`                                  |
+|赋值          |`a=([first]=1 [second]=2)` &ensp; `a[first]=1`  |
+|**数组操作**  |                                                |
+|`${a[0]}`     |访问单个元素                                    |
+|`${a[@]}`     |访问所有元素，作为独立单词                      |
+|`${a[*]}`     |访问所有元素，作为一个字符串                    |
+|`a+=(1)`      |追加元素到末尾                                  |        
+|`${#a[@]}`    |获取数组长度                                    |
+|`${a[@]:1:2}` |数组切片，从索引 1 开始取 2 个元素              |
+|`${!name[@]}` |匹配所有索引/键作为独立单词                     |
+|`${!name[*]}` |匹配所有索引/键作为一个字符串                   |
 
-```bash
-declare -A person
-person=([name]="John" [age]=30 [city]="New York")
+</div>
 
-# 或者逐个赋值
-declare -A user
-user["username"]="jdoe"
-user["email"]="jdoe@example.com"
-```
 
-### 数组操作
 
-#### 获取数组长度
-
-```bash
-echo ${#fruits[@]}
-```
-
-### 遍历数组
 
 
 
@@ -396,7 +370,7 @@ result=$(( 2**4 ))
 |`-e file`                 |文件存在                        |
 |`-f file`                 |是普通文件（不是目录或设备文件）|
 |`-d file`                 |是目录                          |
-|`-L file`                 |文件是符号链接，或者 `-h`       |
+|`-h file`                 |文件是符号链接                  |
 |`-s file`                 |文件大小不为零                  |
 |`-r file`                 |文件可读                        |
 |`-w file`                 |文件可写                        |
@@ -423,6 +397,8 @@ result=$(( 2**4 ))
 
 </div>
 
+> 更选项多见：[Bash Conditional Expressions](https://www.gnu.org/software/bash/manual/bash.html#Bash-Conditional-Expressions)
+
 
 ### 条件结构
 
@@ -430,13 +406,10 @@ result=$(( 2**4 ))
 
 ```bash
 if [ -f "file1" ]; then
-    echo "文件 file1 存在"
 elif test -f "file2"; then
-    echo "文件 file2 存在"
 elif [[ -f "file3" ]]; then
-    echo "文件 file3 存在"
+elif (( a > b )); then
 else
-    echo "nothing"
 fi
 ```
 
@@ -496,32 +469,49 @@ Your selected: Banana
 
 ### 循环结构
 
-
-#### until 循环
-
-只要 `test-commands` 的返回值不为 `0` 就执行 `consequent-commands`，`while` 循环也一样
+#### for 循环
 
 ```bash
-until test-commands; do consequent-commands; done
+# 遍历简单列表
+for i in 1 2 3 4 5; do
+    echo "Number $i"
+done
 ```
 
 ```bash
-# 基本计数器
-count=1
-until [ $count -gt 5 ]; do
-    echo "Count: $count"
-    count=$((count + 1))
+# 遍历字符串列表
+for color in red green blue; do
+    echo "Color is $color"
 done
-
-# 等待某个条件满足
-until ping -c1 example.com &>/dev/null; do
-    echo "Waiting for example.com to be reachable..."
-    sleep 5
-done
-echo "example.com is now reachable!"
 ```
 
-循环结构中的 `;` 可以直接用换行替代，看个人习惯
+```bash
+# 使用大括号展开
+for i in {1..5}; do
+    echo "Counting $i"
+done
+```
+
+```bash
+# 指定步长
+for i in {1..10..2}; do
+    echo "Step $i"
+done
+```
+
+```bash
+# 遍历命令输出
+for file in "$(ls)"; do
+    echo "File: $file"
+done
+```
+
+```bash
+# C 语言风格的 for 循环
+for ((i=0; i<5; i++)); do
+    echo "C-style loop: $i"
+done
+```
 
 #### while 循环
 
@@ -532,18 +522,24 @@ while [ $count -le 5 ]; do
     echo "Count: $count"
     count=$((count + 1))
 done
+```
 
+```bash
 # 读取文件内容
 while read line; do
     echo "Line: $line"
 done < filename.txt
+```
 
+```bash
 # 无限循环
 while true; do
     echo "Press Ctrl+C to stop"
     sleep 1
 done
+```
 
+```bash
 # 使用算术表达式
 count=0
 while ((count < 5)); do
@@ -552,38 +548,24 @@ while ((count < 5)); do
 done
 ```
 
-#### for 循环
+#### until 循环
 
 ```bash
-# 遍历简单列表
-for i in 1 2 3 4 5; do
-    echo "Number $i"
+# 基本计数器
+count=1
+until [ $count -gt 5 ]; do
+    echo "Count: $count"
+    count=$((count + 1))
 done
+```
 
-# 遍历字符串列表
-for color in red green blue; do
-    echo "Color is $color"
+```bash
+# 等待某个条件满足
+until ping -c1 example.com &>/dev/null; do
+    echo "Waiting for example.com to be reachable..."
+    sleep 5
 done
-
-# 使用大括号展开
-for i in {1..5}; do
-    echo "Counting $i"
-done
-
-# 指定步长
-for i in {1..10..2}; do
-    echo "Step $i"
-done
-
-# 遍历命令输出
-for file in "$(ls)"; do
-    echo "File: $file"
-done
-
-# C 语言风格的 for 循环
-for ((i=0; i<5; i++)); do
-    echo "C-style loop: $i"
-done
+echo "example.com is now reachable!"
 ```
 
 #### 循环控制
@@ -742,46 +724,40 @@ log_to_file
 
 <div class="table-container no-thead">
 
-|                       |                                                           |
-|:----------------------|:----------------------------------------------------------|
-|**花括号扩展**         |                                                           |
-|`a{b,c,d}e`            | `abe ace ade`                                             |
-|`{1..5}`               | `1 2 3 4 5`                                               |
-|`{a..d}`               | `a b c d`                                                 |
-|`{01..10}`             | `01 02 03 04 05 06 07 08 09 10`                           |
-|`{a..d}{1..3}`         | `a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3`                     |
-|`{1..10..2}`           | `1 3 5 7 9`                                               |
-|`{a..z..3}`            | `a d g j m p s v y`                                       |
-|**波浪号扩展**         |                                                           |
-|`~`                    | 当前用户的家目录                                          |
-|`~user`                | `user` 用户的家目录                                       |
-|`~+`                   | 当前目录，等同 `$PWD`                                     |
-|`~-`                   | 之前目录，等同 `$OLDPWD`                                  |
-|**参数扩展**           |                                                           |
-|`${var:-default}`      | 当 `var` 未设置或为空，返回 `default`，不修改 `var`       |
-|`${var-default}`       | 当 `var` 未设置，返回 `default`，不修改 `var`             |
-|`${var:=default}`      | 当 `var` 未设置或为空，返回 `default`，修改 `var=default` |
-|`${var:+replacement}`  | 当 `var` 已设置且非空，返回 `replacement`，不修改 `var`   |
-|`${var:?error_msg}`    | 当 `var` 未设置或为空，打印 `error_msg` 并退出脚本        |
-|`${#str}`              | 返回 `str` 的长度                                         |
-|`${str:offset}`        | 截取 `str` 从 `offset` 到末尾的部分                       |
-|`${str:offset:length}` | 截取 `str` 从 `offset` 到 `offset + length` 的部分        |
+|                       |                                                                                  |
+|:----------------------|:---------------------------------------------------------------------------------|
+|**花括号扩展**         |                                                                                  |
+|`a{b,c,d}e`            |`abe ace ade`                                                                     |
+|`{1..5}`               |`1 2 3 4 5`                                                                       |
+|`{a..d}`               |`a b c d`                                                                         |
+|`{01..10}`             |`01 02 03 04 05 06 07 08 09 10`                                                   |
+|`{a..d}{1..3}`         |`a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3`                                             |
+|`{1..10..2}`           |`1 3 5 7 9`                                                                       |
+|`{a..z..3}`            |`a d g j m p s v y`                                                               |
+|**波浪号扩展**         |                                                                                  |
+|`~`                    |当前用户的家目录                                                                  |
+|`~user`                |`user` 用户的家目录                                                               |
+|`~+`                   |当前目录，等同 `$PWD`                                                             |
+|`~-`                   |之前目录，等同 `$OLDPWD`                                                          |
+|**参数扩展**           |                                                                                  |
+|`${var:-default}`      |当 `var` 未设置或为空，返回 `default`，不修改 `var`                               |
+|`${var-default}`       |当 `var` 未设置，返回 `default`，不修改 `var`                                     |
+|`${var:=default}`      |当 `var` 未设置或为空，返回 `default`，修改 `var=default`                         |
+|`${var:+replacement}`  |当 `var` 已设置且非空，返回 `replacement`，不修改 `var`                           |
+|`${var:?error_msg}`    |当 `var` 未设置或为空，打印 `error_msg` 并退出脚本                                |
+|`${#str}`              |返回 `str` 的长度                                                                 |
+|`${str:offset}`        |截取 `str` 从 `offset` 到末尾的部分                                               |
+|`${str:offset:length}` |截取 `str` 从 `offset` 到 `offset + length` 的部分                                |
+|`${str@operator}`      |操作符 `operator`                                                                 |
+|                       |`u`：将 `str` 第一个字符化为大写                                                  |
+|                       |`U`：将 `str` 所有字母转化为大写                                                  |
+|                       |`L`：将 `str` 所有字母转化为小写                                                  |
+|                       |`Q`：给 `str` 加上单引号（保留空格/引号/`$` 等特殊字符），返回 `'str'`            |
+|                       |`E`：将 `str` 中的转义字符（`\n` `\t` 等）展开，类似 `echo -e`                    |
+|                       |`A`：显示变量是如何声明的，如 `str='hello'` 则 `echo ${str@A}` 输出 `str='hello'` |
 
 </div>
 
-
-<div class="table-container no-thead colfirst-100">
-
-|            |                               |
-|:-----------|:------------------------------|
-|**通配符**  |                               |
-|`*`         |匹配 `>=0` 个字符              |
-|`?`         |匹配 `1` 个字符                |
-|`[abc]`     |匹配 `abc` 中的 `1` 个字符     |
-|`[^0-9]`    |不匹配 `0-9` 中的 `1` 个字符   |
-|`{jpg,png}` |匹配 `jpg` 或 `png`            |
-
-</div>
 
 
 <div class="table-container no-thead">
@@ -797,10 +773,10 @@ log_to_file
 |`${var//pattern/replacement}` |替换所有匹配              |`${var//h/H}`   |`H` ola `H` ola      |
 |`${var/#pattern/replacement}` |替换行首匹配              |`${var/#ho/HO}` |`HO` lahola          |
 |`${var/%pattern/replacement}` |替换行尾匹配              |`${var/%la/LA}` |holaho `LA`          |
-|`${var^pattern}`              |匹配行首字符并转换为大写  |`${var^}`       |`H` olahola          |
-|`${var^^pattern}`             |匹配的所有字符转换为大写  |`${var^^}`      |`HOLAHOLA`           |
-|`${var,pattern}`              |匹配行首字符并转换为小写  |`${var,}`       |`h` OLAHOLA          |
-|`${var,,pattern}`             |匹配的所有字符转换为小写  |`${var,,}`      |`holahola`           |
+|`${var^单个通配符}`              |匹配行首字符并转换为大写  |`${var^}`       |`H` olahola          |
+|`${var^^单个通配符}`             |匹配的所有字符转换为大写  |`${var^^}`      |`HOLAHOLA`           |
+|`${var,单个通配符}`              |匹配行首字符并转换为小写  |`${var,}`       |`h` OLAHOLA          |
+|`${var,,单个通配符}`             |匹配的所有字符转换为小写  |`${var,,}`      |`holahola`           |
 
 </div>
 
@@ -811,9 +787,6 @@ log_to_file
 |**变量名匹配**                |                                            |
 |`${!prefix@}`                 |匹配所有以 `prefix` 开头的变量名作为独立单词，类似 `$@` |
 |`${!prefix*}`                 |匹配所有以 `prefix` 开头的变量名作为一个字符串，类似 `$*` |
-|**数组索引匹配**              |                                            |
-|`${!name[@]}`                 |匹配所有索引/键作为独立单词，类似 `$@`      |
-|`${!name[*]}`                 |匹配所有索引/键作为一个字符串，类似 `$*`  |
 
 </div>
 
@@ -821,7 +794,28 @@ log_to_file
 
 ### 文件名匹配
 
-文件名匹配有个问题，例如 `files=(*.jpg)`，当目录下没有 `jpg` 文件时，`*.jpg` 就会做为字面量赋值给 `files`：
+<div class="table-container no-thead">
+
+|                   |                                                                     |
+|:------------------|:--------------------------------------------------------------------|
+|**通配符**         |                                                                     |
+|`*`                |匹配 `>=0` 个任意字符                                                |
+|`?`                |匹配 `1` 个任意字符                                                  |
+|`[abc]`            |匹配 `abc` 中的 `1` 个字符                                           |
+|`[^0-9]`           |匹配除 `0-9` 以外的 `1` 个任意字符                                   |
+|**扩展通配符**     |**需启用** `shopt -s extglob`                                        |
+|`file?(.txt)`      |匹配 `file` 和 `file.txt`（匹配括号中的内容 `0` 或 `1` 次）          |
+|`file*(.txt)`      |匹配 `file` `file.txt` `file.txt.txt` 等（匹配括号中的内容 `>=0` 次）|
+|`file+(.txt)`      |匹配 `file.txt` `file.txt.txt` 等（匹配括号中的内容 `>=1` 次）       |
+|`file@(.txt\|.log)`|匹配 `file.txt` 或 `file.log`（匹配括号内的其中一项）                |
+|`!(*.txt)`         |匹配所有不以 `.txt` 结尾的文件（匹配不符合任何给定模式的）           |
+|**递归匹配**       |**需启用** `shopt -s globstar`                                       |
+|`**/*.txt`         |匹配当前目录及所有子目录中的 `.txt` 文件                             |
+
+</div>
+
+
+**文件名匹配问题一**：例如 `files=(*.jpg)`，当目录下没有 `jpg` 文件时，`*.jpg` 就会做为字面量赋值给 `files`：
 
 ```bash-session
 $ touch {a,b,c}.txt
@@ -841,7 +835,34 @@ $ files=(*.jpg)
 $ echo ${files[@]}   # 输出为空
 ```
 
-> 另外 `*.jpg` 这种方式获取文件列表，当文件名中包含空格，就需要另作处理
+> 其它 Bash 选项：`failglob` 没有匹配的文件则报错；`nocaseglob` 匹配时忽略大小写
+
+**文件名匹配问题二**：`IFS` 在文件名（含空格）匹配中的应用：
+
+```bash
+IFS=$'\n' files=($(ls -1 *.txt)) # 每个文件名占一行
+for f in ${files[@]}; do
+    echo "处理文件: $f"
+done
+```
+
+```bash-session
+$ touch {'a b c',d,e}.txt
+$ ./test.sh
+处理文件: a b c.txt
+处理文件: d.txt
+处理文件: e.txt
+```
+
+如果不使用 `IFS=$'\n'` ，输出如下：
+
+```bash-session
+处理文件: a
+处理文件: b
+处理文件: c.txt
+处理文件: d.txt
+处理文件: e.txt
+```
 
 
 ### 进程替换
@@ -902,23 +923,18 @@ BAR
 
 ### 字段分隔符 IFS
 
-`IFS`（Internal Field Separator），是 Bash 中的一个特殊环境变量，用于字符串的分割
+`IFS`（Internal Field Separator），是 Bash 中的一个特殊环境变量，用于单词的分割，Bash 会对未包含在双引号中的参数扩展 `$var`、命令替换 `$(cmd)` 和算术扩展 `$(())` 的结果进行扫描，以执行单词分割
 
-`IFS` 默认值为空格、制表符 `\t` 和换行符 `\n`
-
-`IFS` 会影响 `read` 命令、`$( )` 命令替换、`$str` 参数扩展等行为
-
-
-`IFS` 查看和修改：
+`IFS` 默认值为空格、制表符 `\t` 和换行符 `\n`，`IFS` 的查看和修改：
 
 ```bash
 printf "%q\n" "$IFS"
 IFS=$' \t\n'
 ```
 
-`$' '` 允许在字符串中使用转义序列来表示特殊字符，即 `\t` 会被转化为真正的制表符存入 `IFS` 中
+> `$' '` 允许在字符串中使用转义序列来表示特殊字符，即 `\t` 会被转化为真正的制表符存入 `IFS` 中
 
-`IFS` 只影响 **不加引号** 的变量扩展，如 `$str` ：
+`IFS` 只影响 **不加引号** 的参数扩展，如 `$str` ：
 
 ```bash
 str="one:two:three"
@@ -984,34 +1000,6 @@ echo "arr[0]=${arr[0]},  arr[1]=${arr[1]},  arr[2]=${arr[2]}"
 arr[0]=apple,  arr[1]=banana,  arr[2]=orange
 ```
 
-`IFS` 在文件名（含空格）匹配中的应用：
-
-```bash
-IFS=$'\n'
-files=$(ls -1 *.txt)  # 每个文件名占一行
-for f in $files; do
-    echo "处理文件: $f"
-done
-```
-
-```bash-session
-$ touch {'a b c',d,e}.txt
-$ ./test.sh
-处理文件: a b c.txt
-处理文件: d.txt
-处理文件: e.txt
-```
-
-如果不使用 `IFS=$'\n'` ，输出如下：
-
-```bash-session
-处理文件: a
-处理文件: b
-处理文件: c.txt
-处理文件: d.txt
-处理文件: e.txt
-```
-
 
 `IFS` 对位置参数变量 `$*` 的影响：
 
@@ -1055,18 +1043,6 @@ $ var=456 echo $var
 123
 ```
 
-## 间接变量引用
-
-```bash
-${!var}
-```
-
-```bash-session
-$ x="hello"
-$ var="x"
-$ echo ${!var}  # 相当于 $x
-hello
-```
 
 
 
@@ -1077,7 +1053,6 @@ hello
 
 
 
-## IFS 与 双引号的关系
 
 ## 匿名管道
 

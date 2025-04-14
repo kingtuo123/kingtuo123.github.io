@@ -257,6 +257,46 @@ body {
 .colfirst-100 table th:first-child {
   width: 100px; /* 设置你想要的宽度 */
 }
+.colfirst-110 table td:first-child, 
+.colfirst-110 table th:first-child {
+  width: 110px; /* 设置你想要的宽度 */
+}
+.colfirst-120 table td:first-child, 
+.colfirst-120 table th:first-child {
+  width: 120px; /* 设置你想要的宽度 */
+}
+.colfirst-130 table td:first-child, 
+.colfirst-130 table th:first-child {
+  width: 130px; /* 设置你想要的宽度 */
+}
+.colfirst-140 table td:first-child, 
+.colfirst-140 table th:first-child {
+  width: 140px; /* 设置你想要的宽度 */
+}
+.colfirst-150 table td:first-child, 
+.colfirst-150 table th:first-child {
+  width: 150px; /* 设置你想要的宽度 */
+}
+.colfirst-160 table td:first-child, 
+.colfirst-160 table th:first-child {
+  width: 160px; /* 设置你想要的宽度 */
+}
+.colfirst-170 table td:first-child, 
+.colfirst-170 table th:first-child {
+  width: 170px; /* 设置你想要的宽度 */
+}
+.colfirst-180 table td:first-child, 
+.colfirst-180 table th:first-child {
+  width: 180px; /* 设置你想要的宽度 */
+}
+.colfirst-190 table td:first-child, 
+.colfirst-190 table th:first-child {
+  width: 190px; /* 设置你想要的宽度 */
+}
+.colfirst-200 table td:first-child, 
+.colfirst-200 table th:first-child {
+  width: 200px; /* 设置你想要的宽度 */
+}
 
 
 .post-content iframe {
