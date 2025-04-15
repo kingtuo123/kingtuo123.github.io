@@ -1,11 +1,13 @@
 ---
 title: "Bash 脚本"
-date: "2025-04-01"
+date: "2025-04-15"
 summary: "速查"
 description: ""
 categories: [ "programming" ]
 tags: [ "bash" ]
 ---
+
+
 
 
 ## 变量
@@ -49,6 +51,31 @@ $ echo "hello $(whoami)"
 hello king
 $ echo 'hello $(whoami)'
 hello $(whoami)
+```
+
+### 临时环境变量
+
+```bash-session
+$ VAR1=value1 VAR2=value2 ... command
+```
+
+命令前添加 `VAR=value` 的形式，表示这个变量赋值仅对该 `command` 有效
+
+```bash-session
+$ echo 'echo $var' > test.sh
+$ var=123
+$ var=456 ./test.sh
+456
+$ echo $var
+123
+```
+
+错误用法，`echo` 输出前 `$var` 就被展开为 `123` ：
+
+```bash-session
+$ var=123
+$ var=456 echo $var
+123
 ```
 
 ### 特殊变量
@@ -146,7 +173,7 @@ Using "$*":
 
 ## Shell 基础
 
-### 管道
+### 匿名管道
 
 ```bash-session
 $ ls /temp | grep -o "file"
@@ -164,6 +191,22 @@ file
 
 </div>
 
+
+### 命名管道
+
+使用 `mkfifo` 创建命名管道：
+
+```bash-session
+$ mkfifo mypipe
+$ echo 'hello world' > mypipe
+```
+
+打开另一终端：
+
+```bash-session
+$ cat < mypipe
+hello world
+```
 
 
 ### 命令列表操作符
@@ -241,8 +284,8 @@ lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
 |`n<&m`               |复制 `m` → `n`                                                                         |
 |`n<&m-`              |复制 `m` → `n`，然后关闭 `m`                                                           |
 |`n<&-`               |关闭 `n`                                                                               |
-|`n<<eof`             |创建临时 `file`，逐行写入内容直到 `eof`，然后复制 `file` 的 `fd` → `n`                 |
-|`n<<<string`         |创建临时 `file`，写入一行 `string`（包含空格要加引号），然后复制 `file` 的 `fd` → `n`  |
+|`n<<eof`             |创建匿名 `pipe`，逐行写入内容直到 `eof`，然后复制 `pipe` 的 `fd` → `n`                 |
+|`n<<<string`         |创建匿名 `pipe`，写入一行 `string`（包含空格要加引号），然后复制 `pipe` 的 `fd` → `n`  |
 |**输出重定向**       |**n 默认为 1（只写）**                                                                 |
 |`n>file`             |复制 `file` 的 `fd` → `n`                                                              |
 |`n>&m`               |复制 `m` → `n`                                                                         |
@@ -257,7 +300,7 @@ lrwx------ 1 king king 64 Apr 10 18:46 2 -> /dev/pts/1
 
 </div>
 
-> 之前习惯在 `>` 右侧加空格，但像 `command 1> file1 2> file2` 和 `command 1>file1 2>file2` 明显后者更易阅读和理解，`file` 应是 `>` 的参数而不是 `command` 的参数，所以还是不加吧
+> 之前习惯在 `>` 右侧加空格，但像 `command 1> file1 2> file2` 和 `command 1>file1 2>file2` 明显后者更易阅读和理解，`file` 应是 `>` 的参数而不是 `command` 的参数，所以 . . .
 
 
 
@@ -272,8 +315,7 @@ $ a=123;(a=456);echo $a
 ```
 
 - `( )` 中的命令在 `子Shell` 中运行，`子Shell` 能继承 `父Shell` 的环境变量，但不会影响 `父Shell` 的环境变量 
-- `( )` 一般用于隔离环境，避免影响当前 Shell
-- `$( )` 的内部实现就是使用子 Shell
+- `( )` 可以用于隔离环境，避免影响当前 Shell
 
 ```bash-session
 $ { ls /var; ls /usr; } | grep lib
@@ -283,9 +325,10 @@ lib64
 libexec
 ```
 
-- `{ }` 中的命令在当前 Shell 执行
-- `{ command; }` 中的命令左右都要有空格，必须以 `;` 或换行结尾
-- `{  }` 一般用于合并多条命令的输出，方便一起处理
+- `{ command; }` 中的命令在当前 Shell 执行，`command;` 左右都要有空格，必须以 `;` 或换行结尾
+- `{ }` 可以用于需要共享上下文的场景
+
+> `( )` 与 `{ }` 都能合并多条命令的输出，方便一起处理
 
 
 ### (( 表达式 ))
@@ -339,7 +382,7 @@ result=$(( 2**4 ))
 [[ "$a" =~ ^[0-9]+$ ]]  # 正则表达式匹配	
 ```
 
-<div class="table-container">
+<div class="table-container colfirst-200 ">
 
 |区别              |`[ ]`                           |`[[ ]]`               |
 |:-----------------|:-------------------------------|:---------------------|
@@ -582,71 +625,6 @@ echo "example.com is now reachable!"
 
 
 
-### 协进程
-
-协进程（coprocess），允许你在脚本中启动一个子进程并与它进行双向通信
-
-如果不指定 `NAME`，Bash 会使用默认名称 `COPROC`：
-
-```bash
-coproc NAME { command; }
-```
-
-协进程启动后，Bash 会创建两个文件描述符及 PID 变量：
-
-<div class="table-container no-thead colfirst-90">
-
-|           |                                     |
-|:----------|:------------------------------------|
-|`NAME[0]`  | 用于从协进程读取（协进程的标准输出）|
-|`NAME[1]`  | 用于向协进程写入（协进程的标准输入）|
-|`NAME_PID` | 协进程的 PID                        |
-
-</div>
-
-```bash
-#!/bin/bash
-
-coproc data_processor {
-    while read input; do
-        sleep 1  # 模拟处理延迟
-        echo "$input" | tr 'a-z' 'A-Z'  # 处理数据 - 这里简单转换为大写
-    done
-}
-
-for i in {1..5}; do
-    echo "data packet $i" >&"${data_processor[1]}"  # 非阻塞发送
-done
-echo "数据发送完成"
-
-echo "干点别的事..."
-sleep 3
-
-for i in {1..5}; do
-    read -t 5 response <&"${data_processor[0]}"
-    echo "Received: $response"
-done
-echo "数据接收完成"
-
-exec {data_processor[0]}<&-  # 无阻塞风险也可不关闭
-exec {data_processor[1]}>&-  # 关闭协程的输入 fd，避免协进程的 read 无限等待输入（阻塞）
-
-# 关闭文件描述符后，协进程通常会自行终止，也可 kill ${data_processor_PID}
-wait $data_processor_PID     # 确保协进程正确退出并回收其资源
-```
-
-```bash-session
-$ ./test.sh
-数据发送完成
-干点别的事...
-Received: DATA PACKET 1
-Received: DATA PACKET 2
-Received: DATA PACKET 3
-Received: DATA PACKET 4
-Received: DATA PACKET 5
-数据接收完成
-```
-
 ### 函数
 
 ```bash
@@ -792,7 +770,7 @@ log_to_file
 
 
 
-### 文件名匹配
+## 文件名匹配
 
 <div class="table-container no-thead">
 
@@ -865,15 +843,14 @@ $ ./test.sh
 ```
 
 
-### 进程替换
+## 进程替换
 
 ```bash
 <(cmd)   # 作为输入文件
 >(cmd)   # 作为输出文件
 ```
 
-
-当 Bash 遇到进程替换时，它会创建一个匿名管道并使用符号链接指向管道：
+当 Bash 遇到进程替换时，它会创建一个匿名管道并使用符号链接指向匿名管道：
 
 ```bash-session
 $ ls -l <(cat)
@@ -921,7 +898,7 @@ BAR
 > `sed` 既支持标准输入又能直接操作文件，要看情况使用重定向和进程替换
 
 
-### 字段分隔符 IFS
+## 字段分隔符 IFS
 
 `IFS`（Internal Field Separator），是 Bash 中的一个特殊环境变量，用于单词的分割，Bash 会对未包含在双引号中的参数扩展 `$var`、命令替换 `$(cmd)` 和算术扩展 `$(())` 的结果进行扫描，以执行单词分割
 
@@ -1018,55 +995,193 @@ Using $@: one two three
 ```
 
 
-## 临时环境变量
 
-```bash-session
-$ VAR1=value1 VAR2=value2 ... command
+
+
+
+
+## 协进程
+
+协进程（coprocess），允许你在脚本中启动一个子进程并与它进行双向通信
+
+
+```bash
+coproc NAME { command; }
 ```
 
-命令前添加 `VAR=value` 的形式，表示这个变量赋值仅对该 `command` 有效
+如果不指定 `NAME`，Bash 会使用默认名称 `COPROC`，协进程启动后，Bash 会创建两个文件描述符及 PID 变量：
 
-```bash-session
-$ echo 'echo $var' > test.sh
-$ var=123
-$ var=456 ./test.sh
-456
-$ echo $var
-123
+<div class="table-container colfirst-90">
+
+|           |                                     |
+|:----------|:------------------------------------|
+|`NAME[0]`  | 用于从协进程读取（协进程的标准输出）|
+|`NAME[1]`  | 用于向协进程写入（协进程的标准输入）|
+|`NAME_PID` | 协进程的 PID                        |
+
+</div>
+
+```bash
+#!/bin/bash
+
+coproc data_processor {
+    while read input; do
+        sleep 1  # 模拟处理延迟
+        echo "$input" | tr 'a-z' 'A-Z'  # 处理数据 - 这里简单转换为大写
+    done
+}
+
+for i in {1..5}; do
+    echo "data packet $i" >&"${data_processor[1]}"  # 非阻塞发送
+done
+echo "数据发送完成"
+
+echo "干点别的事..."
+sleep 3
+
+for i in {1..5}; do
+    read -t 5 response <&"${data_processor[0]}"
+    echo "Received: $response"
+done
+echo "数据接收完成"
+
+exec {data_processor[0]}<&-  # 无阻塞风险也可不关闭
+exec {data_processor[1]}>&-  # 关闭协程的输入 fd，避免协进程的 read 无限等待输入（阻塞）
+
+# 关闭文件描述符后，协进程通常会自行终止，也可 kill ${data_processor_PID}
+wait $data_processor_PID     # 确保协进程正确退出并回收其资源
 ```
 
-错误用法，`echo` 输出前 `$var` 就被展开为 `123` ：
-
 ```bash-session
-$ var=123
-$ var=456 echo $var
-123
+$ ./test.sh
+数据发送完成
+干点别的事...
+Received: DATA PACKET 1
+Received: DATA PACKET 2
+Received: DATA PACKET 3
+Received: DATA PACKET 4
+Received: DATA PACKET 5
+数据接收完成
 ```
 
 
 
-
-
-
-
-
-
-
-
-
-## 匿名管道
 
 ## Bash 调试
 
-```bash
-set -x 
-bash -x 
-set -e
+
+基本调试方法，执行并打印每条命令：
+
+```bash-session
+$ bash -x script.sh
 ```
 
-## 命令前缀临时环境变量
+局部调试：
 
-## bash 的关键字有哪些
+```bash
+#!/bin/bash
+set -x   # 开启调试
+# 需要调试的代码部分
+set +x   # 关闭调试
+```
 
-## bash 编程常犯错误
 
+
+## 任务控制
+
+将任务转入后台，使用 `&` 或 `Ctrl+z` ：
+
+```bash-session
+$ sleep 60 &
+[1] 13492
+```
+
+查看后台任务，使用 `jobs` 命令：
+
+```bash-session
+$ jobs
+[1]   Done                    sleep 60
+[2]   Stopped                 sleep 600 &
+[3]-  Running                 sleep 6000 &
+[4]+  Running                 sleep 60000 &
+```
+
+其中 `+` 表示最近放入后台的任务，`-` 表示倒数第二放入后台的任务
+
+恢复后台任务到前台，使用 `fg` 命令：
+
+```bash-session
+$ fg      # 恢复最近的任务到前台，即带 + 号的
+$ fg %2   # 恢复 2 号任务到前台
+```
+让后台 `Stopped` 的任务继续运行，使用 `bg` 命令：
+
+```bash-session
+$ bg      # 让最近放入后台的任务继续运行
+$ bg %2   # 让 2 号后台任务继续运行
+```
+
+
+## 信号处理
+
+`trap` 用于在脚本执行过程中捕获和处理信号
+
+```bash
+#!/bin/bash
+trap "echo '捕获到Ctrl+C';" SIGINT
+echo "按Ctrl+C试试看"
+sleep 10
+```
+
+```bash-session
+$ ./test.sh
+按Ctrl+C试试看
+^C捕获到Ctrl+C
+```
+
+<div class="table-container colfirst-80">
+
+|信号编号|信号名	|说明                               |
+|:-------|:---------|:----------------------------------|
+|1	     |SIGHUP	|终端挂断或控制进程终止             |
+|2	     |SIGINT	|键盘中断 `Ctrl+C`                  |
+|3	     |SIGQUIT	|键盘退出  `Ctrl+\`                 |
+|9	     |SIGKILL	|强制终止 `kill -9`（不能被捕获）   |
+|15	     |SIGTERM	|终止信号 `kill`                    |
+|0	     |EXIT	    |Shell 脚本运行完成后退出时默认触发 |
+
+</div>
+
+
+
+## Shell 内置命令
+
+> 更多命令见 [Shell Builtin Commands](https://www.gnu.org/software/bash/manual/bash.html#Shell-Builtin-Commands)
+
+<div class="table-container no-thead colfirst-20">
+
+|           |                                     |
+|:----------|:------------------------------------|
+|`:`     `args`     |除扩展参数和执行重定向外，不执行任何操作，返回状态为零，如 `: ${var:=123}`|
+|`.`     `file`     |在当前 Shell 执行 `file`，类似 `source` 命令|
+|`eval` `str`|将 `str` 作为命令执行，如 `eval 'echo hello world'`    |  
+|`exec` `cmd`|替换当前 Shell 并执行 `cmd`，而不是在子进程中运行 `cmd`，还可用于文件描述符的重定向 `exec 3<&-`|
+|`export` |设置环境变量，`export var="123"`|
+|`getopts`|用于处理 Shell 脚本的命令行参数，如 `-h` `--help`|
+|`shift` `n` |将位置参数 `$1`, `$2`, `$3`，如 `shift 1` 向左移动 1 位数，`$2` 就成为 `$1`，移出的参数被丢弃 |
+|`unset`|用于删除变量或函数，`unset var1`|
+|`declare`|用于显式地声明变量|
+|`mapfile`|用于将输入行读取到数组变量中，同 `readarray` 命令|
+|`printf` |格式化输出|
+|`read`   |从标准输入读取数据 `read -p "输入姓名和年龄: " name age`，读取数组 `read -a array`|
+|`shopt`  |管理 Bash 的增强功能（如高级模式匹配、补全等），启用 `shopt -s 选项`，禁用 `shopt -u 选项`|
+|`set`    |控制 shell 的基本行为（特别是脚本中的错误处理和调试），类似 `shopt`|
+
+
+<div>
+
+
+
+## Shell 变量
+
+> 更多变量见 [Shell Variables](https://www.gnu.org/software/bash/manual/bash.html#Shell-Variables)
