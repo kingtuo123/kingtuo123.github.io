@@ -2,13 +2,16 @@
 title: "Markdown 语法"
 date: "2021-05-01"
 description: ""
-categories: [ "" ]
+categories: [ "web" ]
 tags: [ "markdown" ]
 ---
 
+
+
+
 ## 标题
 
-```text
+```markdown
 # 这是一级标题
 ## 这是二级标题
 ### 这是三级标题
@@ -17,11 +20,9 @@ tags: [ "markdown" ]
 ###### 这是六级标题
 ```
 
-最后一个 `#` 号后面加空格，下同
-
 ## 字体样式
 
-```text
+```markdown
 *倾斜的文字*
 **加粗的文字**
 ***斜体加粗的文字***
@@ -30,29 +31,30 @@ tags: [ "markdown" ]
 
 ## 引用
 
-换行则使用单个 `>`
-
-```text
+```markdown
 > 这是引用的内容
 >
 > 这是引用的内容
 ```
 
+换行则使用单个 `>`
+
 
 ## 分割线
 
-三个或者三个以上的 `-` 或者 `*` 都可以
-
-```text
+```markdown
 ---
 ----
 ***
 *****
 ```
 
+三个或者三个以上的 `-` 或者 `*` 都可以
+
+
 ## 图片
 
-```text
+```markdown
 ![](url)
 ![图片alt](图片url "图片title")
 ```
@@ -78,61 +80,48 @@ tags: [ "markdown" ]
 
 ## 超链接
 
-```text
+```markdown
 [name](url)
 [超链接名](超链接url "超链接title")
 ```
 
 ## 列表
 
-### 无序列表
-
-`-` 和`+` 和`*` 三个符号都可以
-
-```text
-- 列表内容
-+ 列表内容
-* 列表内容
+```markdown
+- 无序列表
++ 无序列表
+* 无序列表
 ```
-
-### 有序列表
-
-```text
-1. 列表内容
-2. 列表内容
-3. 列表内容
-```
-
-### 多级列表
-
-二级列表前加三个空格
 
 ```markdown
-- 一级无序列表内容
-   - 二级无序列表内容
-   - 二级无序列表内容
-   - 二级无序列表内容
+1. 有序列表
+2. 有序列表
+3. 有序列表
 ```
+
+```markdown
+- 多级列表
+  - 二级无序列表内容
+  - 二级无序列表内容
+  - 二级无序列表内容
+```
+
 
 ## 表格
 
-```text
-|表头1|表头2|表头3|
-|---|:--:|--:|
-|内容|内容|内容|
-|内容|内容|内容|
+```markdown
+|align left|align center|align right|
+|:---------|:----------:|----------:|
+|content   |content     |content    |
+|content   |content     |content    |
 ```
-居中 `:--:`
 
-靠左 `:--`
-
-靠右 `--:`
-     
 
 ## 代码
 
+
 ```text
-​```java
+​```bash
   代码...
   代码...
   代码...
@@ -169,3 +158,26 @@ tags: [ "markdown" ]
 </div>
 </div>
 
+
+## 任务列表
+
+```markdown
+- [x] Write the press release
+- [ ] Update the website
+- [ ] Contact the media
+```
+
+## 定义列表
+
+```markdown
+term
+: definition
+```
+
+## 空格
+
+普通空格 `&nbsp;`：|&nbsp;|
+
+半角空格 `&ensp;`：|&ensp;|
+
+全角空格 `&emsp;`：|&emsp;|

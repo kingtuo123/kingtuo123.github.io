@@ -400,43 +400,50 @@ result=$(( 2**4 ))
 
 <div class="table-container no-thead">
 
-|                          |                                |
-|:-------------------------|:-------------------------------|
-|**逻辑操作符**            |                                |
-|`[ ! condition ]`         |非，`!` 前后都要加空格          |
-|`[ cond1 -a cond2 ]`      |与                              |
-|`[ cond1 -o cond2 ]`      |或                              |
-|`[[ ! condition ]]`       |非，`!` 前后都要加空格          |
-|`[[ cond1 && cond2 ]]`    |与                              |
-|`[[ cond1 \|\| cond2 ]]`  |或                              |
-|**文件测试操作符**        |                                |    
-|`-e file`                 |文件存在                        |
-|`-f file`                 |是普通文件（不是目录或设备文件）|
-|`-d file`                 |是目录                          |
-|`-h file`                 |文件是符号链接                  |
-|`-s file`                 |文件大小不为零                  |
-|`-r file`                 |文件可读                        |
-|`-w file`                 |文件可写                        |
-|`-x file`                 |文件可执行                      |
-|`file1 -nt file2`         |file1 比 file2 新               |
-|`file1 -ot file2`         |file1 比 file2 旧               |
-|**字符串比较**            |                                |
-|`-z string`               |字符串长度为 0                  |
-|`-n string`               |字符串长度不为 0                |
-|`string1 = string2`       |字符串相等                      |
-|`string1 == string2`      |字符串相等                      |
-|`string1 != string2`      |字符串不相等                    |
-|`string1 < string2`       |string1 按字典顺序小于 string2  |
-|`string1 > string2`       |string1 按字典顺序大于 string2  |
-|**数值比较**              |                                |
-|`num1 -eq num2`           |等于                            |
-|`num1 -ne num2`           |不等于                          |
-|`num1 -lt num2`           |小于                            |
-|`num1 -le num2`           |小于等于                        |
-|`num1 -gt num2`           |大于                            |
-|`num1 -ge num2`           |大于等于                        |
-|**正则表达式匹配**        |                                |
-`string =~ pattern`        |当 pattern 成功匹配到 string 中的字符则返回真，pattern 包含特殊字符时不加双引号|
+|                          |                                                                                     |
+|:-------------------------|:------------------------------------------------------------------------------------|
+|**逻辑操作符**            |                                                                                     |
+|`[ ! condition ]`         |非，`!` 前后都要加空格                                                               |
+|`[ cond1 -a cond2 ]`      |与                                                                                   |
+|`[ cond1 -o cond2 ]`      |或                                                                                   |
+|`[[ ! condition ]]`       |非，`!` 前后都要加空格                                                               |
+|`[[ cond1 && cond2 ]]`    |与                                                                                   |
+|`[[ cond1 \|\| cond2 ]]`  |或                                                                                   |
+|**文件测试操作符**        |                                                                                     |    
+|`-b file`                 |文件是块设备文件                                                                     |
+|`-c file`                 |文件是字符设备文件                                                                   |
+|`-d file`                 |文件是目录                                                                           |
+|`-e file`                 |文件存在                                                                             |
+|`-f file`                 |文件是普通文件（不是目录或设备文件）                                                 |
+|`-h file`                 |文件是符号链接                                                                       |
+|`-s file`                 |文件大小不为零                                                                       |
+|`-r file`                 |文件可读                                                                             |
+|`-w file`                 |文件可写                                                                             |
+|`-x file`                 |文件可执行                                                                           |
+|`file1 -ef file2`         |两个文件是同一个文件（硬链接或符号链接指向同一文件）                                 |
+|`file1 -nt file2`         |file1 比 file2 新                                                                    |
+|`file1 -ot file2`         |file1 比 file2 旧                                                                    |
+|**字符串比较**            |                                                                                     |
+|`-z string`               |字符串长度为 0                                                                       |
+|`-n string`               |字符串长度不为 0                                                                     |
+|`string1 = string2`       |字符串相等                                                                           |
+|`string1 == string2`      |字符串相等                                                                           |
+|`string1 != string2`      |字符串不相等                                                                         |
+|`string1 < string2`       |string1 按字典顺序小于 string2                                                       |
+|`string1 > string2`       |string1 按字典顺序大于 string2                                                       |
+|**数值比较**              |                                                                                     |
+|`num1 -eq num2`           |等于                                                                                 |
+|`num1 -ne num2`           |不等于                                                                               |
+|`num1 -lt num2`           |小于                                                                                 |
+|`num1 -le num2`           |小于等于                                                                             |
+|`num1 -gt num2`           |大于                                                                                 |
+|`num1 -ge num2`           |大于等于                                                                             |
+|**正则表达式匹配**        |                                                                                     |
+`string =~ pattern`        |当 pattern 成功匹配到 string 中的字符则返回真，pattern 包含特殊字符时不加双引号      |
+|**其他**                  |                                                                                     |
+|`-o optname`              |shell 选项 optname 已启用                                                            |
+|`-v varname`              |shell 变量 varname 已设置（已被赋值）                                                |
+|`-R varname`              |shell 变量 varname 已设置（已被赋值或为空）                                          |
 
 </div>
 
@@ -1045,8 +1052,8 @@ for i in {1..5}; do
 done
 echo "数据接收完成"
 
-exec {data_processor[0]}<&-  # 无阻塞风险也可不关闭
-exec {data_processor[1]}>&-  # 关闭协程的输入 fd，避免协进程的 read 无限等待输入（阻塞）
+exec ${data_processor[0]}<&-  # 无阻塞风险也可不关闭
+exec ${data_processor[1]}>&-  # 关闭协程的输入 fd，避免协进程的 read 无限等待输入（阻塞）
 
 # 关闭文件描述符后，协进程通常会自行终止，也可 kill ${data_processor_PID}
 wait $data_processor_PID     # 确保协进程正确退出并回收其资源
@@ -1156,32 +1163,179 @@ $ ./test.sh
 
 ## Shell 内置命令
 
-> 更多命令见 [Shell Builtin Commands](https://www.gnu.org/software/bash/manual/bash.html#Shell-Builtin-Commands)
+> 下表由 DeepSeek 生成，仅供参考，详见官方文档 [Shell Builtin Commands](https://www.gnu.org/software/bash/manual/bash.html#Shell-Builtin-Commands)
 
-<div class="table-container no-thead colfirst-20">
-
-|           |                                     |
-|:----------|:------------------------------------|
-|`:`     `args`     |除扩展参数和执行重定向外，不执行任何操作，返回状态为零，如 `: ${var:=123}`|
-|`.`     `file`     |在当前 Shell 执行 `file`，类似 `source` 命令|
-|`eval` `str`|将 `str` 作为命令执行，如 `eval 'echo hello world'`    |  
-|`exec` `cmd`|替换当前 Shell 并执行 `cmd`，而不是在子进程中运行 `cmd`，还可用于文件描述符的重定向 `exec 3<&-`|
-|`export` |设置环境变量，`export var="123"`|
-|`getopts`|用于处理 Shell 脚本的命令行参数，如 `-h` `--help`|
-|`shift` `n` |将位置参数 `$1`, `$2`, `$3`，如 `shift 1` 向左移动 1 位数，`$2` 就成为 `$1`，移出的参数被丢弃 |
-|`unset`|用于删除变量或函数，`unset var1`|
-|`declare`|用于显式地声明变量|
-|`mapfile`|用于将输入行读取到数组变量中，同 `readarray` 命令|
-|`printf` |格式化输出|
-|`read`   |从标准输入读取数据 `read -p "输入姓名和年龄: " name age`，读取数组 `read -a array`|
-|`shopt`  |管理 Bash 的增强功能（如高级模式匹配、补全等），启用 `shopt -s 选项`，禁用 `shopt -u 选项`|
-|`set`    |控制 shell 的基本行为（特别是脚本中的错误处理和调试），类似 `shopt`|
-
-
-<div>
-
+| 命令 | 说明 |
+|:------|:------|
+| `:` | 空操作(返回 true) |
+| `.` | 在当前 shell 中执行脚本 |
+| `alias` | 创建命令别名 |
+| `bg` | 将作业放到后台运行 |
+| `bind` | 绑定按键到 readline 函数或宏 |
+| `break` | 退出 for/while/until 循环 |
+| `builtin` | 执行指定的 shell 内置命令 |
+| `caller` | 返回当前子程序调用的上下文 |
+| `case` | 多分支条件判断 |
+| `cd` | 改变工作目录 |
+| `command` | 执行命令(绕过函数查找) |
+| `compgen` | 生成可能的补全匹配 |
+| `complete` | 指定命令如何补全 |
+| `continue` | 继续下一次循环迭代 |
+| `declare` | 声明变量/设置属性 |
+| `dirs` | 显示目录栈 |
+| `disown` | 从作业表中移除作业 |
+| `echo` | 显示参数 |
+| `enable` | 启用/禁用内置命令 |
+| `eval` | 将参数作为命令执行 |
+| `exec` | 用指定命令替换 shell |
+| `exit` | 退出 shell |
+| `export` | 设置环境变量 |
+| `false` | 返回 false |
+| `fc` | 编辑并重新执行命令 |
+| `fg` | 将作业放到前台运行 |
+| `for` | 循环命令 |
+| `function` | 定义函数 |
+| `getopts` | 解析位置参数 |
+| `hash` | 记住命令的完整路径 |
+| `help` | 显示帮助信息 |
+| `history` | 显示命令历史 |
+| `if` | 条件判断 |
+| `jobs` | 列出活动作业 |
+| `kill` | 向进程发送信号 |
+| `let` | 执行算术运算 |
+| `local` | 声明局部变量 |
+| `logout` | 退出登录 shell |
+| `mapfile` | 从标准输入读取到数组 |
+| `popd` | 从目录栈中移除目录 |
+| `printf` | 格式化输出 |
+| `pushd` | 向目录栈添加目录 |
+| `pwd` | 打印当前工作目录 |
+| `read` | 从标准输入读取一行 |
+| `readarray` | 同 mapfile |
+| `readonly` | 标记变量为只读 |
+| `return` | 从函数中返回 |
+| `select` | 生成菜单选择 |
+| `set` | 设置/取消设置 shell 选项和位置参数 |
+| `shift` | 移动位置参数 |
+| `shopt` | 设置/取消设置 shell 选项 |
+| `source` | 同 . (在当前 shell 中执行脚本) |
+| `suspend` | 暂停 shell 执行 |
+| `test` | 条件测试 |
+| `time` | 测量命令执行时间 |
+| `times` | 显示 shell 和进程的累计用户/系统时间 |
+| `trap` | 设置信号处理程序 |
+| `true` | 返回 true |
+| `type` | 显示命令类型 |
+| `typeset` | 同 declare |
+| `ulimit` | 设置/获取资源限制 |
+| `umask` | 设置文件创建掩码 |
+| `unalias` | 移除别名 |
+| `unset` | 移除变量或函数 |
+| `until` | 直到条件为真时循环 |
+| `variables` | 列出 shell 变量 |
+| `wait` | 等待作业完成 |
+| `while` | 当条件为真时循环 |
+| `{ }` | 命令分组(在当前 shell 中执行) |
+| `[[ ]]` | 条件表达式测试 |
 
 
 ## Shell 变量
 
-> 更多变量见 [Shell Variables](https://www.gnu.org/software/bash/manual/bash.html#Shell-Variables)
+> 下表由 DeepSeek 生成，仅供参考，详见官方文档 [Shell Variables](https://www.gnu.org/software/bash/manual/bash.html#Shell-Variables)
+
+| 变量名 | 说明 |
+|--------|------|
+| `BASH` | 当前 Bash 实例的完整路径名 |
+| `BASHOPTS` | 已启用 shell 选项的列表（冒号分隔） |
+| `BASHPID` | 当前 Bash 进程的 PID |
+| `BASH_ALIASES` | 关联数组，包含当前定义的别名 |
+| `BASH_ARGC` | 数组，包含当前子程序调用栈的帧数 |
+| `BASH_ARGV` | 数组，包含所有当前子程序调用栈中的参数 |
+| `BASH_ARGV0` | 引用当前 Bash 命令名的变量 |
+| `BASH_CMDS` | 关联数组，包含已执行命令的位置 |
+| `BASH_COMMAND` | 正在执行或即将执行的命令 |
+| `BASH_COMPAT` | 设置兼容模式级别 |
+| `BASH_ENV` | 如果设置，在非交互式 shell 启动时会执行该文件 |
+| `BASH_EXECUTION_STRING` | 使用 -c 选项调用的命令字符串 |
+| `BASH_LINENO` | 数组，包含调用栈中各帧的行号 |
+| `BASH_LOADABLES_PATH` | 冒号分隔的目录列表，用于查找可加载的内建命令 |
+| `BASH_REMATCH` | 数组，包含最近正则表达式匹配的结果 |
+| `BASH_SOURCE` | 数组，包含调用栈中各帧的源文件名 |
+| `BASH_SUBSHELL` | 当前子 shell 的嵌套级别 |
+| `BASH_VERSINFO` | 数组，包含 Bash 版本信息 |
+| `BASH_VERSION` | Bash 的版本号字符串 |
+| `BASH_XTRACEFD` | 调试跟踪输出的文件描述符 |
+| `CDPATH` | cd 命令的搜索路径 |
+| `CHILD_MAX` | 设置 shell 记住的已完成子进程数量 |
+| `COLUMNS` | 终端宽度（列数） |
+| `COMP_CWORD` | 当前光标位置在 `${COMP_WORDS}` 中的索引 |
+| `COMP_LINE` | 当前命令行 |
+| `COMP_POINT` | 当前光标位置相对于命令开始的位置 |
+| `COMP_TYPE` | 补全尝试类型 |
+| `COMP_KEY` | 触发补全的键 |
+| `COMP_WORDBREAKS` | 单词补全的分隔符 |
+| `COMP_WORDS` | 数组，包含当前命令行的各个单词 |
+| `COMPREPLY` | 数组，包含可能的补全结果 |
+| `COPROC` | 协进程的文件描述符数组 |
+| `DIRSTACK` | 数组，包含目录栈的内容 |
+| `EMACS` | 如果设置为 't'，表示在 Emacs shell 缓冲区中运行 |
+| `ENV` | 类似于 `BASH_ENV`，用于 POSIX 模式 |
+| `EUID` | 当前用户的有效用户 ID |
+| `EXECIGNORE` | 冒号分隔的模式列表，`PATH` 查找时忽略匹配的文件 |
+| `FCEDIT` | fc 命令的默认编辑器 |
+| `FIGNORE` | 文件名补全时忽略的后缀列表 |
+| `FUNCNAME` | 数组，包含当前调用栈中的所有函数名 |
+| `FUNCNEST` | 函数嵌套的最大深度 |
+| `GLOBIGNORE` | 模式列表，扩展时忽略匹配的文件名 |
+| `GROUPS` | 数组，包含当前用户所属的组 |
+| `HISTCMD` | 当前命令在历史记录中的编号 |
+| `HISTCONTROL` | 控制历史记录如何保存 |
+| `HISTFILE` | 历史记录文件路径 |
+| `HISTFILESIZE` | 历史记录文件的最大行数 |
+| `HISTIGNORE` | 冒号分隔的模式列表，匹配的命令不存入历史 |
+| `HISTSIZE` | 内存中历史记录的最大数量 |
+| `HISTTIMEFORMAT` | 历史时间戳格式 |
+| `HOME` | 当前用户的主目录 |
+| `HOSTFILE` | 包含主机名补全列表的文件 |
+| `HOSTNAME` | 当前主机名 |
+| `HOSTTYPE` | 主机类型（CPU 架构） |
+| `IGNOREEOF` | 控制 EOF 作为输入时的行为 |
+| `INPUTRC` | readline 初始化文件路径 |
+| `LANG` | 本地化语言设置 |
+| `LC_ALL` | 覆盖所有本地化设置的变量 |
+| `LC_COLLATE` | 设置排序顺序 |
+| `LC_CTYPE` | 设置字符分类和转换 |
+| `LC_MESSAGES` | 设置消息显示的语言 |
+| `LC_NUMERIC` | 设置数字格式 |
+| `LINENO` | 脚本或函数中的当前行号 |
+| `LINES` | 终端高度（行数） |
+| `MACHTYPE` | 系统类型的完整描述 |
+| `MAILCHECK` | 检查新邮件的频率（秒） |
+| `MAPFILE` | 数组，包含 mapfile/readarray 读取的文本行 |
+| `OLDPWD` | 前一个工作目录 |
+| `OPTERR` | 控制是否显示 getopts 错误 |
+| `OSTYPE` | 操作系统类型 |
+| `PIPESTATUS` | 数组，包含最近前台管道中每个命令的退出状态 |
+| `POSIXLY_CORRECT` | 如果设置，Bash 以 POSIX 模式运行 |
+| `PPID` | 父进程的 PID |
+| `PROMPT_COMMAND` | 在主提示符显示前执行的命令 |
+| `PROMPT_DIRTRIM` | 设置路径缩写显示的深度 |
+| `PS0` | 在交互式 shell 读取命令后显示的字符串 |
+| `PS1` | 主提示符字符串 |
+| `PS2` | 次提示符字符串 |
+| `PS3` | select 命令的提示符 |
+| `PS4` | 调试跟踪时的提示符 |
+| `PWD` | 当前工作目录 |
+| `RANDOM` | 返回 0-32767 之间的随机数 |
+| `READLINE_LINE` | readline 行缓冲区的内容 |
+| `READLINE_POINT` | readline 行缓冲区中的光标位置 |
+| `REPLY` | read 命令的默认输出变量 |
+| `SECONDS` | shell 启动后经过的秒数 |
+| `SHELL` | shell 的路径名 |
+| `SHELLOPTS` | 已启用 shell 选项的列表（冒号分隔） |
+| `SHLVL` | shell 嵌套级别 |
+| `TIMEFORMAT` | time 命令的输出格式 |
+| `TMOUT` | 输入超时时间（秒） |
+| `TMPDIR` | 临时文件目录 |
+| `UID` | 当前用户的真实用户 ID |
+| `_` | 上一个命令的最后一个参数 |
