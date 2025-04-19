@@ -1165,6 +1165,8 @@ $ ./test.sh
 
 > 下表由 DeepSeek 生成，仅供参考，详见官方文档 [Shell Builtin Commands](https://www.gnu.org/software/bash/manual/bash.html#Shell-Builtin-Commands)
 
+<div class="table-container colfirst-100">
+
 | 命令 | 说明 |
 |:------|:------|
 | `:` | 空操作(返回 true) |
@@ -1238,10 +1240,13 @@ $ ./test.sh
 | `{ }` | 命令分组(在当前 shell 中执行) |
 | `[[ ]]` | 条件表达式测试 |
 
+</div>
 
 ## Shell 变量
 
 > 下表由 DeepSeek 生成，仅供参考，详见官方文档 [Shell Variables](https://www.gnu.org/software/bash/manual/bash.html#Shell-Variables)
+
+<div class="table-container colfirst-150">
 
 | 变量名 | 说明 |
 |--------|------|
@@ -1339,3 +1344,5 @@ $ ./test.sh
 | `TMPDIR` | 临时文件目录 |
 | `UID` | 当前用户的真实用户 ID |
 | `_` | 上一个命令的最后一个参数 |
+
+</div>
