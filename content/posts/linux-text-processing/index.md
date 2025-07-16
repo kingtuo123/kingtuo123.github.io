@@ -7,9 +7,8 @@ categories: [ "linux" ]
 tags: [ "cmd" ]
 ---
 
-## 文本处理
 
-### Sed
+## Sed
 
 ```bash
 sed [选项] '[地址]命令' 文件
@@ -60,7 +59,7 @@ $ sed -f example.sed file.txt
 ```
 
 
-### Awk
+## Awk
 
 ```bash
 awk [选项] '[表达式] { 语句1; 语句2; ... }' 文件
@@ -230,7 +229,7 @@ name=avahi      uid=61  gid=61
 ```
 
 
-### Grep
+## Grep
 
 ```bash
 grep [选项] '正则表达式' 文件
@@ -253,7 +252,7 @@ grep [选项] '正则表达式' 文件
 |`-r` 或 `-R`       |递归搜索目录中的文件，如 `grep -r 'pattern' /path/to/dir`                                      |
 |`--include`        |指定要搜索的文件类型，如 `grep -r 'pattern' /path/to/dir --include '*.txt'`                    |
 |`--exclude`        |排除特定文件类型                                                                               |
-|`-l`               |输出文件中包含匹配字符串的文件名，如 `grep -l 'pattern' *.txt`输出包含 `pattern` 的 `.txt` 文件名|
+|`-l`               |输出文件中包含匹配字符串的文件名，如 `grep -l 'pattern' *.txt` 输出包含 `pattern` 的 `.txt` 文件名|
 |`-L`               |输出文件中不包含匹配字符串的文件名                                                             |
 |**正则表达式**     |                                                                                               |
 |`-E`               |使用扩展正则表达式（等同于 `egrep` 命令）；默认是基本正则表达式，不支持 `+ ? () {}` 等         |
@@ -271,7 +270,7 @@ grep [选项] '正则表达式' 文件
 
 
 
-### Cut
+## Cut
 
 `cut` 用于从文件或标准输入中提取指定的字符、字段
 
@@ -294,7 +293,7 @@ cut -d ':' -f 1 data.txt
 
 
 
-### Tr
+## Tr
 
 `tr` 用于转换或删除字符，如 `echo "hello world" | tr 'a-z' 'A-Z'` 输出 `HELLO WORLD`
 
@@ -315,7 +314,7 @@ tr [选项] 字符集1 字符集2
 
 
 
-### Tee
+## Tee
 
 `tee` 的主要作用是将数据分流，既可以在屏幕上显示，又可以保存到文件中，如下：
 
@@ -333,7 +332,7 @@ echo "Hello, World!" | tee output.txt
 </div>
 
 
-### Sort
+## Sort
 
 `sort` 用于对文件内容或标准输入进行排序操作
 
@@ -361,7 +360,7 @@ echo "Hello, World!" | tee output.txt
 </div>
 
 
-### Uniq
+## Uniq
 
 `uniq` 只能处理 **连续的重复行**，两条重复行之间隔了一条也不行，所以一般搭配 `sort` 命令使用
 
@@ -385,7 +384,7 @@ sort file.txt | uniq > unique.txt
 </div>
 
 
-### Wc
+## Wc
 
 `wc` 用于统计文件中的行数、单词数和字节数
 
@@ -399,6 +398,6 @@ sort file.txt | uniq > unique.txt
 
 </div>
 
-### Tac
+## Tac
 
 `tac` 用于将文件内容从最后一行按行逆序输出，与 `cat` 命令的功能相反

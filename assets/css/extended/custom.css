@@ -191,21 +191,13 @@ body {
 }
 
 .post-content table {
-	display: table;
 	font-size: 0.9em;
 	margin: 5px 0px;
 }
 
-.post-content table th,
-.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
-    min-width: 20px;
-	/*
-    font-size: 0.9em;
-    padding: 8px 40px 8px 0px;
-	width:auto;
-    line-height: 1.7;
-	border: 1px solid var(--border);
-	*/
+
+.post-content .table-container table{
+	display: table;
 }
 
 .post-content .table-container {
