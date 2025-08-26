@@ -622,30 +622,30 @@ beq equal       /* 如果 r0 == r1，跳转到标签 equal */
 ```
 
 
-<div class="table-container">
+<div class="table-container colfirst-100">
 
-|后缀   |英文                    |标志状态         |含义                       |
-|:------|:-----------------------|:----------------|:--------------------------|
-|`EQ`   |Equal                   |`Z == 1`         |等于                       |
-|`NE`   |Not Equal               |`Z == 0`         |不等于                     |
-|`HI`   |Higher                  |`C == 1` `Z == 0`|无符号 `>`                 |
-|`CS/HS`|Carry set / High or Same|`C == 1`         |无符号 `>=` ，进位设置     |
-|`CC/LO`|Carry Clear / Lower     |`C == 0`         |无符号 `<` ，进位清除      |
-|`LS`   |Lower or Same           |`C == 0` `Z == 1`|无符号 `<=`                |
-|`MI`   |Minus                   |`N == 1`         |负数                       |
-|`PL`   |Plus                    |`N == 0`         |正数或零                   |
-|`VS`   |Overflow Set            |`V == 1`         |有符号溢出                 |
-|`VC`   |Overflow Clear          |`V == 0`         |有符号不溢出               |
-|`GE`   |Greater or Equal        |`N == V`         |有符号 `>=`                |
-|`LT`   |Less Than               |`N != V`         |有符号 `<`                 |
-|`GT`   |Greater Than            |`Z == 0` `N == V`|有符号 `>`                 |
-|`LE`   |Less or Equal           |`Z == 1` `N != V`|有符号 `<=`                |
-|`AL`   |Always                  |                 |无条件，始终执行           |
+|后缀   |含义                       |标志状态         |英文                    |
+|:------|:--------------------------|:----------------|:-----------------------|
+|`EQ`   |等于                       |`Z == 1`         |Equal                   |
+|`NE`   |不等于                     |`Z == 0`         |Not Equal               |
+|`HI`   |无符号 `>`                 |`C == 1` `Z == 0`|Higher                  |
+|`CS/HS`|无符号 `>=` ，进位设置     |`C == 1`         |Carry set / High or Same|
+|`CC/LO`|无符号 `<` ，进位清除      |`C == 0`         |Carry Clear / Lower     |
+|`LS`   |无符号 `<=`                |`C == 0` `Z == 1`|Lower or Same           |
+|`MI`   |负数                       |`N == 1`         |Minus                   |
+|`PL`   |正数或零                   |`N == 0`         |Plus                    |
+|`VS`   |有符号溢出                 |`V == 1`         |Overflow Set            |
+|`VC`   |有符号不溢出               |`V == 0`         |Overflow Clear          |
+|`GE`   |有符号 `>=`                |`N == V`         |Greater or Equal        |
+|`LT`   |有符号 `<`                 |`N != V`         |Less Than               |
+|`GT`   |有符号 `>`                 |`Z == 0` `N == V`|Greater Than            |
+|`LE`   |有符号 `<=`                |`Z == 1` `N != V`|Less or Equal           |
+|`AL`   |无条件，始终执行           |                 |Always                  |
 
 </div>
 
 
-<div class="table-container">
+<div class="table-container colfirst-100">
 
 |后缀         |含义                                            |
 |:------------|:-----------------------------------------------|
