@@ -1,5 +1,5 @@
 ---
-title: "ARM Cortex-M3/M4 汇编"
+title: "ARM Cortex-M3 汇编"
 date: "2025-03-30"
 summary: "ARM Cortex-M3 / M4 权威指南 - 笔记"
 description: ""
@@ -34,7 +34,7 @@ ARM 架构的指令集有 ARM、Thumb、Thumb-2、ARM64 等，分别针对不同
 
 例如 16 位的 `MOV` 指令只能承载 8 位立即数：
 
-```
+```text
 | 15:11 | 10:8 | 7:0 |     op： 操作码（5位）
 |-------|------|-----|     Rd： 目标寄存器（3位）
 |  op   |  Rd  | imm |     imm：立即数（8位）
@@ -42,14 +42,14 @@ ARM 架构的指令集有 ARM、Thumb、Thumb-2、ARM64 等，分别针对不同
 
 当立即数超过了 8 位，则需要使用多条指令来加载立即数：
 
-```armasm
+```asm
 MOV R0, #0x34      ; 加载低8位
 MOV R1, #0x12      ; 加载高8位
 ```
 
 32 位的 `MOVW` 指令可承载 16 位的数据：
 
-```armasm
+```asm
 MOVW R0, #0x1234
 ```
 
@@ -139,40 +139,67 @@ Keil 和 Gnu 是汇编 `伪指令` 不同，汇编 `指令` 语法相同
 
 ## Keil 汇编器伪指令
 
-`DCB` &nbsp;&nbsp;&nbsp;&nbsp;定义字节数据，分配一个字节的空间，可存入数据
+`DCB`
+: 定义字节数据（Define Constant Byte）
 
 ```asm
-          DCB  MyVar  ;未初始化（赋值）的空间
-          DCB  0x12
 MyByte    DCB  0x12
 MyBytes   DCB  0x12, 0x34, 0x56
-MyString  DCB  'H', 'e', 'l', 'l', 'o', 0
+MyString  DCB  "Hello", 0
 ```
-`DCW` &nbsp;&nbsp;&nbsp;&nbsp;定义半字数据（2字节）
 
-`DCD` &nbsp;&nbsp;&nbsp;&nbsp;定义字数据（4字节）
+-----
 
-`DCQ` &nbsp;&nbsp;&nbsp;&nbsp;定义双字数据（8字节）
+`DCW`
+: 定义半字数据（2字节）
 
-`SPACE` 分配指定字节的未初始化空间
+-----
+
+`DCD`
+: 定义字数据（4字节）
+
+-----
+
+`DCQ`
+: 定义双字数据（8字节）
+
+-----
+
+`SPACE`
+: 分配指定字节的未初始化空间
 
 ```asm
 MyBuffer SPACE 10  ;分配 10 个字节并初始化为零
 ```
 
-`FILL` 分配指定数量的字节，并用指定值填充
+-----
+
+`FILL` 
+: 分配指定数量的字节，并用指定值填充
 
 ```asm
 MyBuffer FILL 10, 0xFF  ;填充 10 个字节，值为 0xFF
 ```
 
-`EQU` &nbsp;&nbsp;&nbsp;&nbsp;定义符号常量，如 `MAX_VALUE  EQU  100`
+-----
 
-`AREA` &nbsp;&nbsp;定义代码或数据段，为汇编器提供信息，以便正确组织和分配内存
+`EQU`
+: 定义符号常量
+
 
 ```asm
-AREA MyCode, CODE, READONLY, ALIGN=2
-AREA 段名, 属性1, 属性2, ...
+MAX_VALUE  EQU  100
+```
+
+-----
+
+`AREA`
+: 定义代码或数据段，为汇编器提供信息，以便正确组织和分配内存
+
+```asm
+;AREA   段名,  属性1,  属性2, ...
+AREA MyCode,  CODE,  READONLY, ALIGN=2
+
 ;段名：段的名称，通常是一个字符串，用于标识该段。
 ;属性：定义段的特性，常见的属性包括：
 ;     CODE       表示代码段，通常用于存储可执行指令
@@ -181,36 +208,67 @@ AREA 段名, 属性1, 属性2, ...
 ;     READWRITE  表示该段是可读写的
 ;     ALIGN=n    指定段的对齐方式，ALIGN=n 表示按 2^n 方字节对齐
 ;     NOINIT     表示该段不需要初始化
-
-AREA |.text|, CODE, READONLY
-;|.text| 是标准代码段的名称，通常用于存储程序的指令代码
-;使用竖线 | 包裹段名是为了确保段名被当作一个整体处理，避免歧义
-;这种写法是 Keil 汇编器的规范，尤其是在定义标准段时常用
 ```
 
-`PROC` 定义一个子程序，与 `ENDP` 配对使用，`ENDP` 用于标记子程序的结束
+```asm
+;定义了一个名为 MyData 的数据段，具有读写属性
+AREA MyData, DATA, READWRITE
+Data1 DCD 0x1234
+Data2 DCD 0x5678
+```
+
+```asm
+;定义了一个名为 .text 的代码段，具有只读属性，管道符号 || 是可选的，用于包含特殊字符
+AREA |.text|, CODE, READONLY
+```
+
+-----
+
+`PROC` 
+: 定义一个子程序，与 `ENDP` 配对使用，`ENDP` 用于标记子程序的结束
+
+```asm
+子程序名称 PROC [属性1] [, 属性2]...
+    ; 子程序代码
+子程序名称 ENDP
+```
 
 ```asm
 NMI_Handler     PROC
                 EXPORT  NMI_Handler                [WEAK]
-                B       .
+                B       .   ;. 表示当前地址，即 B . 是一个无限循环，相当于 while(1)
                 ENDP
 ```
 
-`EXPORT` 用于声明一个全局符号，使其在其他模块中可见和可调用
+-----
 
-`IMPORT` 用于声明一个外部符号
+`EXPORT` 
+: 用于声明一个全局符号，使其在其他模块中可见和可调用
 
-`WEAK` 用于声明一个弱符号
+-----
+
+`IMPORT` 
+: 用于声明一个外部符号
+
+-----
+
+`WEAK` 
+: 用于声明一个弱符号
 
 ```asm
 WEAK    MyFunction 
 EXPORT  MyFunction  [WEAK] ;与 EXPORT 配合使用
 ```
 
-`ALIGN` 对齐到 `2^n` 字节边界
+-----
 
-`IFDEF` 用于检查某个符号是否已定义
+`ALIGN` 
+: 对齐到 `2^n` 字节边界
+
+-----
+
+`IFDEF` 
+: 用于检查某个符号是否已定义
 
 ```asm
 IFDEF DEBUG
@@ -218,7 +276,10 @@ IFDEF DEBUG
 ENDIF
 ```
 
-`IF`、`ELSE` 条件汇编
+-----
+
+`IF` `ELSE` 
+: 条件汇编
 
 ```asm
 IF Var = 1
@@ -237,17 +298,32 @@ ENDIF
 
 ## GNU 汇编器伪指令
 
- **更多参考：[The gnu Assembler](https://www.eecs.umich.edu/courses/eecs373/readings/Assembler.pdf) 第 7 章**
+**更多参考：[The gnu Assembler](https://www.eecs.umich.edu/courses/eecs373/readings/Assembler.pdf) 第 7 章**
 
-`.align` 用于对齐代码或数据到 `2^n` 字节边界，如 `.align 2` 对齐到 4 字节的边界
+-----
 
-`.extern` 用于声明一个外部符号（如函数或变量）
+`.align` 
+: 用于对齐代码或数据到 `2^n` 字节边界，如 `.align 2` 对齐到 4 字节的边界
 
-`.include` 用于包含其他汇编文件，如 `.include "header.s" `
+-----
 
-`.text` 表示后续代码属于 `.text` 段，类似的还有 `.data`、`.bss`  
+`.extern` 
+: 用于声明一个外部符号（如函数或变量）
 
-`.section` 告诉汇编器将本行之后的代码或数据放入指定的段中，直到遇到下一个 `.section`
+-----
+
+`.include` 
+: 用于包含其他汇编文件，如 `.include "header.s" `
+
+-----
+
+`.text` 
+: 表示后续代码属于 `.text` 段，`.text` 实际上是 `.section .text` 的简写，类似的还有 `.data`、`.bss`  
+
+-----
+
+`.section` 
+: 告诉汇编器将本行之后的代码或数据放入指定的段中，直到遇到下一个 `.section`
 
 ```asm
 .section  .text.Default_Handler,"ax",%progbits
@@ -259,15 +335,30 @@ ENDIF
    入口点：可选参数，指定段的入口点 */
 ```
 
+-----
 
- `.asciz`、`.string` 用于在汇编代码中定义字符串，并在末尾添加 `\0` ；`.ascii` 不会添加 `\0`
+ `.ascii`
+: 定义字符串
+
+```asm
+my_string:
+    .ascii "ARM GCC Assembly\0"
+```
+
+-----
+
+ `.string` `.asciz`
+: 定义字符串，并在末尾添加 `\0`
 
 ```asm
 my_string:
     .string "ARM GCC Assembly"
 ```
 
-`.byte` 指令用于在内存中定义一个或多个字节的数据，类似还有 `.word`、`.int`、`.float`、`.double`
+-----
+
+`.byte` 
+: 定义一个或多个字节的数据，类似还有 `.word` `.int` `.float` `.double`
 
 ```asm
 .data
@@ -277,14 +368,18 @@ my_values:
     .word 0x12345678, 0x87654321, 0xABCDEF01
 ```
 
-`.equ`、`.set` 用于定义符号常量，类似于 C 语言中的 `#define`，`.equ` 更通用
+-----
+
+`.equ` `.set` 
+: 定义符号常量，类似于 C 语言中的 `#define`，`.equ` 比 `.set` 更通用
 
 ```asm
 .equ BUFFER_SIZE, 1024 * 4
 ```
 
+-----
 
-`.if`、`.ifdef`、`.else`、`.elseif` 和 `.endif` 是条件汇编伪指令
+`.if` `.ifdef` `.else` `.elseif`  `.endif` 是条件汇编伪指令
 
 ```asm
 .equ FLAG, 0x1
@@ -295,7 +390,10 @@ my_values:
 .endif
 ```
 
-`.macro` 和 `.endm` 用于定义宏
+-----
+
+`.macro`  `.endm` 
+: 定义宏
 
 ```asm
 .macro add_reg reg1, reg2
@@ -303,14 +401,20 @@ my_values:
 .endm
 ```
 
-`.space` 指令用于在内存中分配指定大小的空间，并用指定的值填充该空间
+-----
+
+`.space` 
+: 用于在内存中分配指定大小的空间，并用指定的值填充该空间
 
 ```asm
 /* 分配 200 字节的空间，并用 0x00 填充，并使用标签 my_buffer 标记起始地址 */
-my_buffer .space 200, 0x00
+my_buffer:  .space 200, 0x00
 ```
 
-`.global` 用于声明一个全局符号，可以在其他汇编文件或 C/C++ 代码中引用
+-----
+
+`.global` 
+: 声明一个全局符号，可以在其他汇编文件或 C/C++ 代码中引用
 
 ```asm
 .global my_variable  /* 声明 my_variable 为全局符号（变量）*/
@@ -332,10 +436,17 @@ extern int my_variable;
 extern void my_function(void);
 ```
 
+-----
 
-`.type` 用于声明符号的类型，如 `%function` 函数或 `%object` 对象
+`.type`
+: 用于指定符号的类型信息，这对于链接器和调试器非常重要
 
 ```asm
+/*  %function ：指定符号是一个函数       
+    %object   ：指定符号是一个数据对象   
+    %common   ：用于未初始化的公共数据   
+    %notype   ：无特定类型               */
+
 .globl my_function
 .type my_function, %function
 my_function:
@@ -349,8 +460,10 @@ my_data:
     .word 0x12345678
 ```
 
-`.size` 用于指定符号（如函数或数据）的大小信息，常与 `.type` 一起使用，
-帮助链接器和调试器更好地理解代码结构
+-----
+
+`.size` 
+: 显式指定符号的大小信息（边界），以便链接器可以检查符号引用是否超出范围
 
 ```asm
 .global my_function
@@ -359,51 +472,75 @@ my_function:
     /* 函数代码 */
     mov r0, #0
     bx lr
-.size my_function, .-my_function   /* 设置 my_function 的大小为当前位置（.）减去 my_function 的起始地址 */
+/* 设置 my_function 的大小为当前位置（.）减去 my_function 的起始地址 */
+.size my_function, .-my_function   
 /* .size 符号名, 表达式
-    符号名：指定要设置大小的符号，通常是函数或数据的名称
-    表达式：指定符号的大小，通常以字节为单位 */
+       符号名：指定要设置大小的符号，通常是函数或数据的名称
+       表达式：指定符号的大小，通常以字节为单位                      */
 ```
 
-`.weak` 指令用于声明一个弱符号
+```asm
+.globl my_array
+.data
+my_array:
+    .word 1, 2, 3, 4
+.size my_array, 16  // 4个word × 4字节 = 16字节
+```
+
+-----
+
+`.weak` 
+: 声明一个弱符号
 
 ```asm
 .weak my_function
 my_function:
     bx lr
-```
 
-```asm
 .weak my_variable
 .data
 my_variable:
     .word 0
 ```
 
+-----
 
-`.syntax` 指定汇编代码的语法格式
+`.syntax` 
+: 汇编代码的语法格式
 
 ```asm
 .syntax unified  /* 统一汇编语言（默认），支持混合使用 ARM 和 Thumb 指令 */
 .syntax divided  /* 传统语法，仅支持 ARM 指令集 */
 ```
 
-`.cpu` 指定处理器架构，使汇编器针对特定的架构优化
+-----
+
+`.cpu` 
+: 处理器架构，使汇编器针对特定的架构优化
 
 ```asm
 .cpu cortex-m3
 ```
 
-`.fpu` 指定目标处理器支持的浮点单元（FPU）类型
+-----
+
+`.fpu` 
+: 处理器支持的浮点单元（FPU）类型
 
 ```asm
 .fpu softvfp  /* 软件浮点运算 */
 .fpu vfpv3    /* ARMv7 架构的 VFPv3 */
 ```
 
-`.thumb` 使用 thumb 指令集，在某些情况下，可以在同一汇编文件中混合使用 `.arm` 和 `.thumb` 指令集
+-----
 
-`.thumb_set` 用于将一个符号定义为另一个符号的别名 （alias），并且明确指定该别名是 Thumb 指令集的符号
+`.thumb` 
+: 使用 thumb 指令集，在某些情况下，可以在同一汇编文件中混合使用 `.arm` 和 `.thumb` 指令集
+
+-----
+
+`.thumb_set` 
+: 将一个符号定义为另一个符号的别名 （alias），并且明确指定该别名是 Thumb 指令集的符号
 
 ```asm
 .thumb_set 别名, 目标符号
@@ -428,27 +565,25 @@ my_function:
 
 <div class="table-container no-thead">
 
-|               |                         |                                                               |
-|:--------------|:------------------------|:--------------------------------------------------------------|
-|立即数寻址     |`MOV R0, #0x10`          |将立即数 0x10 加载到寄存器 R0                                  |
-|寄存器寻址     |`MOV R1, R0`             |将寄存器 R0 的值复制到寄存器 R1                                |
-|寄存器间接寻址 |`LDR R2, [R1]`           |从 R1 指向的内存地址加载数据到 R2                              |
-|基址加偏移寻址 |`LDR R2, [R1, #4]`       |从 R1 + 4 的内存地址加载数据到 R2                              |
-|基址加索引寻址 |`LDR R2, [R1, R0]`       |从 R1 + R0 的内存地址加载数据到 R2                             |
-|前变址寻址     |`LDR R2, [R1, #4]!`      |先将 R1 增加 4，然后从 R1 指向的内存地址加载数据到 R2          |
-|后变址寻址     |`LDR R2, [R1], #4`       |从 R1 指向的内存地址加载数据到 R2，然后将 R1 增加 4            |
-|PC 相对寻址    |`LDR R0, [PC, #0x100]`   |从 PC + 0x100 的内存地址加载数据到 R0                          |
-|字面量池寻址   |`LDR R0, =0x12345678`    |将常量 0x12345678 加载到 R0                                    |
-|多寄存器寻址   |`LDMIA R1, {R2, R3, R4}` |从 R1 指向的内存地址依次加载数据到 R2, R3, R4，并自动增加 R1   |
-|堆栈寻址       |`PUSH {R0, R1}`          |将 R0 和 R1 压入堆栈                                           |
-|               |`POP {R0, R1}`           |从堆栈弹出数据到 R0 和 R1                                      |
+|               |                          |                                                                    |
+|:--------------|:-------------------------|:-------------------------------------------------------------------|
+|寄存器寻址     |`MOV R0, R1`              |`R0` ← `R1`                                                         |
+|立即数寻址     |`MOV R0, #4`              |`R0` ← `4`                                                          |
+|寄存器间接寻址 |`LDR R0, [R1]`            |`R0` ← `*R1`                                                        |
+|基址加偏移寻址 |`LDR R0, [R1, #4]`        |`R0` ← `*(R1 + 4)`                                                  |
+|基址加索引寻址 |`LDR R0, [R1, R2]`        |`R0` ← `*(R1 + R2)`                                                 |
+|前变址寻址     |`LDR R0, [R1, #4]!`       |`R1` ← `R1 + 4` ， `R0` ← `*R1`                                     |
+|后变址寻址     |`LDR R0, [R1], #4`        |`R0` ← `*R1` ， `R1` ← `R1 + 4`                                     |
+|PC 相对寻址    |`LDR R0, [PC, #4]`        |`R0` ← `*(PC + 4)`                                                  |
+|字面量池寻址   |`LDR R0, =0x12345678`     |`R0` ← `0x12345678`                                                 |
+|多寄存器寻址   |`LDMIA SP!, {R0, R1}`     |`R0` ← `*SP` ， `SP` ← `SP + 4` ， `R1` ← `*SP` ， `SP` ← `SP + 4`  |
+|堆栈寻址       |`PUSH {R0, R1}`           |`SP` ← `SP - 4` ， `*SP` ← `R0` ， `SP` ← `SP - 4` ， `*SP` ← `R1`  |
+|               |`POP {R0, R1}`            |`R0` ← `*SP` ， `SP` ← `SP + 4` ， `R1` ← `*SP` ， `SP` ← `SP + 4`  |
 
 </div>
 
 
-> 前变址寻址中，`!` 表示将更新后的值写回寄存器，后变址则不需要 `!`
-> 
-> 类似的 `LDMIA SP!, {R0-R3, PC}` 表示指令完成时，将 SP 更新的值写回 SP
+> `!` 表示在数据传输完成后，将更新后的内存地址写回基址寄存器，这个特性称为 “写回”
 
 
 ## 地址对齐
@@ -458,24 +593,21 @@ my_function:
     <img src="align.svg" style="max-height:400px"></img>
 </div>
 
-在汇编中 `.align n` 是 `2^n` 字节对齐，在链接脚本中 `ALIGN(n)` 是 `n` 字节对齐
+> 在汇编中 `.align n` 是 `2^n` 字节对齐，在链接脚本中 `ALIGN(n)` 是 `n` 字节对齐。
+> 大多数情况下，4 字节传输的地址要 4 字节对齐，2 字节传输的地址要 2 字节对齐
 
-大多数情况下，4 字节传输的地址要 4 字节对齐，2 字节传输的地址要 2 字节对齐
 
-
-## 整数状态标志
-
-`APSR`（应用程序状态寄存器）包含以下标志位：
+## 应用程序状态寄存器 ASPR
 
 <div class="table-container">
 
-|标志|置位条件                                                                           |
-|:---|:----------------------------------------------------------------------------------|
-|`N == 1` |结果为负、算术或逻辑运算结果的最高有效位为 1、被比较数 < 另一个数                  |
-|`Z == 1` |结果为零、比较相等                                                                 |
-|`C == 1` |无符号加法溢出、被减数 >= 减数，被比较数 >= 另一个数、移位时最后一个被移出的位为 1 |
-|`V == 1` |有符号运算结果溢出                                                                 |
-|`Q == 1` |饱和运算                                                                    |
+|标志|位置|置位条件（等于1）                                                                  |
+|:---|:---|:----------------------------------------------------------------------------------|
+|`N` |31  |结果为负、算术或逻辑运算结果的最高有效位为 1、被比较数 < 另一个数                  |
+|`Z` |30  |结果为零、比较相等                                                                 |
+|`C` |29  |无符号加法溢出、被减数 >= 减数，被比较数 >= 另一个数、移位时最后一个被移出的位为 1 |
+|`V` |28  |有符号运算结果溢出                                                                 |
+|`Q` |27  |饱和运算                                                                           |
 
 </div>
 
@@ -530,121 +662,194 @@ beq equal       /* 如果 r0 == r1，跳转到标签 equal */
 
 <div class="table-container no-thead">
 
-||||
-|:--|:--|:--|
-|`MOV` |`R4, R0`      |从 `R0` 复制数据到 `R4`                      |
-|`MOVS`|`R4, R0`      |从 `R0` 复制数据到 `R4`，且更新 `APSR` 标志  |
-|`MRS` |`R7, PRIMASK` |将数据从 `PRIMASK` 复制到 `R7`（特殊寄存器 → 通用寄存器）               |
-|`MSR` |`CONTROL, R2` |将数据从 `R2` 复制到 `CONTROL`（通用寄存器 → 特殊寄存器）              |
-|`MOVW`|`R6, #0x1234` |设置 `R6` 为 16 位常量 `0x1234`              |
-|`MOVT`|`R6, #0x8765` |设置 `R6` 的高 16 位为 `0x8765`              |
-|`MVN` |`R3, R7`      |将 `R7` 中数据取反后送至 `R3`                |
+|                               |                     |                                  |
+|:------------------------------|:--------------------|:---------------------------------|
+|**传送数据（Move）**           |`MOV` `R4, R0`       |`R0` ← `R4`                       |
+|                               |`MOVS` `R4, R0`      |`R0` ← `R4`，更新 `APSR`          |
+|**传送至低 16 位**             |`MOVW` `R6, #0x1234` |`R6[0:15]` ← `0x1234`             |
+|**传送至高 16 位（Move Top）** |`MOVT` `R6, #0x8765` |`R6[16:31]` ← `0x8765`            |
+|**取反传送（Move Not）**       |`MVN` `R3, R7`       |`R3` ← `取反` ← `R7`              |
+|**特殊寄存器 → 通用寄存器**    |`MRS` `R7, PRIMASK`  |`R7` ← `PRIMASK`                  |
+|**通用寄存器 → 特殊寄存器**    |`MSR` `CONTROL, R2`  |`CONTROL` ← `R2`                  |
 
 </div>
 
 
 ## 加载标签地址
 
-<div class="table-container no-thead">
 
-|                            |                                                          |
-|:---------------------------|:---------------------------------------------------------|
-|`LDR` ` R0, [PC, #offset]`  |PC 相对寻址，这种方法需要手动计算偏移量，不推荐直接使用   |
-|`LDR` ` R0, =label`         |最常用的方法，汇编器将其会转换为 PC 相对寻址              |
-|`ADR` ` R0, label`          |ADR 会计算标签相对于 PC 的偏移，适用于小范围内的地址加载（±4KB）  |
+下面两条都是伪指令，即汇编器会根据实际情况，用一条或多条等效的指令来替代它
 
-</div>
+`ADR R0, label` ：
+
+通过计算 lable 相对于 PC 的偏移，通常用 `ADD` 或 `SUB` 指令替代，如 `ADD R0, PC, #offset`，适用于小范围内的地址加载（±4KB）
+
+`LDR R0, =label` ： 
+
+通常被替换为 `LDR R0，[PC, #offset]` 。例如当 `lable` 的地址为 `0x12345678` 时，`0x12345678` 会被存入
+文字池，通过计算 `0x12345678` 所在地址相对于 PC 的偏移量，用 `LDR R0，[PC, #offset]` 替代
+
+
+> 文字池，是汇编器在 `.text` 段内部开辟的一块用于存储常量数据的特殊区域，通常位于 `.text` 末尾，也可使用 `.pool` 伪指令手动指定。
+
+
+```asm
+my_function:
+    LDR R0, =0x12345678    ; 需要一个文字池项
+    LDR R1, =my_global_var ; 需要另一个文字池项
+    ...                    ; 很多代码
+    BX LR                  ; 函数返回
+
+    .pool                  ; 手动提示汇编器在此处生成文字池
+                           ; 汇编器会将两个常量放在这里
+```
+
+ 汇编后可能变成：
+
+```asm
+my_function:
+    LDR R0, [PC, #offset1]  ; PC + offset1 指向 0x12345678
+    LDR R1, [PC, #offset2]  ; PC + offset2 指向 my_global_var的地址
+    ...
+    BX LR
+
+.word 0x12345678          ; 文字池项 #1
+.word my_global_var       ; 文字池项 #2
+```
+
 
 
 ## 存储器访问指令
 
-<div class="table-container no-thead">
+<div class="table-container">
 
-|||    |
-|:---------------|:---------------|:-------------------------------|
-|`LDRB`          |`STRB`          |8 位无符号（Byte）              |
-|`LDRSB`         |`STRB`          |8 位有符号 （Signed Byte）      |
-|`LDRH`          |`STRH`          |16 位无符号 （Half Word）       |
-|`LDRSH`         |`STRH`          |16 位有符号 （Signed Half Word）|
-|`LDR`           |`STR`           |32 位（Word）                   |
-|`LDM`           |`STM`           |多个 32 位  （Multiple）        |
-|`LDRD`          |`STRD`          |双字 64 位  （Double）          |
-|`POP`           |`PUSH`          |栈操作 32 位                    |
+|                                    |加载（读存储器）|存储（写存储器）|
+|:-----------------------------------|:---------------|:---------------|
+|**8 位无符号（Byte）**              |`LDRB`          |`STRB`          |
+|**8 位有符号 （Signed Byte）**      |`LDRSB`         |`STRB`          |
+|**16 位无符号 （Half Word）**       |`LDRH`          |`STRH`          |
+|**16 位有符号 （Signed Half Word）**|`LDRSH`         |`STRH`          |
+|**32 位（Word）**                   |`LDR`           |`STR`           |
+|**多个 32 位  （Multiple）**        |`LDM`           |`STM`           |
+|**双字 64 位  （Double）**          |`LDRD`          |`STRD`          |
+|**栈操作 32 位**                    |`POP`           |`PUSH`          |
 
 </div>
 
 ```asm
-LDR R0, [R1, #0x8]  /* 从存储器 R0 + 8 地址处读取字 */
-STR R0, [R1, #0x8]  /* 将 R0 中的数据写入存储器 R0 + 8 地址处 */
+LDR R0, [R1, #0x8]    /*  R0 ← *(R1 + 8)                     */
+LDR R0, [R1, #0x8]!   /*  R0 ← *(R1 + 8) , R1 += 8           */
+STR R0, [R1, #0x8]    /*  *(R1 + 8) ← R0                     */
 ```
 
-## 多加载和多存储
+## 多加载和多存储 LDM / STM
 
-`LDM`、`STM` 指令的地址模式：
 
-- `IA`（Increment After）&nbsp;&nbsp;&nbsp;：存储后地址递增（默认模式）
-- `IB`（Increment Before）&nbsp;：存储前地址递增
-- `DA`（Decrement After）&nbsp;&nbsp;：存储后地址递减
-- `DB`（Decrement Before）：存储前地址递减
+<div class="table-container">
 
-```asm
-STMIA R0!, {R4-R7}       /* 存储 R4-R7 到 R0 指向的地址，地址在每次写入后增加 4，最后将 R0+16 写回 R0 */
-STMDB SP!, {R0-R3, LR}   /* 等同于 PUSH {R0-R3, LR} */
-LDMIA SP!, {R0-R3, PC}   /* 等同于 POP {R0-R3, PC} */
-```
+|地址模式                                |后缀                        |   |   |
+|:---------------------------------------|:---------------------------|:--|:--|
+|**存储后地址递增（Increment After）**   |`IA`（默认）                |   |   | 
+|**存储前地址递增（Increment Before）**  |`IB`                        |   |   |
+|**存储后地址递减（Decrement After）**   |`DA`                        |   |   |
+|**存储前地址递减（Decrement Before）**  |`DB`                        |   |   |
 
-`STMDB SP!, {R0-R3, LR}` 存储顺序：
+</div>
+
+
+`STMDB SP!, {R0-R3, LR}` 等同于 `PUSH {R0-R3, LR}` ：
 
 ```text
-   栈       高地址
-|      | ← SP
-|  LR  | ← SP-4
-|  R3  | ← SP-8 
-|  R2  | ← SP-12   
-|  R1  | ← SP-16 
-|  R0  | ← SP-20
-            低地址
+SP      SP-4       SP-8       SP-12      SP-16      SP-20       SP=SP-20
+  →│xx│       │  │       │  │       │  │       │  │       │  │   
+   │  │      →│LR│       │LR│       │LR│       │LR│       │LR│       
+   │  │       │  │      →│R3│       │R3│       │R3│       │R3│   
+   │  │       │  │       │  │      →│R2│       │R2│       │R2│        
+   │  │       │  │       │  │       │  │      →│R1│       │R1│        
+   │  │       │  │       │  │       │  │       │  │      →│R0│        
+   │  │       │  │       │  │       │  │       │  │       │  │   
 ```
 
-> 注意：无论寄存器列表如何书写，编号高的寄存器总是先存储
 
-`LDMIA SP!, {R0-R3, PC}` 加载顺序：
+`LDMIA SP!, {R0-R3, PC}` 等同于 `POP {R0-R3, PC}` ：
 
 ```text
-   栈      高地址    寄存器
-|      | ← SP+20
-|  LR  | ← SP+16 → [  PC  ]
-|  R3  | ← SP+12 → [  R3  ]
-|  R2  | ← SP+8  → [  R2  ]
-|  R1  | ← SP+4  → [  R1  ]
-|  R0  | ← SP    → [  R0  ]
-           低地址
+SP      SP+4       SP+8       SP+12      SP+16      SP+20       SP=SP+20
+   │  │       │  │       │  │       │  │       │  │      →│xx│ 
+   │LR│       │LR│       │LR│       │LR│      →│LR│       │  │     
+   │R3│       │R3│       │R3│      →│R3│       │  │       │  │ 
+   │R2│       │R2│      →│R2│       │  │       │  │       │  │      
+   │R1│      →│R1│       │  │       │  │       │  │       │  │      
+  →│R0│       │  │       │  │       │  │       │  │       │  │      
+   │  │       │  │       │  │       │  │       │  │       │  │ 
 ```
+
+> 注意：`SP!` 表示 **所有数据** 传输完成后再写回 `SP`
+>
+> 注意：无论寄存器列表如何书写，编号 **高的寄存器** 总是 **先存储**，编号 **低的寄存器** 总是 **先加载**
 
 > `PUSH` 实际上是 `STMDB` 的别名，`POP` 是 `LDMIA` 的别名
 
 数组在栈中的存储顺序：
 
 ```text
-| array[3] | 高地址
-| array[2] |
-| array[1] |
-| array[0] | 低地址
+│ a[3] │ 高地址
+│ a[2] │
+│ a[1] │
+│ a[0] │ 低地址
 ```
+
+## 函数调用与返回
+
+```asm
+.global _start
+
+_start:
+    MOV R0, #3        /* 参数 1                              */
+    MOV R1, #5        /* 参数 2                              */
+    LDR R4, =0x1234   /* 测试 R4-R6 是否会被破坏               */
+    LDR R5, =0x5678   /* 测试 R4-R6 是否会被破坏               */
+    LDR R6, =0x9ABC   /* 测试 R4-R6 是否会被破坏               */
+    BL add            /* 调用 add                            */ 
+    LDR R3, =0x8888   /* lr = 此处地址：返回后从这里继续执行     */
+
+add: 
+    PUSH {R4-R6,LR}   /* 保存 R4-R6 和返回地址 LR              */
+    MOV R4, R0
+    MOV R5, R1
+    ADD R6, R4, R5
+    MOV R0, R6        /* R0 保存返回值                         */
+    POP {R4-R6,PC}    /* 恢复 R4-R6，将 LR 的值弹入 PC 寄存器    */
+```
+
+> R0 通常作为返回值的寄存器，约定俗成？
+
 
 ## 排他访问
 
-例如 `LDREXB` 通常与 `STREXB` (Exclusive Byte) 指令配合使用，
-用于实现原子读-修改-写操作
+<div class="table-container">
+
+|排他访问（Exclusive）|后缀，字节（B），半字（H）  |                                                     |
+|:--------------------|:---------------------------|:----------------------------------------------------|
+|**加载字**           |`LDREX` `Rd, [Rn]`          |`Rd` ← `*Rn` ， 标记 `*Rn` 为独占访问                |
+|**存储字**           |`STREX` `Rt, Rd, [Rn]`      |`*Rn` ← `Rd` ， `Rt` ← `返回值` （0：成功，1：失败） |
+|**清除独占状态**     |`CLREX`                     |                                                     |  
+
+</div>
+
+`LDREX` 必须与 `STREX` (Exclusive) 指令配合使用，用于实现原子读-修改-写操作
 
 ```asm
 try_atomic_update:
-    LDREXB R1, [R0]       /* 从R0指向的地址加载字节到R1，并标记独占访问 */
+    LDREXB R1, [R0]       /* 从 R0 指向的地址加载数据到 R1，并标记 R0 指向的地址为独占访问 */
     ...                   /* 在这里对 R1 的值进行修改*/
-    STREXB R2, R1, [R0]   /* 尝试将修改后 R1 的值存回 R0 地址，返回状态存入 R2 */
+                          /* 在此期间 R0 指向的地址处的数据被修改，则下面的指令将执行失败  */
+    STREXB R2, R1, [R0]   /* 将修改后 R1 的值存回 R0 地址，返回状态存入 R2 */
     CMP R2, #0            /* 检查存储是否成功（R2=0表示成功）*/
     BNE try_atomic_update /* 如果不成功则重试 */
 ```
+
+只有在执行 `STREX` 之前，独占访问的地址没有被其它程序（如中断或 DMA） 写入过，`STREX` 才能返回成功
 
 ## 算术运算
 
@@ -934,7 +1139,7 @@ UBFX R1, R0, #4, #8  /* R1 = 0x00000088 */
 |                                                  |                       |                             |
 |:-------------------------------------------------|:----------------------|:----------------------------|
 |**比较和跳转（Compare and Branch if Zero）**      |`CBZ` `Rn, lable`      |若 Rn = 0 则跳转到 lable 处  |
-|**比较和跳转（Compare and Branch if None-Zero）** |`CBZ` `Rn, lable`      |若 Rn !=  0 则跳转到 lable 处|
+|**比较和跳转（Compare and Branch if None-Zero）** |`CBNZ` `Rn, lable`     |若 Rn !=  0 则跳转到 lable 处|
 
 </div>
 
@@ -1045,26 +1250,18 @@ USAT R2, #16, R0      /* R2 = 0x0000FFFF */
 ```asm
 .global _start
 _start:
-        ldr  r0, =my_array
-        mov  r1, #5
-        ldrb r2, [r0, r1, lsl #2]    /* r2 = r0+(r1<<2) = my_array[5*4] = 0x24  */
+        ldr  r0, =my_array           /* my_array[0][0]                           */
+        mov  r1, #2                  /* my_array[2][0]                           */
+        ldrb r2, [r0, r1, lsl #3]    /* r2 = r0+(r1<<3) = my_array[2*8] = 0x20   */
 
 .section .rodata
-my_array:
+my_array:                            /* my_array[3][7]                           */
         .byte 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
         .byte 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17
         .byte 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27
         .byte 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37
 ```
 
-## 未完待续
-
-- [ ] 架构（特殊寄存器,及其读写指令）
-- [ ] APSR 标志位读写
-- [ ] 异常指令
-- [ ] 休眠模式指令
-- [ ] 存储器屏障指令
-- [ ] 程序调用流程 push pop
 
 
 
@@ -1074,6 +1271,3 @@ my_array:
 
 - [Arm 汇编在线模拟运行](https://cpulator.01xz.net/?sys=arm)
 - [ARM Cortex-M3/4 指令流水线](https://blog.csdn.net/kouxi1/article/details/123318182)
-
-
-
