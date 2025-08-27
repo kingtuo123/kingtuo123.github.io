@@ -1,7 +1,7 @@
 ---
-title: "ARM Cortex-M3 汇编"
+title: "CM3 汇编"
 date: "2025-03-30"
-summary: "ARM Cortex-M3 / M4 权威指南 - 笔记"
+summary: "《ARM Cortex-M3 / M4 权威指南》- 阅读笔记"
 description: ""
 categories: [ "embedded" ]
 tags: [ "arm", "asm"]
